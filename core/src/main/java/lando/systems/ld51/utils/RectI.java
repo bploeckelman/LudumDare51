@@ -2,6 +2,7 @@ package lando.systems.ld51.utils;
 
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
+import text.formic.Stringf;
 
 public class RectI implements Pool.Poolable {
 
@@ -91,7 +92,7 @@ public class RectI implements Pool.Poolable {
     }
 
     public String toString() {
-        return String.format("RectI(%d, %d, %d, %d)", x, y, w, h);
+        return Stringf.format("RectI(%d, %d, %d, %d)", x, y, w, h);
     }
 
 }

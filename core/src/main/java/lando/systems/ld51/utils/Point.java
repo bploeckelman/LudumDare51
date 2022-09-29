@@ -3,6 +3,7 @@ package lando.systems.ld51.utils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
+import text.formic.Stringf;
 
 public class Point implements Pool.Poolable {
 
@@ -99,7 +100,7 @@ public class Point implements Pool.Poolable {
 
     @Override
     public String toString() {
-        return String.format("(%d,%d)", x, y);
+        return Stringf.format("(%d,%d)", x, y);
     }
 
     @Override

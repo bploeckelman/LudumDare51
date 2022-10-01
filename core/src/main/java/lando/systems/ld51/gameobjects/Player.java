@@ -109,10 +109,31 @@ public class Player {
     }
 
     public boolean canPickup(Gem gem){
-        return true;
+        if (isWizard) return false;
+        switch (gem.type){
+            case RED:
+                return (redGemCount < FULL_GEM_COUNT);
+            case GREEN:
+                return (greenGemCount < FULL_GEM_COUNT);
+            case BLUE:
+                return (blueGemCount < FULL_GEM_COUNT);
+        }
+        // Shouldn't get here
+        return false;
     }
-    public void pickupGem(Gem gem) {
 
+    public void pickupGem(Gem gem) {
+        switch (gem.type){
+            case RED:
+                redGemCount++;
+                break;
+            case GREEN:
+                greenGemCount++;
+                break;
+            case BLUE:
+                blueGemCount++;
+                break;
+        }
     }
 
     public void setPhase(int phase){
@@ -127,7 +148,21 @@ public class Player {
         if (currentPhase == nextPhase) {
             return;
         }
+
+        // TODO: anything that needs to happen on the phase change
+        // Particle effects etc
         currentPhase = nextPhase;
+        switch (currentPhase){
+            case RED:
+                this.animation = gameScreen.assets.creatureAnims.get(CreatureAnims.Type.warrior);
+                break;
+            case GREEN:
+                this.animation = gameScreen.assets.creatureAnims.get(CreatureAnims.Type.rogue);
+                break;
+            case BLUE:
+                this.animation = gameScreen.assets.creatureAnims.get(CreatureAnims.Type.cleric);
+                break;
+        }
     }
 
     public Phase getCurrentPhase() {

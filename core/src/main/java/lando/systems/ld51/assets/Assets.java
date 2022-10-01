@@ -2,6 +2,8 @@ package lando.systems.ld51.assets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -49,6 +51,19 @@ public class Assets implements Disposable {
     public Array<Animation<TextureRegion>> numberParticles;
 
     public SimplexNoise noise;
+
+    public Music introMusicMusic;
+
+    public Sound introMusicSound;
+    public Sound warriorMusic1;
+    public Sound warriorMusic2;
+    public Sound warriorMusic3;
+    public Sound rogueMusic1;
+    public Sound rogueMusic2;
+    public Sound rogueMusic3;
+    public Sound clericMusic1;
+    public Sound clericMusic2;
+    public Sound clericMusic3;
 
     public enum Patch {
         debug, panel, metal, glass,
@@ -101,6 +116,19 @@ public class Assets implements Disposable {
             mgr.load("fonts/outfit-medium-20px.fnt", BitmapFont.class);
             mgr.load("fonts/outfit-medium-40px.fnt", BitmapFont.class);
             mgr.load("fonts/outfit-medium-80px.fnt", BitmapFont.class);
+
+
+
+
+
+
+            mgr.load("audio/music/introMusic.ogg", Music.class);
+
+
+            mgr.load("audio/sound/introMusic.ogg", Sound.class);
+            mgr.load("audio/sound/warriorMusic1.ogg", Sound.class);
+//            mgr.load("audio/sound/introMusic.ogg", Sound.class);
+
         }
 
         if (load == Load.SYNC) {
@@ -161,6 +189,18 @@ public class Assets implements Disposable {
         Patch.glass_dim.drawable    = new NinePatchDrawable(Patch.glass_dim.ninePatch);
         Patch.glass_active.drawable = new NinePatchDrawable(Patch.glass_active.ninePatch);
         Patch.metal.drawable        = new NinePatchDrawable(Patch.metal.ninePatch);
+
+
+
+
+        // Music clips as Music objects
+        introMusicMusic = mgr.get("audio/music/introMusic.ogg", Music.class);
+
+
+        // Music clips as Sound objects
+        introMusicSound = mgr.get("audio/sound/introMusic.ogg", Sound.class);
+        warriorMusic1 = mgr.get("audio/sound/warriorMusic1.ogg", Sound.class);
+        rogueMusic1 = mgr.get("audio/sound/warriorMusic1.ogg", Sound.class);
 
         initialized = true;
         return 1;

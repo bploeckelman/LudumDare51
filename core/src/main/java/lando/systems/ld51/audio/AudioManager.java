@@ -23,11 +23,16 @@ public class AudioManager implements Disposable {
 
     // none should not have a sound
     public enum Sounds {
-        none,
+        none
+        ,introMusic
+        ,warriorMusic1
+
     }
 
     public enum Musics {
         none
+        ,introMusic
+        ,warriorMusic1
     }
 
     public ObjectMap<Sounds, SoundContainer> sounds = new ObjectMap<>();
@@ -45,6 +50,15 @@ public class AudioManager implements Disposable {
         this.tween = tween;
 
 //        putSound(Sounds.chaching, assets.chachingSound);
+
+        putSound(Sounds.introMusic, assets.introMusicSound);
+        putSound(Sounds.warriorMusic1, assets.warriorMusic1);
+
+
+//        putSound(Musics.introMusic, assets.introMusicSound);
+
+        musics.put(Musics.introMusic, assets.introMusicMusic);
+//        musics.put(Musics.warriorMusic1, assets.warriorMusic1);
 
 
         musicVolume = new MutableFloat(.5f); 
@@ -142,6 +156,21 @@ public class AudioManager implements Disposable {
 
         return (s != null) ? s.play(soundVolume.floatValue(), 1f, pan) : 0;
     }
+
+    public long loopSound(Sounds soundOption, float volume) {
+        volume = volume * soundVolume.floatValue();
+        if (isSoundMuted || soundOption == Sounds.none) return -1;
+
+        SoundContainer soundCont = sounds.get(soundOption);
+        if (soundCont == null) {
+            // Gdx.app.log("NoSound", "No sound found for " + soundOption.toString());
+            return 0;
+        }
+
+        Sound s = soundCont.getSound();
+        return (s != null) ? s.loop(volume) : 0;
+    }
+
 
     public void stopSound(Sounds soundOption) {
         SoundContainer soundCont = sounds.get(soundOption);

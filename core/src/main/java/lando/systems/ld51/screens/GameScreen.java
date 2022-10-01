@@ -10,6 +10,7 @@ import lando.systems.ld51.Config;
 import lando.systems.ld51.assets.CreatureAnims;
 import lando.systems.ld51.gameobjects.*;
 import lando.systems.ld51.particles.Particles;
+import lando.systems.ld51.systems.AttackResolver;
 import lando.systems.ld51.ui.BossHealthUI;
 import lando.systems.ld51.ui.DebugWindow;
 import lando.systems.ld51.ui.PlayerGemsUI;
@@ -98,6 +99,7 @@ public class GameScreen extends BaseScreen {
 
         player.update(delta);
         boss.update(delta);
+        AttackResolver.resolve(player, enemies);
 
         for (int i = gems.size -1; i >= 0; i--) {
             Gem gem = gems.get(i);

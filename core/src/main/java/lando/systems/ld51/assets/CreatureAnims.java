@@ -10,8 +10,11 @@ import com.badlogic.gdx.utils.ObjectMap;
 public class CreatureAnims {
 
     private final TextureRegion sheet;
+    private final TextureRegion flashSheet;
     private final TextureRegion[][] regions;
+    private final TextureRegion[][] flashRegions;
     private final ObjectMap<Type, Animation<TextureRegion>> animations;
+    private final ObjectMap<Type, Animation<TextureRegion>> flashAnimations;
 
     public CreatureAnims(Assets assets) {
         String name = "temp-creatures/oryx-creatures";
@@ -19,11 +22,20 @@ public class CreatureAnims {
         if (this.sheet == null) {
             throw new GdxRuntimeException("Unable to find '" + name + "' region in texture atlas. Does sprites/" + name + " exist? Did you run the 'sprites' task in gradle?");
         }
+        name = "temp-creatures/oryx-creatures-flash";
+        this.flashSheet = assets.atlas.findRegion(name);
+        if (this.flashSheet == null) {
+            throw new GdxRuntimeException("Unable to find '" + name + "' region in texture atlas. Does sprites/" + name + " exist? Did you run the 'sprites' task in gradle?");
+        }
+
         int tileSize = 48;
         int numCreaturesWidePerSheet = 10;
         this.regions = sheet.split(tileSize, tileSize);
+        this.flashRegions = flashSheet.split(tileSize, tileSize);
         this.animations = new ObjectMap<>();
+        this.flashAnimations = new ObjectMap<>();
         Array<TextureRegion> frames = new Array<>();
+        Array<TextureRegion> flashFrames = new Array<>();
         for (Type type : Type.values()) {
             frames.clear();
             frames.add(regions[type.y][type.x + 0 * numCreaturesWidePerSheet]);
@@ -32,6 +44,14 @@ public class CreatureAnims {
             frames.add(regions[type.y][type.x + 3 * numCreaturesWidePerSheet]);
             Animation<TextureRegion> animation = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
             animations.put(type, animation);
+
+            flashFrames.clear();
+            flashFrames.add(flashRegions[type.y][type.x + 0 * numCreaturesWidePerSheet]);
+            flashFrames.add(flashRegions[type.y][type.x + 1 * numCreaturesWidePerSheet]);
+            flashFrames.add(flashRegions[type.y][type.x + 2 * numCreaturesWidePerSheet]);
+            flashFrames.add(flashRegions[type.y][type.x + 3 * numCreaturesWidePerSheet]);
+            Animation<TextureRegion> flashAnimation = new Animation<>(0.1f, flashFrames, Animation.PlayMode.LOOP);
+            flashAnimations.put(type, flashAnimation);
         }
     }
 
@@ -39,6 +59,14 @@ public class CreatureAnims {
         Animation<TextureRegion> animation = animations.get(type);
         if (animation == null) {
             throw new GdxRuntimeException("Can't get creature animation for type '" + type.name() + "', it might not have been created correctly, check CreatureAnims.java");
+        }
+        return animation;
+    }
+
+    public Animation<TextureRegion> getFlash(Type type) {
+        Animation<TextureRegion> animation = flashAnimations.get(type);
+        if (animation == null) {
+            throw new GdxRuntimeException("Can't get creature flash animation for type '" + type.name() + "', it might not have been created correctly, check CreatureAnims.java");
         }
         return animation;
     }

@@ -80,6 +80,16 @@ public class Particles implements Disposable {
                 .init());
     }
 
+    public void explode(float x, float y) {
+        Animation<TextureRegion> animation = assets.effectAnims.get(EffectAnims.Type.explode_puff);
+        activeParticles.get(Layer.foreground).add(Particle.initializer(particlePool.obtain())
+                .animation(animation)
+                .startSize(32)
+                .timeToLive(animation.getAnimationDuration())
+                .startPos(x, y)
+                .init());
+    }
+
     public void lightning(Vector2 start, Vector2 end) {
         TextureRegion keyframe = assets.particles.line;
         float dist = start.dst(end);

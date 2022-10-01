@@ -100,7 +100,7 @@ public class Main extends ManagedGame<BaseScreen, ScreenTransition> {
 			if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 				Gdx.app.exit();
 			}
-			if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) Config.Debug.general = !Config.Debug.general;
+			if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) Config.Debug.general = !Config.Debug.general;
 		}
 
 		// update things that must update every tick

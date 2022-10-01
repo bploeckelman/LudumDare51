@@ -1,9 +1,12 @@
 package lando.systems.ld51.gameobjects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import lando.systems.ld51.Config;
@@ -11,6 +14,7 @@ import lando.systems.ld51.assets.CreatureAnims;
 import lando.systems.ld51.assets.EffectAnims;
 import lando.systems.ld51.audio.AudioManager;
 import lando.systems.ld51.screens.GameScreen;
+import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class Player {
 
@@ -25,6 +29,9 @@ public class Player {
     private TextureRegion keyframe;
     private Animation<TextureRegion> animation;
     private float stateTime;
+
+    public Circle attackRange;
+    public Polygon attackHitShape;
 
     private Animation<TextureRegion> attackAnimation;
     private TextureRegion attackKeyframe;
@@ -60,6 +67,7 @@ public class Player {
         this.animation = gameScreen.assets.creatureAnims.get(CreatureAnims.Type.warrior);
         this.keyframe = animation.getKeyFrame(0f);
         this.stateTime = 0f;
+        this.attackRange = new Circle(position, 2f * SIZE); // NOTE - used for broad phase collision check
         this.attackAnimation = gameScreen.assets.effectAnims.get(EffectAnims.Type.swipe);
         this.attackKeyframe = attackAnimation.getKeyFrame(0f);
         this.attackStateTime = 0f;
@@ -96,14 +104,9 @@ public class Player {
         stateTime += dt;
         keyframe = animation.getKeyFrame(stateTime);
 
-        if (isAttacking) {
-            attackKeyframe = attackAnimation.getKeyFrame(attackStateTime);
-            attackStateTime += dt;
-            if (attackStateTime >= attackAnimation.getAnimationDuration()) {
-                attackStateTime = 0f;
-                isAttacking = false;
-            }
-        }
+        // save previous position so the attack hit shape can be moved if the player moves
+        float prevPosX = position.x;
+        float prevPosY = position.y;
 
         if (Gdx.input.isTouched()){
             tempVec2.set(facing);
@@ -135,6 +138,24 @@ public class Player {
 
             position.add(tempVec2.x * SPEED * dt, tempVec2.y * SPEED * dt);
         }
+
+        attackRange.setPosition(position);
+        if (isAttacking) {
+            // update hit shape
+            attackHitShape.translate(position.x - prevPosX, position.y - prevPosY);
+            attackHitShape.setRotation(facing.angleDeg());
+
+            // update attack animation
+            attackKeyframe = attackAnimation.getKeyFrame(attackStateTime);
+            attackStateTime += dt;
+
+            // complete attack if appropriate
+            if (attackStateTime >= attackAnimation.getAnimationDuration()) {
+                attackStateTime = 0f;
+                attackHitShape = null;
+                isAttacking = false;
+            }
+        }
     }
 
     public void render(SpriteBatch batch) {
@@ -152,6 +173,17 @@ public class Player {
                     1f, 1f,
                     facing.angleDeg()
             );
+        }
+
+        if (Config.Debug.general) {
+            ShapeDrawer shapes = gameScreen.assets.shapes;
+            shapes.setColor(Color.MAGENTA);
+            shapes.circle(attackRange.x, attackRange.y, attackRange.radius, 3f);
+            if (isAttacking) {
+                shapes.setColor(Color.CORAL);
+                shapes.polygon(attackHitShape);
+            }
+            shapes.setColor(Color.WHITE);
         }
     }
 
@@ -232,15 +264,30 @@ public class Player {
         gameScreen.playerGemsUI.update(currentPhase);
     }
 
+    public boolean isAttacking() {
+        return isAttacking;
+    }
+
+    public void attack() {
+        isAttacking = true;
+        attackStateTime = 0f;
+        float range = attackRange.radius;
+        float[] vertices = new float[] {
+                position.x, position.y,
+                position.x + range,
+                position.y - range / 2f,
+                position.x + range,
+                position.y + range / 2f
+        };
+        attackHitShape = new Polygon(vertices);
+        attackHitShape.setOrigin(position.x, position.y);
+    }
+
     public Phase getCurrentPhase() {
         return currentPhase;
     }
 
     public boolean getIsWizard() {
         return isWizard;
-    }
-    public void attack() {
-        isAttacking = true;
-        attackStateTime = 0f;
     }
 }

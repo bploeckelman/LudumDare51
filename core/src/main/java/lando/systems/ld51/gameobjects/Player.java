@@ -26,6 +26,8 @@ public class Player {
     public Vector2 velocity;
     public Vector3 mousePos;
     public Vector2 facing;
+    public Vector2 tempPos;
+    public Vector2 tempVec2;
     public int redGemCount;
     public int greenGemCount;
     public int blueGemCount;
@@ -38,6 +40,8 @@ public class Player {
         this.velocity = new Vector2();
         this.facing = new Vector2();
         this.mousePos = new Vector3();
+        this.tempPos = new Vector2();
+        this.tempVec2 = new Vector2();
         this.animation = gameScreen.assets.creatureAnims.get(CreatureAnims.Type.warrior);
         this.keyframe = animation.getKeyFrame(0f);
         this.stateTime = 0f;
@@ -58,7 +62,25 @@ public class Player {
         keyframe = animation.getKeyFrame(stateTime);
 
         if (Gdx.input.isTouched()){
-            position.add(facing.x * SPEED * dt, facing.y * SPEED * dt);
+            Arena arena = gameScreen.arena;
+            tempVec2.set(facing);
+            // collision checks
+            tempPos.set(position).add(facing.x * SPEED * dt, facing.y * SPEED * dt);
+            if ((tempPos.x - SIZE/2f) < arena.bounds.x){
+                tempVec2.x -= ((tempPos.x -SIZE/2f) - arena.bounds.x);
+            }
+            if ((tempPos.x + SIZE/2f) > arena.bounds.x + arena.bounds.width){
+                tempVec2.x -= (tempPos.x + SIZE/2f) - (arena.bounds.x + arena.bounds.width);
+            }
+
+            if ((tempPos.y - SIZE/2f) < arena.bounds.y){
+                tempVec2.y -= ((tempPos.y -SIZE/2f) - arena.bounds.y);
+            }
+            if ((tempPos.y + SIZE/2f) > arena.bounds.y + arena.bounds.height){
+                tempVec2.y -= (tempPos.y + SIZE/2f) - (arena.bounds.y + arena.bounds.height);
+            }
+
+            position.add(tempVec2.x * SPEED * dt, tempVec2.y * SPEED * dt);
         }
     }
 

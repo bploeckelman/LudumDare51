@@ -9,7 +9,8 @@ import lando.systems.ld51.screens.GameScreen;
 
 public class Gem {
 
-    public static float AttractRange = 250;
+    public static float AttractRange = 150;
+    public static float CollectDistance = 20;
 
     public enum Type {
           RED(ItemTextures.Type.gem_red)
@@ -45,13 +46,13 @@ public class Gem {
         float attract2 = AttractRange * AttractRange;
         float dist2ToPlayer = this.pos.dst2(gameScreen.player.position);
         if (gameScreen.player.canPickup(this)) {
-            if (dist2ToPlayer < 30 * 30) {
+            if (dist2ToPlayer < CollectDistance * CollectDistance) {
                 // Pick up
                 gameScreen.player.pickupGem(this);
                 collected = true;
             }
             if (dist2ToPlayer < attract2) {
-                velocity.set(gameScreen.player.position).sub(pos).nor().scl((attract2 - dist2ToPlayer)/attract2 * 200f);
+                velocity.set(gameScreen.player.position).sub(pos).nor().scl((attract2 - dist2ToPlayer)/attract2 * 300f);
             }
         }
         this.pos.add(velocity.x * dt, velocity.y * dt);

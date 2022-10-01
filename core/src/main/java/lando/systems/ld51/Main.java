@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.kotcrab.vis.ui.VisUI;
 import de.damios.guacamole.gdx.graphics.NestableFrameBuffer;
 import de.eskalon.commons.core.ManagedGame;
@@ -48,6 +49,7 @@ public class Main extends ManagedGame<BaseScreen, ScreenTransition> {
 
 		assets = new Assets();
 		audio = new AudioManager(assets, tween);
+		VisUI.load(game.assets.mgr.get("ui/uiskin.json", Skin.class));
 
 		tween = new TweenManager();
 		{

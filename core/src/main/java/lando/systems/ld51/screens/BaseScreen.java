@@ -4,7 +4,11 @@ import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.kotcrab.vis.ui.VisUI;
 import de.eskalon.commons.screen.ManagedScreen;
 import lando.systems.ld51.Config;
 import lando.systems.ld51.Main;
@@ -20,6 +24,8 @@ public abstract class BaseScreen extends ManagedScreen implements Disposable {
     public final OrthographicCamera windowCamera;
     public final Vector3 pointerPos;
     public AudioManager audio;
+    protected Stage uiStage;
+    protected Skin skin;
 
     public OrthographicCamera worldCamera;
 
@@ -31,6 +37,7 @@ public abstract class BaseScreen extends ManagedScreen implements Disposable {
         this.batch = assets.batch;
         this.pointerPos = new Vector3();
         this.audio = game.audio;
+        initializeUI();
     }
 
     @Override
@@ -51,6 +58,7 @@ public abstract class BaseScreen extends ManagedScreen implements Disposable {
             worldCamera.update();
         }
         audio.update(delta);
+        uiStage.act(delta);
     }
 
 
@@ -61,6 +69,17 @@ public abstract class BaseScreen extends ManagedScreen implements Disposable {
     }
 
     @Override
-    public void dispose() {}
+    public void dispose() {
+        uiStage.dispose();
+    }
+
+    protected void initializeUI() {
+        // reset the stage in case it hasn't already been set to the current window camera orientation
+        // NOTE - doesn't seem to be a way to directly set the stage camera as the window camera
+        //  could go in the other direction, create the uiStage and set windowCam = stage.cam
+        skin = VisUI.getSkin();
+        StretchViewport viewport = new StretchViewport(windowCamera.viewportWidth, windowCamera.viewportHeight);
+        uiStage = new Stage(viewport, batch);
+    }
 
 }

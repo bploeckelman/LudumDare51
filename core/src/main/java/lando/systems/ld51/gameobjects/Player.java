@@ -72,4 +72,11 @@ public class Player {
         }
         invulnerabilityTimer = 1f;
     }
+
+    public boolean canPickup(Gem gem){
+        return true;
+    }
+    public void pickupGem(Gem gem) {
+
+    }
 }

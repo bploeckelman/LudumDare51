@@ -30,4 +30,8 @@ public class TimerUI extends VisWindow {
 //        addActor(progressBar);
     }
 
+    public void update(float delta) {
+
+    }
+
 }

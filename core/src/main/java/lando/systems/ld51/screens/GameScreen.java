@@ -34,8 +34,8 @@ public class GameScreen extends BaseScreen {
 
     private final EnemySpawner enemySpawner;
 
-    private final float BOSS_HEALTH_UI_HEIGHT = 100f;
-    private final float PLAYER_GEMS_UI_HEIGHT = 100f;
+    private final float BOSS_HEALTH_UI_HEIGHT = 50f;
+    private final float PLAYER_GEMS_UI_HEIGHT = 50f;
 
     public GameScreen(){
         this.player = new Player(this);

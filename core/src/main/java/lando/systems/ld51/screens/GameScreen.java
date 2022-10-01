@@ -1,16 +1,15 @@
 package lando.systems.ld51.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.kotcrab.vis.ui.widget.VisWindow;
 import lando.systems.ld51.Config;
+import lando.systems.ld51.assets.CreatureAnims;
 import lando.systems.ld51.gameobjects.Arena;
+import lando.systems.ld51.gameobjects.Enemy;
 import lando.systems.ld51.gameobjects.Gem;
 import lando.systems.ld51.gameobjects.Player;
 import lando.systems.ld51.ui.DebugWindow;
@@ -20,16 +19,21 @@ public class GameScreen extends BaseScreen {
 
     public Player player;
     public Arena arena;
-    public float accum;
     public Array<Gem> gems;
+    public Array<Enemy> enemies;
+    public float accum;
+
     private DebugWindow debugWindow;
 
+    private final EnemySpawner enemySpawner;
 
     public GameScreen(){
         this.player = new Player(this);
-        this.accum = 0;
-        this.gems = new Array<>();
         this.arena = new Arena();
+        this.gems = new Array<>();
+        this.enemies = new Array<>();
+        this.accum = 0;
+        this.enemySpawner = new EnemySpawner();
     }
 
     @Override
@@ -46,11 +50,13 @@ public class GameScreen extends BaseScreen {
         worldCamera.update();
     }
 
-
     @Override
     public void update(float delta) {
         super.update(delta);
+        accum += delta;
+
         arena.update(delta);
+
         if (MathUtils.random(1f) > .97f){ // THIS IS PLACEHOLDER
             int randType = MathUtils.random(2);
             Gem.Type type = Gem.Type.RED;
@@ -64,8 +70,9 @@ public class GameScreen extends BaseScreen {
             }
             gems.add(new Gem(this, new Vector2(MathUtils.random(Config.Screen.window_width), MathUtils.random(Config.Screen.window_height)), type));
         }
-        accum += delta;
+
         player.update(delta);
+
         for (int i = gems.size -1; i >= 0; i--) {
             Gem gem = gems.get(i);
             gem.update(delta);
@@ -73,8 +80,24 @@ public class GameScreen extends BaseScreen {
                 gems.removeIndex(i);
             }
         }
+
+        Enemy enemy = enemySpawner.update(delta);
+        if (enemy != null) {
+            enemies.add(enemy);
+        }
+        for (int i = enemies.size - 1; i >= 0; i--) {
+            enemy = enemies.get(i);
+            enemy.update(delta);
+            if (enemy.isDead()) {
+                enemy.kill();
+                enemies.removeIndex(i);
+            }
+        }
+
         // Camera follow things
+        // TODO - maybe just make the worldCamera a FollowOrthoCam so we don't need to cast here
         ((FollowOrthographicCamera)worldCamera).update(player.position, delta);
+
         debugWindow.update();
         uiStage.act();
     }
@@ -90,6 +113,9 @@ public class GameScreen extends BaseScreen {
         batch.begin();
         {
             arena.render(batch);
+            for (Enemy enemy : enemies) {
+                enemy.render(batch);
+            }
             player.render(batch);
             for (Gem gem : gems){
                 gem.render(batch);
@@ -98,4 +124,36 @@ public class GameScreen extends BaseScreen {
         batch.end();
         uiStage.draw();
     }
+
+    // ------------------------------------------------------------------------
+    // Helper classes
+    // ------------------------------------------------------------------------
+
+    class EnemySpawner {
+        private float timer = 0f;
+        private float duration = 3f;
+        Enemy update(float delta) {
+            Enemy enemy = null;
+            timer += delta;
+            if (timer >= duration) {
+                timer -= duration;
+                enemy = spawn();
+            }
+            return enemy;
+        }
+        Enemy spawn() {
+            CreatureAnims.Type type = CreatureAnims.Type.random();
+            Vector2 playerPos = player.position;
+            float setback = 100f;
+            float angle = MathUtils.random(0, 360f);
+            float xDist = worldCamera.viewportWidth / 2f + setback;
+            float yDist = worldCamera.viewportHeight / 2f + setback;
+            float x = MathUtils.cosDeg(angle) * xDist;
+            float y = MathUtils.sinDeg(angle) * yDist;
+            Enemy enemy = new Enemy(GameScreen.this, type, x, y);
+            enemy.targetPos = playerPos;
+            return enemy;
+        }
+    }
+
 }

@@ -2,6 +2,7 @@ package lando.systems.ld51.assets;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -55,6 +56,10 @@ public class CreatureAnims {
         Type(int x, int y) {
             this.x = x;
             this.y = y;
+        }
+        public static Type random() {
+            int numTypes = values().length;
+            return values()[MathUtils.random(0, numTypes - 1)];
         }
     }
 

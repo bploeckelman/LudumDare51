@@ -8,10 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import lando.systems.ld51.Config;
 import lando.systems.ld51.assets.CreatureAnims;
-import lando.systems.ld51.gameobjects.Arena;
-import lando.systems.ld51.gameobjects.Enemy;
-import lando.systems.ld51.gameobjects.Gem;
-import lando.systems.ld51.gameobjects.Player;
+import lando.systems.ld51.gameobjects.*;
 import lando.systems.ld51.particles.Particles;
 import lando.systems.ld51.ui.BossHealthUI;
 import lando.systems.ld51.ui.DebugWindow;
@@ -22,6 +19,7 @@ import lando.systems.ld51.utils.FollowOrthographicCamera;
 public class GameScreen extends BaseScreen {
 
     public Player player;
+    public Boss boss;
     public Arena arena;
     public Array<Gem> gems;
     public Array<Enemy> enemies;
@@ -40,8 +38,9 @@ public class GameScreen extends BaseScreen {
     private final float PLAYER_GEMS_UI_HEIGHT = 50f;
 
     public GameScreen(){
-        this.player = new Player(this);
         this.arena = new Arena(this);
+        this.player = new Player(this);
+        this.boss = new Boss(this);
         this.gems = new Array<>();
         this.enemies = new Array<>();
         this.accum = 0;
@@ -98,6 +97,7 @@ public class GameScreen extends BaseScreen {
         }
 
         player.update(delta);
+        boss.update(delta);
 
         for (int i = gems.size -1; i >= 0; i--) {
             Gem gem = gems.get(i);
@@ -143,6 +143,7 @@ public class GameScreen extends BaseScreen {
             for (Enemy enemy : enemies) {
                 enemy.render(batch);
             }
+            boss.render(batch);
             particles.draw(batch, Particles.Layer.middle);
             player.render(batch);
             for (Gem gem : gems){

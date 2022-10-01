@@ -216,6 +216,7 @@ public class Player {
                 gameScreen.audio.playSound(AudioManager.Sounds.clericMusic1);
                 break;
         }
+        gameScreen.particles.lightning(gameScreen.boss.position, position);
         gameScreen.playerGemsUI.update(currentPhase);
     }
 

@@ -29,7 +29,7 @@ public class GameScreen extends BaseScreen {
 
     public GameScreen(){
         this.player = new Player(this);
-        this.arena = new Arena();
+        this.arena = new Arena(this);
         this.gems = new Array<>();
         this.enemies = new Array<>();
         this.accum = 0;
@@ -55,6 +55,7 @@ public class GameScreen extends BaseScreen {
         super.update(delta);
         accum += delta;
 
+        player.setPhase((int)(accum / 10f));
         arena.update(delta);
 
         if (MathUtils.random(1f) > .97f){ // THIS IS PLACEHOLDER

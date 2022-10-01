@@ -12,6 +12,8 @@ import lando.systems.ld51.screens.GameScreen;
 
 public class Player {
 
+    public enum Phase {RED, GREEN, BLUE};
+
     public static float SIZE = 30f;
     public static float SPEED = 100f;
     public static int FULL_GEM_COUNT = 100;
@@ -32,6 +34,8 @@ public class Player {
     public int greenGemCount;
     public int blueGemCount;
     public float invulnerabilityTimer;
+    public Phase currentPhase;
+    public boolean isWizard;
 
 
     public Player(GameScreen gameScreen) {
@@ -49,6 +53,8 @@ public class Player {
         greenGemCount = 0;
         blueGemCount = 0;
         invulnerabilityTimer = 0;
+        this.currentPhase = Phase.RED;
+        this.isWizard = false;
     }
 
     public void update(float dt) {
@@ -72,7 +78,6 @@ public class Player {
             if ((tempPos.x + SIZE/2f) > arena.bounds.x + arena.bounds.width){
                 tempVec2.x -= (tempPos.x + SIZE/2f) - (arena.bounds.x + arena.bounds.width);
             }
-
             if ((tempPos.y - SIZE/2f) < arena.bounds.y){
                 tempVec2.y -= ((tempPos.y -SIZE/2f) - arena.bounds.y);
             }
@@ -108,5 +113,28 @@ public class Player {
     }
     public void pickupGem(Gem gem) {
 
+    }
+
+    public void setPhase(int phase){
+        Phase nextPhase = null;
+        switch(phase % 3) {
+            case 0: nextPhase = Phase.RED;
+            break;
+            case 1: nextPhase = Phase.GREEN;
+            break;
+            case 2: nextPhase = Phase.BLUE;
+        }
+        if (currentPhase == nextPhase) {
+            return;
+        }
+        currentPhase = nextPhase;
+    }
+
+    public Phase getCurrentPhase() {
+        return currentPhase;
+    }
+
+    public boolean getIsWizard() {
+        return isWizard;
     }
 }

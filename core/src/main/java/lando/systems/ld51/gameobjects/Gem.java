@@ -2,21 +2,33 @@ package lando.systems.ld51.gameobjects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import lando.systems.ld51.Main;
+import lando.systems.ld51.assets.ItemTextures;
 import lando.systems.ld51.screens.GameScreen;
 
 public class Gem {
 
     public static float AttractRange = 250;
 
-    public enum Type {RED, GREEN, BLUE};
+    public enum Type {
+          RED(ItemTextures.Type.gem_red)
+        , GREEN(ItemTextures.Type.gem_green)
+        , BLUE(ItemTextures.Type.gem_blue)
+        ;
+        final ItemTextures.Type textureType;
+        Type(ItemTextures.Type textureType) {
+            this.textureType = textureType;
+        }
+    };
 
-    public Type type;
+    public final Type type;
+
     public Vector2 pos;
     public GameScreen gameScreen;
     public boolean collected;
     public Vector2 velocity;
+    public TextureRegion texture;
 
     public Gem(GameScreen screen, Vector2 position, Type type) {
         this.gameScreen = screen;
@@ -24,6 +36,7 @@ public class Gem {
         this.collected = false;
         this.pos = new Vector2(position);
         this.velocity = new Vector2();
+        this.texture = screen.assets.itemTextures.get(type.textureType);
     }
 
     public void update(float dt) {
@@ -45,18 +58,7 @@ public class Gem {
     }
 
     public void render(SpriteBatch batch) {
-        switch (type){
-            case RED:
-                batch.setColor(Color.RED);
-                break;
-            case GREEN:
-                batch.setColor(Color.GREEN);
-                break;
-            case BLUE:
-                batch.setColor(Color.BLUE);
-                break;
-        }
-        batch.draw(Main.game.assets.pixel, pos.x - 10, pos.y - 10, 20, 20);
+        batch.draw(texture, pos.x - 10, pos.y - 10, 20, 20);
         batch.setColor(Color.WHITE);
     }
 }

@@ -35,6 +35,7 @@ public class Assets implements Disposable {
     public I18NBundle strings;
     public InputPrompts inputPrompts;
     public CreatureAnims creatureAnims;
+    public ItemTextures itemTextures;
 
     public BitmapFont font;
     public BitmapFont smallFont;
@@ -100,7 +101,6 @@ public class Assets implements Disposable {
             mgr.load("fonts/outfit-medium-20px.fnt", BitmapFont.class);
             mgr.load("fonts/outfit-medium-40px.fnt", BitmapFont.class);
             mgr.load("fonts/outfit-medium-80px.fnt", BitmapFont.class);
-
         }
 
         if (load == Load.SYNC) {
@@ -120,6 +120,7 @@ public class Assets implements Disposable {
 
         inputPrompts = new InputPrompts(this);
         creatureAnims = new CreatureAnims(this);
+        itemTextures = new ItemTextures(this);
 
         smallFont = mgr.get("fonts/outfit-medium-20px.fnt");
         font      = mgr.get("fonts/outfit-medium-40px.fnt");

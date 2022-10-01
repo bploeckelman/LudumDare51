@@ -14,7 +14,7 @@ public class ItemTextures {
         if (this.sheet == null) {
             throw new GdxRuntimeException("Unable to find '" + name + "' region in texture atlas. Does sprites/" + name + " exist? Did you run the 'sprites' task in gradle?");
         }
-        int tileSize = 18;  // 18.28 ... blah
+        int tileSize = 47;  // 46.8-ish ... blah
         this.regions = sheet.split(tileSize, tileSize);
     }
 
@@ -27,9 +27,9 @@ public class ItemTextures {
     }
 
     public enum Type {
-          gem_red(3, 2)
-        , gem_green(2, 0)
-        , gem_blue(4, 3)
+          gem_red(6, 1)
+        , gem_green(8, 1)
+        , gem_blue(7, 1)
         ;
         public final int x;
         public final int y;

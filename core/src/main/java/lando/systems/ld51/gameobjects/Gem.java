@@ -8,7 +8,7 @@ import lando.systems.ld51.screens.GameScreen;
 
 public class Gem {
 
-    public static float AttractRange = 150;
+    public static float AttractRange = 250;
 
     public enum Type {RED, GREEN, BLUE};
 

@@ -9,12 +9,15 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import lando.systems.ld51.Config;
+import lando.systems.ld51.gameobjects.Arena;
 import lando.systems.ld51.gameobjects.Gem;
 import lando.systems.ld51.gameobjects.Player;
+import lando.systems.ld51.utils.FollowOrthographicCamera;
 
 public class GameScreen extends BaseScreen {
 
     public Player player;
+    public Arena arena;
     public float accum;
     public Array<Gem> gems;
 
@@ -23,12 +26,21 @@ public class GameScreen extends BaseScreen {
         this.player = new Player(this);
         this.accum = 0;
         this.gems = new Array<>();
+        this.arena = new Arena();
+    }
+
+    @Override
+    protected void create() {
+        worldCamera = new FollowOrthographicCamera();
+        worldCamera.setToOrtho(false, Config.Screen.window_width, Config.Screen.window_height);
+        worldCamera.update();
     }
 
 
     @Override
     public void update(float delta) {
         super.update(delta);
+        arena.update(delta);
         if (MathUtils.random(1f) > .97f){ // THIS IS PLACEHOLDER
             int randType = MathUtils.random(2);
             Gem.Type type = Gem.Type.RED;
@@ -51,6 +63,9 @@ public class GameScreen extends BaseScreen {
                 gems.removeIndex(i);
             }
         }
+
+        // Camera follow things
+        ((FollowOrthographicCamera)worldCamera).update(player.position, delta);
     }
 
     @Override
@@ -59,10 +74,11 @@ public class GameScreen extends BaseScreen {
 
         ScreenUtils.clear(Color.BLACK);
 
-        OrthographicCamera camera = windowCamera;
+        OrthographicCamera camera = worldCamera;
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         {
+            arena.render(batch);
             player.render(batch);
             for (Gem gem : gems){
                 gem.render(batch);

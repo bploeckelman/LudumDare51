@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.kotcrab.vis.ui.widget.VisWindow;
 import lando.systems.ld51.assets.Assets;
 import lando.systems.ld51.gameobjects.Player;
-import org.omg.PortableInterceptor.ACTIVE;
 
 public class PlayerGemsUI extends Group {
     VisWindow redGemUI;

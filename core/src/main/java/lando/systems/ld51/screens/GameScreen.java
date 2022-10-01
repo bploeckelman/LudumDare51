@@ -16,6 +16,7 @@ import lando.systems.ld51.particles.Particles;
 import lando.systems.ld51.ui.BossHealthUI;
 import lando.systems.ld51.ui.DebugWindow;
 import lando.systems.ld51.ui.PlayerGemsUI;
+import lando.systems.ld51.ui.TimerUI;
 import lando.systems.ld51.utils.FollowOrthographicCamera;
 
 public class GameScreen extends BaseScreen {
@@ -31,6 +32,7 @@ public class GameScreen extends BaseScreen {
     private DebugWindow debugWindow;
     private BossHealthUI bossHealthUI;
     public PlayerGemsUI playerGemsUI;
+    public TimerUI timerUI;
 
     private final EnemySpawner enemySpawner;
 
@@ -62,6 +64,7 @@ public class GameScreen extends BaseScreen {
 
         playerGemsUI = new PlayerGemsUI("", 0f, 0f, windowCamera.viewportWidth, PLAYER_GEMS_UI_HEIGHT, skin);
         uiStage.addActor(playerGemsUI);
+
     }
 
     @Override

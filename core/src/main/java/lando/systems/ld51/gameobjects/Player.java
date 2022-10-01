@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import lando.systems.ld51.Config;
 import lando.systems.ld51.assets.CreatureAnims;
+import lando.systems.ld51.assets.EffectAnims;
 import lando.systems.ld51.audio.AudioManager;
 import lando.systems.ld51.screens.GameScreen;
 
@@ -24,6 +25,11 @@ public class Player {
     private TextureRegion keyframe;
     private Animation<TextureRegion> animation;
     private float stateTime;
+
+    private Animation<TextureRegion> attackAnimation;
+    private TextureRegion attackKeyframe;
+    private float attackStateTime;
+    private boolean isAttacking;
 
     public Vector2 position;
     public Vector2 velocity;
@@ -52,6 +58,10 @@ public class Player {
         this.animation = gameScreen.assets.creatureAnims.get(CreatureAnims.Type.warrior);
         this.keyframe = animation.getKeyFrame(0f);
         this.stateTime = 0f;
+        this.attackAnimation = gameScreen.assets.effectAnims.get(EffectAnims.Type.swipe);
+        this.attackKeyframe = attackAnimation.getKeyFrame(0f);
+        this.attackStateTime = 0f;
+        this.isAttacking = false;
         this.redGemCount = 0;
         this.greenGemCount = 0;
         this.blueGemCount = 0;
@@ -84,6 +94,15 @@ public class Player {
         stateTime += dt;
         keyframe = animation.getKeyFrame(stateTime);
 
+        if (isAttacking) {
+            attackKeyframe = attackAnimation.getKeyFrame(attackStateTime);
+            attackStateTime += dt;
+            if (attackStateTime >= attackAnimation.getAnimationDuration()) {
+                attackStateTime = 0f;
+                isAttacking = false;
+            }
+        }
+
         if (Gdx.input.isTouched()){
             Arena arena = gameScreen.arena;
             tempVec2.set(facing);
@@ -108,6 +127,20 @@ public class Player {
 
     public void render(SpriteBatch batch) {
         batch.draw(keyframe, position.x - (SIZE/2f), position.y - (SIZE/2f), SIZE, SIZE);
+
+        if (isAttacking) {
+            float keyframeWidth = attackKeyframe.getRegionWidth();
+            float keyframeHeight = attackKeyframe.getRegionHeight();
+            batch.draw(attackKeyframe,
+                    position.x - (SIZE / 2f),
+                    position.y - (SIZE / 2f),
+                    keyframeWidth / 2f,
+                    keyframeHeight / 2f,
+                    keyframeWidth, keyframeHeight,
+                    1f, 1f,
+                    facing.angleDeg()
+            );
+        }
     }
 
     public void getHit(){
@@ -194,6 +227,7 @@ public class Player {
         return isWizard;
     }
     public void attack() {
-        gameScreen.particles.swipe(position.x, position.y, facing.angleDeg());
+        isAttacking = true;
+        attackStateTime = 0f;
     }
 }

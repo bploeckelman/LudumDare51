@@ -9,6 +9,7 @@ import de.eskalon.commons.screen.ManagedScreen;
 import lando.systems.ld51.Config;
 import lando.systems.ld51.Main;
 import lando.systems.ld51.assets.Assets;
+import lando.systems.ld51.audio.AudioManager;
 
 public abstract class BaseScreen extends ManagedScreen implements Disposable {
 
@@ -18,6 +19,7 @@ public abstract class BaseScreen extends ManagedScreen implements Disposable {
     public final SpriteBatch batch;
     public final OrthographicCamera windowCamera;
     public final Vector3 pointerPos;
+    public AudioManager audio;
 
     public OrthographicCamera worldCamera;
 
@@ -28,6 +30,7 @@ public abstract class BaseScreen extends ManagedScreen implements Disposable {
         this.windowCamera = game.windowCamera;
         this.batch = assets.batch;
         this.pointerPos = new Vector3();
+        this.audio = game.audio;
     }
 
     @Override
@@ -47,6 +50,7 @@ public abstract class BaseScreen extends ManagedScreen implements Disposable {
         if (worldCamera != null) {
             worldCamera.update();
         }
+        audio.update(delta);
     }
 
 

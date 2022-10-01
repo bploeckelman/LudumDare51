@@ -22,6 +22,7 @@ import de.eskalon.commons.screen.transition.impl.PushTransition;
 import de.eskalon.commons.screen.transition.impl.SlidingDirection;
 import de.eskalon.commons.utils.BasicInputMultiplexer;
 import lando.systems.ld51.assets.Assets;
+import lando.systems.ld51.audio.AudioManager;
 import lando.systems.ld51.screens.BaseScreen;
 import lando.systems.ld51.screens.LaunchScreen;
 import lando.systems.ld51.screens.TitleScreen;
@@ -34,6 +35,7 @@ public class Main extends ManagedGame<BaseScreen, ScreenTransition> {
 
 	public Assets assets;
 	public TweenManager tween;
+	public AudioManager audio;
 	public NestableFrameBuffer frameBuffer;
 	public TextureRegion frameBufferRegion;
 	public OrthographicCamera windowCamera;
@@ -45,6 +47,7 @@ public class Main extends ManagedGame<BaseScreen, ScreenTransition> {
 		Time.init();
 
 		assets = new Assets();
+		audio = new AudioManager(assets, tween);
 
 		tween = new TweenManager();
 		{

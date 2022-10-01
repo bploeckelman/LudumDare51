@@ -24,7 +24,7 @@ public class AudioManager implements Disposable {
     // none should not have a sound
     public enum Sounds {
         none
-        ,introMusic
+        , introMusic
         , rogueMusic1
         , warriorMusic1
         , clericMusic1

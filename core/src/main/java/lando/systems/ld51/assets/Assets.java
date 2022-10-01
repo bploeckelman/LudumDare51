@@ -130,6 +130,7 @@ public class Assets implements Disposable {
             mgr.load("audio/sound/introMusic.ogg", Sound.class);
             mgr.load("audio/sound/warriorMusic1.ogg", Sound.class);
             mgr.load("audio/sound/rogueMusic1.ogg", Sound.class);
+            mgr.load("audio/sound/clericMusic1.ogg", Sound.class);
 //            mgr.load("audio/sound/introMusic.ogg", Sound.class);
 
         }

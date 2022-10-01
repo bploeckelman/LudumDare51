@@ -8,6 +8,7 @@ import lando.systems.ld51.screens.GameScreen;
 public class Boss {
 
     public static float SIZE = 150;
+    public float protectedRadius = 110;
     public Vector2 position;
     public GameScreen screen;
 

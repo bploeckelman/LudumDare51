@@ -94,7 +94,7 @@ public class Particles implements Disposable {
                             .startColor(1f, 1f, 0, 1f)
                             .endColor(.3f, .3f, .3f, .3f)
                             .startRotation(angle + MathUtils.random(-30, 30))
-                            .timeToLive(.01f * i)
+                            .timeToLive(.5f * i / (dist/5f))
                     .init()
             );
         }

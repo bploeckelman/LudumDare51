@@ -37,6 +37,7 @@ public class Player {
     public Vector2 facing;
     public Vector2 tempPos;
     public Vector2 tempVec2;
+    public Vector2 tempVec;
     public int redGemCount;
     public int greenGemCount;
     public int blueGemCount;
@@ -55,6 +56,7 @@ public class Player {
         this.mousePos = new Vector3();
         this.tempPos = new Vector2();
         this.tempVec2 = new Vector2();
+        this.tempVec = new Vector2();
         this.animation = gameScreen.assets.creatureAnims.get(CreatureAnims.Type.warrior);
         this.keyframe = animation.getKeyFrame(0f);
         this.stateTime = 0f;
@@ -104,10 +106,11 @@ public class Player {
         }
 
         if (Gdx.input.isTouched()){
-            Arena arena = gameScreen.arena;
             tempVec2.set(facing);
-            // collision checks
             tempPos.set(position).add(facing.x * SPEED * dt, facing.y * SPEED * dt);
+
+            // collision check of arena
+            Arena arena = gameScreen.arena;
             if ((tempPos.x - SIZE/2f) < arena.bounds.x){
                 tempVec2.x -= ((tempPos.x -SIZE/2f) - arena.bounds.x);
             }
@@ -119,6 +122,15 @@ public class Player {
             }
             if ((tempPos.y + SIZE/2f) > arena.bounds.y + arena.bounds.height){
                 tempVec2.y -= (tempPos.y + SIZE/2f) - (arena.bounds.y + arena.bounds.height);
+            }
+
+            // Boss check
+            Boss boss = gameScreen.boss;
+            float distToBoss = tempPos.dst(boss.position);
+            if (distToBoss < SIZE/2 + boss.protectedRadius) {
+                float overlapDist = SIZE/2 + boss.protectedRadius - distToBoss;
+                tempVec.set(tempPos).sub(boss.position).nor();
+                tempVec2.add(tempVec.x * overlapDist, tempVec.y * overlapDist);
             }
 
             position.add(tempVec2.x * SPEED * dt, tempVec2.y * SPEED * dt);

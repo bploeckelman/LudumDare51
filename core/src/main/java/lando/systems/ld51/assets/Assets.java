@@ -34,6 +34,7 @@ public class Assets implements Disposable {
 
     public I18NBundle strings;
     public InputPrompts inputPrompts;
+    public CreatureAnims creatureAnims;
 
     public BitmapFont font;
     public BitmapFont smallFont;
@@ -118,6 +119,7 @@ public class Assets implements Disposable {
         strings = mgr.get("i18n/strings", I18NBundle.class);
 
         inputPrompts = new InputPrompts(this);
+        creatureAnims = new CreatureAnims(this);
 
         smallFont = mgr.get("fonts/outfit-medium-20px.fnt");
         font      = mgr.get("fonts/outfit-medium-40px.fnt");

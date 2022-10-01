@@ -9,16 +9,19 @@ import lando.systems.ld51.gameobjects.Player;
 public class GameScreen extends BaseScreen {
 
     public Player player;
+    public float accum;
+
 
     public GameScreen(){
         this.player = new Player(this);
+        this.accum = 0;
     }
 
 
     @Override
     public void update(float delta) {
         super.update(delta);
-
+        accum += delta;
         player.update(delta);
     }
 

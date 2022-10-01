@@ -54,6 +54,8 @@ public class Player {
         blueGemCount = 0;
         invulnerabilityTimer = 0;
         this.currentPhase = Phase.RED;
+        // player gem ui switch update
+        this.gameScreen.playerGemsUI.update(this.currentPhase);
         this.isWizard = false;
     }
 
@@ -163,6 +165,7 @@ public class Player {
                 this.animation = gameScreen.assets.creatureAnims.get(CreatureAnims.Type.cleric);
                 break;
         }
+        gameScreen.playerGemsUI.update(currentPhase);
     }
 
     public Phase getCurrentPhase() {

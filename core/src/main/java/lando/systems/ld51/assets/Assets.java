@@ -38,6 +38,7 @@ public class Assets implements Disposable {
     public InputPrompts inputPrompts;
     public CreatureAnims creatureAnims;
     public ItemTextures itemTextures;
+    public PixelUIs pixelUIs;
 
     public BitmapFont font;
     public BitmapFont smallFont;
@@ -149,6 +150,7 @@ public class Assets implements Disposable {
         inputPrompts = new InputPrompts(this);
         creatureAnims = new CreatureAnims(this);
         itemTextures = new ItemTextures(this);
+        pixelUIs = new PixelUIs(this);
 
         smallFont = mgr.get("fonts/outfit-medium-20px.fnt");
         font      = mgr.get("fonts/outfit-medium-40px.fnt");

@@ -22,12 +22,11 @@ public class DebugWindow extends VisWindow {
         //debugWindow = new VisWindow("", true);
         setFillParent(false);
         setSize(160f, 40f);
-        setPosition(10f, windowCamera.viewportHeight - getHeight());
+        setPosition(10f, windowCamera.viewportHeight - getHeight() - 10f);
         setColor(1f, 1f, 1f, 0.4f);
         setKeepWithinStage(false);
 
         VisLabel label;
-        Label.LabelStyle labelStyle = skin.get("outfit-medium-20px", Label.LabelStyle.class);
 
         label = new VisLabel();
         add(label).growX().row();

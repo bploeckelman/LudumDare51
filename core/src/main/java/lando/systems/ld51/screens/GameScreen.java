@@ -12,7 +12,9 @@ import lando.systems.ld51.gameobjects.Arena;
 import lando.systems.ld51.gameobjects.Enemy;
 import lando.systems.ld51.gameobjects.Gem;
 import lando.systems.ld51.gameobjects.Player;
+import lando.systems.ld51.ui.BossHealthUI;
 import lando.systems.ld51.ui.DebugWindow;
+import lando.systems.ld51.ui.PlayerGemsUI;
 import lando.systems.ld51.utils.FollowOrthographicCamera;
 
 public class GameScreen extends BaseScreen {
@@ -24,8 +26,13 @@ public class GameScreen extends BaseScreen {
     public float accum;
 
     private DebugWindow debugWindow;
+    private BossHealthUI bossHealthUI;
+    public PlayerGemsUI playerGemsUI;
 
     private final EnemySpawner enemySpawner;
+
+    private final float BOSS_HEALTH_UI_HEIGHT = 100f;
+    private final float PLAYER_GEMS_UI_HEIGHT = 100f;
 
     public GameScreen(){
         this.player = new Player(this);
@@ -39,8 +46,18 @@ public class GameScreen extends BaseScreen {
     @Override
     public void initializeUI() {
         super.initializeUI();
+
+        //debug window
         debugWindow = new DebugWindow("", true, windowCamera, skin);
         uiStage.addActor(debugWindow);
+
+        //boss health ui
+        bossHealthUI = new BossHealthUI("", true, 0f, windowCamera.viewportHeight - BOSS_HEALTH_UI_HEIGHT, windowCamera.viewportWidth, BOSS_HEALTH_UI_HEIGHT, skin);
+        bossHealthUI.setVisible(true);
+        uiStage.addActor(bossHealthUI);
+
+        playerGemsUI = new PlayerGemsUI("", 0f, 0f, windowCamera.viewportWidth, PLAYER_GEMS_UI_HEIGHT, skin);
+        uiStage.addActor(playerGemsUI);
     }
 
     @Override

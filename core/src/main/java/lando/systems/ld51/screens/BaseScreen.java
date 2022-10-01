@@ -3,12 +3,19 @@ package lando.systems.ld51.screens;
 import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.kotcrab.vis.ui.VisUI;
+import com.kotcrab.vis.ui.widget.VisLabel;
+import com.kotcrab.vis.ui.widget.VisWindow;
 import de.eskalon.commons.screen.ManagedScreen;
 import lando.systems.ld51.Config;
 import lando.systems.ld51.Main;
@@ -26,6 +33,7 @@ public abstract class BaseScreen extends ManagedScreen implements Disposable {
     public AudioManager audio;
     protected Stage uiStage;
     protected Skin skin;
+    private VisWindow debugWindow;
 
     public OrthographicCamera worldCamera;
 
@@ -81,5 +89,54 @@ public abstract class BaseScreen extends ManagedScreen implements Disposable {
         StretchViewport viewport = new StretchViewport(windowCamera.viewportWidth, windowCamera.viewportHeight);
         uiStage = new Stage(viewport, batch);
     }
+
+//    private void initializeDebugUI() {
+//        debugWindow = new VisWindow("", true);
+//        debugWindow.setFillParent(false);
+//        debugWindow.setSize(160f, 50f);
+//        debugWindow.setPosition(10f, windowCamera.viewportHeight-debugWindow.getHeight());
+//        debugWindow.setColor(1f, 1f, 1f, 0.4f);
+//        debugWindow.setKeepWithinStage(false);
+//
+//        VisLabel label;
+//        Label.LabelStyle labelStyle = skin.get("outfit-medium-20px", Label.LabelStyle.class);
+//
+//        label = new VisLabel();
+//        debugWindow.add(label).growX().row();
+//        DebugElements.fpsLabel = label;
+//
+//        label = new VisLabel();
+//        debugWindow.add(label).growX().row();
+//        DebugElements.javaHeapLabel = label;
+//
+//        label = new VisLabel();
+//        debugWindow.add(label).growX().row();
+//        DebugElements.nativeHeapLabel = label;
+//
+//        label = new VisLabel();
+//        debugWindow.add(label).growX().row();
+//        DebugElements.drawCallLabel = label;
+//
+//        uiStage.addActor(debugWindow);
+//
+//        Actor rootActor = debugWindow;
+//        Action transitionAction = Actions.moveTo(0, -windowCamera.viewportHeight, 0.1f, Interpolation.exp10In);
+//        transitionAction.setActor(rootActor);
+//        //debugWindow.addAction(transitionAction);
+//    }
+//
+//    private void updateDebugElements() {
+//        DebugElements.fpsLabel.setText(Config.getFpsString());
+//        DebugElements.javaHeapLabel.setText(Config.getJavaHeapString());
+//        DebugElements.nativeHeapLabel.setText(Config.getNativeHeapString());
+//        DebugElements.drawCallLabel.setText(Config.getDrawCallString(batch));
+//    }
+//
+//    private static class DebugElements {
+//        public static VisLabel fpsLabel;
+//        public static VisLabel javaHeapLabel;
+//        public static VisLabel nativeHeapLabel;
+//        public static VisLabel drawCallLabel;
+//    }
 
 }

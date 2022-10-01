@@ -8,10 +8,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.kotcrab.vis.ui.widget.VisWindow;
 import lando.systems.ld51.Config;
 import lando.systems.ld51.gameobjects.Arena;
 import lando.systems.ld51.gameobjects.Gem;
 import lando.systems.ld51.gameobjects.Player;
+import lando.systems.ld51.ui.DebugWindow;
 import lando.systems.ld51.utils.FollowOrthographicCamera;
 
 public class GameScreen extends BaseScreen {
@@ -20,6 +22,7 @@ public class GameScreen extends BaseScreen {
     public Arena arena;
     public float accum;
     public Array<Gem> gems;
+    private DebugWindow debugWindow;
 
 
     public GameScreen(){
@@ -27,6 +30,13 @@ public class GameScreen extends BaseScreen {
         this.accum = 0;
         this.gems = new Array<>();
         this.arena = new Arena();
+    }
+
+    @Override
+    public void initializeUI() {
+        super.initializeUI();
+        debugWindow = new DebugWindow("", true, windowCamera, skin);
+        uiStage.addActor(debugWindow);
     }
 
     @Override
@@ -63,9 +73,10 @@ public class GameScreen extends BaseScreen {
                 gems.removeIndex(i);
             }
         }
-
         // Camera follow things
         ((FollowOrthographicCamera)worldCamera).update(player.position, delta);
+        debugWindow.update();
+        uiStage.act();
     }
 
     @Override
@@ -85,5 +96,6 @@ public class GameScreen extends BaseScreen {
             }
         }
         batch.end();
+        uiStage.draw();
     }
 }

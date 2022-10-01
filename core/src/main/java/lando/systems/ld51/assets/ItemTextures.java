@@ -9,7 +9,7 @@ public class ItemTextures {
     private final TextureRegion[][] regions;
 
     public ItemTextures(Assets assets) {
-        String name = "items-temp/oryx-items";
+        String name = "temp-items/oryx-items";
         this.sheet = assets.atlas.findRegion(name);
         if (this.sheet == null) {
             throw new GdxRuntimeException("Unable to find '" + name + "' region in texture atlas. Does sprites/" + name + " exist? Did you run the 'sprites' task in gradle?");

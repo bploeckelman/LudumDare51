@@ -36,6 +36,8 @@ public class Player {
     public float invulnerabilityTimer;
     public Phase currentPhase;
     public boolean isWizard;
+    public float attackInterval;
+    public float attackTimer;
 
 
     public Player(GameScreen gameScreen) {
@@ -49,14 +51,20 @@ public class Player {
         this.animation = gameScreen.assets.creatureAnims.get(CreatureAnims.Type.warrior);
         this.keyframe = animation.getKeyFrame(0f);
         this.stateTime = 0f;
-        redGemCount = 0;
-        greenGemCount = 0;
-        blueGemCount = 0;
-        invulnerabilityTimer = 0;
+        this.redGemCount = 0;
+        this.greenGemCount = 0;
+        this.blueGemCount = 0;
+        this.invulnerabilityTimer = 0;
         this.currentPhase = Phase.RED;
         // player gem ui switch update
         this.gameScreen.playerGemsUI.update(this.currentPhase);
         this.isWizard = false;
+        this.redGemCount = 0;
+        this.greenGemCount = 0;
+        this.blueGemCount = 0;
+        this.invulnerabilityTimer = 0;
+        this.attackInterval = 1f;
+        this.attackTimer = attackInterval;
     }
 
     public void update(float dt) {
@@ -65,6 +73,12 @@ public class Player {
         facing.set(mousePos.x, mousePos.y).sub(position).nor();
 
         invulnerabilityTimer -= dt;
+
+        attackTimer -= dt;
+        if (attackTimer <= 0f) {
+            attackTimer = attackInterval;
+            attack();
+        }
 
         stateTime += dt;
         keyframe = animation.getKeyFrame(stateTime);
@@ -174,5 +188,8 @@ public class Player {
 
     public boolean getIsWizard() {
         return isWizard;
+    }
+    public void attack() {
+        gameScreen.particles.swipe(position.x, position.y, facing.angleDeg());
     }
 }

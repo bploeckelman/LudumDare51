@@ -31,7 +31,7 @@ public class Point implements Pool.Poolable {
         this(other.x, other.y);
     }
 
-    private Point(int x, int y) {
+    public Point(int x, int y) {
         set(x, y);
     }
 

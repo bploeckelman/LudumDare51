@@ -12,6 +12,7 @@ import lando.systems.ld51.gameobjects.Arena;
 import lando.systems.ld51.gameobjects.Enemy;
 import lando.systems.ld51.gameobjects.Gem;
 import lando.systems.ld51.gameobjects.Player;
+import lando.systems.ld51.particles.Particles;
 import lando.systems.ld51.ui.BossHealthUI;
 import lando.systems.ld51.ui.DebugWindow;
 import lando.systems.ld51.ui.PlayerGemsUI;
@@ -24,6 +25,8 @@ public class GameScreen extends BaseScreen {
     public Array<Gem> gems;
     public Array<Enemy> enemies;
     public float accum;
+
+    public final Particles particles;
 
     private DebugWindow debugWindow;
     private BossHealthUI bossHealthUI;
@@ -40,6 +43,7 @@ public class GameScreen extends BaseScreen {
         this.gems = new Array<>();
         this.enemies = new Array<>();
         this.accum = 0;
+        this.particles = new Particles(assets);
         this.enemySpawner = new EnemySpawner();
     }
 
@@ -74,6 +78,7 @@ public class GameScreen extends BaseScreen {
 
         player.setPhase((int)(accum / 10f));
         arena.update(delta);
+        particles.update(delta);
 
         if (MathUtils.random(1f) > .97f){ // THIS IS PLACEHOLDER
             int randType = MathUtils.random(2);
@@ -131,13 +136,16 @@ public class GameScreen extends BaseScreen {
         batch.begin();
         {
             arena.render(batch);
+            particles.draw(batch, Particles.Layer.background);
             for (Enemy enemy : enemies) {
                 enemy.render(batch);
             }
+            particles.draw(batch, Particles.Layer.middle);
             player.render(batch);
             for (Gem gem : gems){
                 gem.render(batch);
             }
+            particles.draw(batch, Particles.Layer.foreground);
         }
         batch.end();
         uiStage.draw();

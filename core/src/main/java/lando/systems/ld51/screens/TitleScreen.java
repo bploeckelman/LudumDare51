@@ -1,5 +1,6 @@
 package lando.systems.ld51.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -20,6 +21,10 @@ public class TitleScreen extends BaseScreen {
     public void update(float delta) {
         super.update(delta);
         state += delta;
+
+        if (Gdx.input.justTouched()){
+            game.getScreenManager().pushScreen("game", "blend");
+        }
     }
 
     @Override

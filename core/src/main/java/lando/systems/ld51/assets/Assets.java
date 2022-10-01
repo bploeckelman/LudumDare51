@@ -129,6 +129,7 @@ public class Assets implements Disposable {
 
             mgr.load("audio/sound/introMusic.ogg", Sound.class);
             mgr.load("audio/sound/warriorMusic1.ogg", Sound.class);
+            mgr.load("audio/sound/rogueMusic1.ogg", Sound.class);
 //            mgr.load("audio/sound/introMusic.ogg", Sound.class);
 
         }
@@ -204,7 +205,8 @@ public class Assets implements Disposable {
         // Music clips as Sound objects
         introMusicSound = mgr.get("audio/sound/introMusic.ogg", Sound.class);
         warriorMusic1 = mgr.get("audio/sound/warriorMusic1.ogg", Sound.class);
-        rogueMusic1 = mgr.get("audio/sound/warriorMusic1.ogg", Sound.class);
+        rogueMusic1 = mgr.get("audio/sound/rogueMusic1.ogg", Sound.class);
+        clericMusic1 = mgr.get("audio/sound/clericMusic1.ogg", Sound.class);
 
         initialized = true;
         return 1;

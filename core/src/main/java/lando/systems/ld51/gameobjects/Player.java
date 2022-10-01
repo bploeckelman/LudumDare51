@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import lando.systems.ld51.Config;
 import lando.systems.ld51.assets.CreatureAnims;
+import lando.systems.ld51.audio.AudioManager;
 import lando.systems.ld51.screens.GameScreen;
 
 public class Player {
@@ -171,12 +172,15 @@ public class Player {
         switch (currentPhase){
             case RED:
                 this.animation = gameScreen.assets.creatureAnims.get(CreatureAnims.Type.warrior);
+                gameScreen.audio.playSound(AudioManager.Sounds.warriorMusic1);
                 break;
             case GREEN:
                 this.animation = gameScreen.assets.creatureAnims.get(CreatureAnims.Type.rogue);
+                gameScreen.audio.playSound(AudioManager.Sounds.rogueMusic1);
                 break;
             case BLUE:
                 this.animation = gameScreen.assets.creatureAnims.get(CreatureAnims.Type.cleric);
+                gameScreen.audio.playSound(AudioManager.Sounds.clericMusic1);
                 break;
         }
         gameScreen.playerGemsUI.update(currentPhase);

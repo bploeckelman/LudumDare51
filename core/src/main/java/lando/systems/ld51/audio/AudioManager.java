@@ -25,7 +25,9 @@ public class AudioManager implements Disposable {
     public enum Sounds {
         none
         ,introMusic
-        ,warriorMusic1
+        , rogueMusic1
+        , warriorMusic1
+        , clericMusic1
 
     }
 
@@ -53,6 +55,8 @@ public class AudioManager implements Disposable {
 
         putSound(Sounds.introMusic, assets.introMusicSound);
         putSound(Sounds.warriorMusic1, assets.warriorMusic1);
+        putSound(Sounds.rogueMusic1, assets.rogueMusic1);
+        putSound(Sounds.clericMusic1, assets.clericMusic1);
 
 
 //        putSound(Musics.introMusic, assets.introMusicSound);

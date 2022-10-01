@@ -205,15 +205,15 @@ public class Player {
         switch (currentPhase){
             case RED:
                 this.animation = gameScreen.assets.creatureAnims.get(CreatureAnims.Type.warrior);
-                gameScreen.audio.playSound(AudioManager.Sounds.warriorMusic1);
+                gameScreen.audio.playSound(AudioManager.Sounds.warriorMusic1, 1.0f);
                 break;
             case GREEN:
                 this.animation = gameScreen.assets.creatureAnims.get(CreatureAnims.Type.rogue);
-                gameScreen.audio.playSound(AudioManager.Sounds.rogueMusic1);
+                gameScreen.audio.playSound(AudioManager.Sounds.rogueMusic1, 1.0f);
                 break;
             case BLUE:
                 this.animation = gameScreen.assets.creatureAnims.get(CreatureAnims.Type.cleric);
-                gameScreen.audio.playSound(AudioManager.Sounds.clericMusic1);
+                gameScreen.audio.playSound(AudioManager.Sounds.clericMusic1, 1.0f);
                 break;
         }
         gameScreen.particles.lightning(gameScreen.boss.position, position);

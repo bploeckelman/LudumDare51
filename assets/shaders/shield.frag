@@ -32,7 +32,7 @@ void main() {
 
     float dist = distance(vec2(0.5), v_texCoord) * 2.0;
     float alpha = smoothstep(.6, .95, dist);
-    if (dist > 1.) alpha = 0.;
+//    if (dist > 1.) alpha = 0.;
 
     float noise = noise1.b * .25 + noise1.r * .25 + noise3.b * .25 + noise4.g * .25;
 

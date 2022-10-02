@@ -1,6 +1,7 @@
 package lando.systems.ld51.gameobjects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -41,6 +42,7 @@ public class Player extends ObjectLocation {
     public Vector2 velocity;
     public Vector3 mousePos;
     public Vector2 facing;
+    public Vector2 movementVector;
     public Vector2 tempPos;
     public Vector2 tempVec2;
     public Vector2 tempVec;
@@ -60,6 +62,7 @@ public class Player extends ObjectLocation {
         this.position = new Vector2(Config.Screen.window_width/2f, Config.Screen.window_height/2f);
         this.velocity = new Vector2();
         this.facing = new Vector2();
+        this.movementVector = new Vector2();
         this.mousePos = new Vector3();
         this.tempPos = new Vector2();
         this.tempVec2 = new Vector2();
@@ -72,10 +75,6 @@ public class Player extends ObjectLocation {
         this.attackKeyframe = attackAnimation.getKeyFrame(0f);
         this.attackStateTime = 0f;
         this.isAttacking = false;
-        this.redGemCount = 0;
-        this.greenGemCount = 0;
-        this.blueGemCount = 0;
-        this.invulnerabilityTimer = 0;
         this.currentPhase = Phase.RED;
         // player gem ui switch update
         this.isWizard = false;
@@ -83,7 +82,7 @@ public class Player extends ObjectLocation {
         this.greenGemCount = 0;
         this.blueGemCount = 0;
         this.invulnerabilityTimer = 0;
-        this.attackInterval = 1f;
+        this.attackInterval = .5f;
         this.attackTimer = attackInterval;
         this.wizardPhaseCount = 0;
     }
@@ -97,10 +96,18 @@ public class Player extends ObjectLocation {
         invulnerabilityTimer -= dt;
 
         attackTimer -= dt;
-        if (attackTimer <= 0f) {
+        if (attackTimer <= 0 && (Gdx.input.justTouched() || Gdx.input.isKeyJustPressed(Input.Keys.SPACE))) {
             attackTimer = attackInterval;
             attack();
         }
+
+        movementVector.set(0,0);
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) movementVector.y = 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) movementVector.y -= 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) movementVector.x = 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) movementVector.x -= 1;
+        movementVector.nor();
+
 
         stateTime += dt;
         keyframe = animation.getKeyFrame(stateTime);
@@ -109,9 +116,9 @@ public class Player extends ObjectLocation {
         float prevPosX = position.x;
         float prevPosY = position.y;
 
-        if (Gdx.input.isTouched()){
-            tempVec2.set(facing);
-            tempPos.set(position).add(facing.x * SPEED * dt, facing.y * SPEED * dt);
+        if (!movementVector.isZero()){
+            tempVec2.set(movementVector);
+            tempPos.set(position).add(movementVector.x * SPEED * dt, movementVector.y * SPEED * dt);
 
             // collision check of arena
             Arena arena = gameScreen.arena;

@@ -236,7 +236,7 @@ public class Player extends ObjectLocation {
                     position.x + (attackSize / 2f),
                     position.y - (attackSize / 2f),
                     -attackSize / 2f,
-                    weaponGlowKeyframe.getRegionHeight() / 2f,
+                    weaponKeyframe.getRegionHeight() / 2f,
                     attackSize, attackSize,
                     1f, 1f,
                     facing.angleDeg()
@@ -393,16 +393,19 @@ public class Player extends ObjectLocation {
                     position.y,
 
                     position.x,
-                    position.y - range / 3f,
+                    position.y - range * (1f / 5f),
 
-                    position.x + range * (2f / 3f),
-                    position.y - range * (2f / 3f),
+                    position.x + range * (1f / 3f),
+                    position.y - range * (1f / 3f),
 
-                    position.x + range * (2f / 3f),
-                    position.y + range * (2f / 3f),
+                    position.x + range * (3f / 4f),
+                    position.y,
+
+                    position.x + range * (1f / 3f),
+                    position.y + range * (1f / 3f),
 
                     position.x,
-                    position.y + range / 3f
+                    position.y + range * (1f / 5f)
             };
             attackHitShape = new Polygon(vertices);
             attackHitShape.setOrigin(position.x, position.y);

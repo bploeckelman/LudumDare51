@@ -52,7 +52,12 @@ public class Boss extends ObjectLocation {
         this.animationsByState = new ObjectMap<>();
         for (State state : State.values()) {
             Array<AtlasRegion> frames = screen.assets.atlas.findRegions(state.frameRegionsName);
-            Animation<AtlasRegion> animation = new Animation<>(0.2f, frames, Animation.PlayMode.LOOP);
+            Animation<AtlasRegion> animation = null;
+            if (state == State.idle_a || state == State.idle_b) {
+                animation = new Animation<>(0.2f, frames, Animation.PlayMode.LOOP);
+            } else {
+                animation = new Animation<>(0.25f, frames, Animation.PlayMode.NORMAL);
+            }
             animationsByState.put(state, animation);
         }
         this.animation = animationsByState.get(State.idle_a);
@@ -72,8 +77,17 @@ public class Boss extends ObjectLocation {
         shieldState = MathUtils.clamp(shieldState, 0f, 1f);
 
         // TODO - handle state changes and switch animation as needed
-
         stateTime += dt;
+
+        if (!screen.player.isWizard()){
+            if (screen.accum % 10f > 9.15f || screen.accum %10 < .25f){
+                animation = animationsByState.get(State.attack_spell);
+                stateTime = (screen.accum + .85f) % 1;
+            } else {
+                animation = animationsByState.get(State.idle_a);
+            }
+        }
+
         keyframe = animation.getKeyFrame(stateTime);
     }
 

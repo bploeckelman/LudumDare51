@@ -182,14 +182,14 @@ public class GameScreen extends BaseScreen {
         {
             arena.render(batch);
             particles.draw(batch, Particles.Layer.background);
+            for (Gem gem : gems){
+                gem.render(batch);
+            }
             for (Enemy enemy : enemies) {
                 enemy.render(batch);
             }
             boss.render(batch);
             particles.draw(batch, Particles.Layer.middle);
-            for (Gem gem : gems){
-                gem.render(batch);
-            }
             player.render(batch);
             for (Projectile projectile : projectiles) {
                 projectile.render(batch);

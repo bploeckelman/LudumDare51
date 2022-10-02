@@ -232,22 +232,30 @@ public class Player extends ObjectLocation {
     public void render(SpriteBatch batch) {
         // draw melee attack
         if (isAttacking && !isWizard && weaponKeyframe != null && weaponGlowKeyframe != null) {
-            float attackSize = SIZE;
+            float targetSize = SIZE;
+            float weaponWidth = weaponKeyframe.getRegionWidth();
+            float weaponHeight = weaponKeyframe.getRegionHeight();
+            float widthRatio = targetSize / weaponWidth;
+            float heightRatio = targetSize / weaponHeight;
+            float ratio = Calc.max(widthRatio, heightRatio);
+            float attackWidth = weaponWidth * ratio;
+            float attackHeight = weaponHeight * ratio;
+
             batch.draw(weaponGlowKeyframe,
-                    position.x + (attackSize / 2f),
-                    position.y - (attackSize / 2f),
-                    -attackSize / 2f,
-                    weaponKeyframe.getRegionHeight() / 2f,
-                    attackSize, attackSize,
+                    position.x + (attackWidth / 2f),
+                    position.y - (attackHeight / 2f),
+                    -attackWidth / 2f,
+                    attackHeight / 2f,
+                    attackWidth, attackHeight,
                     1f, 1f,
                     facing.angleDeg()
             );
             batch.draw(weaponKeyframe,
-                    position.x + (attackSize / 2f),
-                    position.y - (attackSize / 2f),
-                    -attackSize / 2f,
-                    weaponGlowKeyframe.getRegionHeight() / 2f,
-                    attackSize, attackSize,
+                    position.x + (attackWidth / 2f),
+                    position.y - (attackHeight / 2f),
+                    -attackWidth / 2f,
+                    attackHeight / 2f,
+                    attackWidth, attackHeight,
                     1f, 1f,
                     facing.angleDeg()
             );
@@ -393,20 +401,20 @@ public class Player extends ObjectLocation {
                     position.x,
                     position.y,
 
-                    position.x,
-                    position.y - range * (1f / 5f),
+                    position.x + range * (1f / 5f),
+                    position.y - range * (1f / 4f),
 
-                    position.x + range * (1f / 3f),
-                    position.y - range * (1f / 3f),
+                    position.x + range * (1f / 2f),
+                    position.y - range * (1f / 2f),
 
-                    position.x + range * (3f / 4f),
+                    position.x + range * (4f / 5f),
                     position.y,
 
-                    position.x + range * (1f / 3f),
-                    position.y + range * (1f / 3f),
+                    position.x + range * (1f / 2f),
+                    position.y + range * (1f / 2f),
 
-                    position.x,
-                    position.y + range * (1f / 5f)
+                    position.x + range * (1f / 5f),
+                    position.y + range * (1f / 4f)
             };
             attackHitShape = new Polygon(vertices);
             attackHitShape.setOrigin(position.x, position.y);

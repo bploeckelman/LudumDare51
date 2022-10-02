@@ -288,11 +288,11 @@ public class Player extends ObjectLocation {
         if (isWizard) return false;
         switch (gem.type){
             case RED:
-                return (redGemCount < FULL_GEM_COUNT);
+                return (getCurrentPhase() == Phase.RED && redGemCount < FULL_GEM_COUNT);
             case GREEN:
-                return (greenGemCount < FULL_GEM_COUNT);
+                return (getCurrentPhase() == Phase.GREEN && greenGemCount < FULL_GEM_COUNT);
             case BLUE:
-                return (blueGemCount < FULL_GEM_COUNT);
+                return (getCurrentPhase() == Phase.BLUE && blueGemCount < FULL_GEM_COUNT);
         }
         // Shouldn't get here
         return false;

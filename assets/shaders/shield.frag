@@ -31,7 +31,7 @@ void main() {
     vec4 noise4 = texture2D(u_texture, vec2(v_texCoord.x + u_time * .2, v_texCoord.y + u_time * -.2));
 
     float dist = distance(vec2(0.5), v_texCoord) * 2.0;
-    float alpha = smoothstep(.6, .95, dist);
+    float alpha = smoothstep(.2, .75, dist);
 //    if (dist > 1.) alpha = 0.;
 
     float noise = noise1.b * .25 + noise1.r * .25 + noise3.b * .25 + noise4.g * .25;
@@ -51,7 +51,7 @@ void main() {
 
     vec4 finalColor = mix(shieldColor, vec4(.8, .8, .8, .9), smoothstep(.97, .99, dist));
 
-    if (dist > 1.) finalColor.a = 0.;
+    finalColor = mix(finalColor, vec4(0), smoothstep(.99, 1., dist));
 
     gl_FragColor = finalColor;
 }

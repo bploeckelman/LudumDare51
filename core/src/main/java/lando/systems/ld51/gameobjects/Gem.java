@@ -3,11 +3,10 @@ package lando.systems.ld51.gameobjects;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import lando.systems.ld51.screens.GameScreen;
 import lando.systems.ld51.utils.VectorPool;
 
@@ -17,24 +16,17 @@ public class Gem {
     public static float AttractRange = 150;
     public static float CollectDistance = 20;
 
-    public enum Type {
-          RED   ("gems/gem-red/gem-red-idle/gem-red-idle")
-        , GREEN ("gems/gem-green/gem-green-idle/gem-green-idle")
-        , BLUE  ("gems/gem-blue/gem-blue-idle/gem-blue-idle")
-        ;
-        final String frameRegionsName;
-        Type(String frameRegionsName) {
-            this.frameRegionsName = frameRegionsName;
-        }
-    }
+    public enum Type { RED, GREEN, BLUE }
+    public enum State { IDLE, SPIN }
 
     public final Type type;
 
     private final GameScreen screen;
 
-    private final Animation<TextureAtlas.AtlasRegion> animation;
+    private Animation<AtlasRegion> animation;
     private TextureRegion keyframe;
     private float stateTime;
+    private State state;
 
     public boolean collected;
     public Vector2 pos;
@@ -45,14 +37,14 @@ public class Gem {
     public Gem(GameScreen screen, Vector2 position, Type type) {
         this.screen = screen;
         this.type = type;
+        this.state = State.IDLE;
         this.collected = false;
         this.pos = VectorPool.vec2.obtain().set(position);
         this.velocity = VectorPool.vec2.obtain().set(0, 0);
         this.initialVelocity = VectorPool.vec2.obtain().set(MathUtils.random(-50f, 50f), MathUtils.random(30f, 120f));
-        Array<TextureAtlas.AtlasRegion> frames = screen.assets.atlas.findRegions(type.frameRegionsName);
-        this.animation = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
+        this.animation = screen.assets.gemAnimationByTypeByState.get(type).get(state);
         this.keyframe = animation.getKeyFrame(0f);
-        this.stateTime = 0f;
+        this.stateTime = MathUtils.random(0f, 1f); // randomize starting state time for visual variety
         this.spawnTimer = MathUtils.random(1f, 2f);
     }
 
@@ -69,6 +61,7 @@ public class Gem {
         }
 
         if (spawnTimer <= 0) {
+            state = State.SPIN;
             velocity.set(0, 0);
             float attract2 = AttractRange * AttractRange;
             float dist2ToPlayer = this.pos.dst2(screen.player.position);
@@ -86,6 +79,7 @@ public class Gem {
         }
 
         stateTime += dt;
+        animation = screen.assets.gemAnimationByTypeByState.get(type).get(state);
         keyframe = animation.getKeyFrame(stateTime);
     }
 

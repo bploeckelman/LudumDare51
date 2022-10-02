@@ -8,16 +8,16 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.I18NBundle;
+import com.badlogic.gdx.utils.*;
 import lando.systems.ld51.Config;
+import lando.systems.ld51.gameobjects.Gem;
 import lando.systems.ld51.utils.screenshake.SimplexNoise;
 import space.earlygrey.shapedrawer.ShapeDrawer;
+import text.formic.Stringf;
 
 public class Assets implements Disposable {
 
@@ -56,6 +56,7 @@ public class Assets implements Disposable {
     public Animation<TextureRegion> cat;
     public Animation<TextureRegion> dog;
     public Array<Animation<TextureRegion>> numberParticles;
+    public ObjectMap<Gem.Type, ObjectMap<Gem.State, Animation<AtlasRegion>>> gemAnimationByTypeByState;
 
     public SimplexNoise noise;
 
@@ -196,6 +197,19 @@ public class Assets implements Disposable {
         numberParticles = new Array<>();
         for (int i = 0; i <= 9; ++i) {
             numberParticles.add(new Animation<>(0.1f, atlas.findRegions("particles/font-points-" + i)));
+        }
+        gemAnimationByTypeByState = new ObjectMap<>();
+        for (Gem.Type type : Gem.Type.values()) {
+            ObjectMap<Gem.State, Animation<AtlasRegion>> animationByState = new ObjectMap<>();
+            gemAnimationByTypeByState.put(type, animationByState);
+            String typeName = type.name().toLowerCase();
+            for (Gem.State state : Gem.State.values()) {
+                String stateName = state.name().toLowerCase();
+                String regionsName = Stringf.format("gems/gem-%1$s/gem-%1$s-%2$s/gem-%1$s-%2$s", typeName, stateName);
+                Array<AtlasRegion> frames = atlas.findRegions(regionsName);
+                Animation<AtlasRegion> animation = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
+                animationByState.put(state, animation);
+            }
         }
 
         // initialize patch values

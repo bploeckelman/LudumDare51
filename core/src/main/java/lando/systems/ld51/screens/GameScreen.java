@@ -71,7 +71,7 @@ public class GameScreen extends BaseScreen {
         uiStage.addActor(debugWindow);
 
         //boss health ui
-        bossHealthUI = new BossHealthUI("", true, 0f, windowCamera.viewportHeight - BOSS_HEALTH_UI_HEIGHT, windowCamera.viewportWidth, BOSS_HEALTH_UI_HEIGHT, skin);
+        bossHealthUI = new BossHealthUI("", true, 0f, windowCamera.viewportHeight - BOSS_HEALTH_UI_HEIGHT, windowCamera.viewportWidth, BOSS_HEALTH_UI_HEIGHT, skin, boss);
         bossHealthUI.setVisible(true);
         uiStage.addActor(bossHealthUI);
 

@@ -67,6 +67,7 @@ public class Assets implements Disposable {
     public Array<Animation<TextureRegion>> numberParticles;
     public ObjectMap<Gem.Type, ObjectMap<Gem.State, Animation<AtlasRegion>>> gemAnimationByTypeByState;
     public ObjectMap<Player.Phase, ObjectMap<Player.State, Animation<AtlasRegion>>> playerAnimationByPhaseByState;
+    public ObjectMap<Player.Phase, ObjectMap<Player.State, Animation<AtlasRegion>>> playerFlashAnimationByPhaseByState;
     public ObjectMap<Player.WeaponType, Player.WeaponAnims> weaponAnimationsByType;
 
     public SimplexNoise noise;
@@ -292,16 +293,26 @@ public class Assets implements Disposable {
             }
         }
         playerAnimationByPhaseByState = new ObjectMap<>();
+        playerFlashAnimationByPhaseByState = new ObjectMap<>();
         for (Player.Phase phase : Player.Phase.values()) {
             ObjectMap<Player.State, Animation<AtlasRegion>> animationByState = new ObjectMap<>();
+            ObjectMap<Player.State, Animation<AtlasRegion>> flashAnimationByState = new ObjectMap<>();
             playerAnimationByPhaseByState.put(phase, animationByState);
+            playerFlashAnimationByPhaseByState.put(phase, flashAnimationByState);
+
             String phaseName = phase.charClassImageName;
             for (Player.State state : Player.State.values()) {
                 String stateName = state.name().toLowerCase();
+
                 String regionsName = Stringf.format("characters/%1$s/%1$s-%2$s/%1$s-%2$s", phaseName, stateName);
                 Array<AtlasRegion> frames = atlas.findRegions(regionsName);
                 Animation<AtlasRegion> animation = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
                 animationByState.put(state, animation);
+
+                String flashRegionsName = Stringf.format("characters/%1$s/%1$s-%2$s/flash/%1$s-%2$s-flash", phaseName, stateName);
+                Array<AtlasRegion> flashFrames = atlas.findRegions(flashRegionsName);
+                Animation<AtlasRegion> flashAnimation = new Animation<>(0.1f, flashFrames, Animation.PlayMode.LOOP);
+                flashAnimationByState.put(state, flashAnimation);
             }
         }
         weaponAnimationsByType = new ObjectMap<>();

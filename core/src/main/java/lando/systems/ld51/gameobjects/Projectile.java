@@ -28,8 +28,9 @@ public class Projectile extends ObjectLocation {
 
     public final Circle bounds;
     public final Vector2 direction;
+    public boolean playerShot;
 
-    public Projectile(Assets assets, EffectAnims.Type type, float x, float y, float angleRadians, float speed) {
+    public Projectile(Assets assets, EffectAnims.Type type, float x, float y, float angleRadians, float speed, boolean isPlayer) {
         this.animation = assets.effectAnims.get(type);
         this.keyframe = animation.getKeyFrame(0f);
         this.stateTime = 0f;
@@ -40,6 +41,7 @@ public class Projectile extends ObjectLocation {
         this.bounds = new Circle(x, y, size / 2f);
         this.direction = new Vector2(Vector2.X).setAngleRad(orientation).nor();
         this.alive = true;
+        this.playerShot = isPlayer;
     }
 
     public void update(float dt) {

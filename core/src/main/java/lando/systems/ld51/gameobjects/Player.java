@@ -51,23 +51,32 @@ public class Player extends ObjectLocation {
     public static float SPEED_NORMAL = 340f;
     public static float SPEED_WIZARD = 450f;
     public static float SPEED = SPEED_NORMAL;
-    public static int FULL_GEM_COUNT = 50;
-
+    public static int FULL_GEM_COUNT = 10;
 
     private final GameScreen screen;
 
-    private TextureRegion keyframe;
     private Animation<AtlasRegion> animation;
+    private Animation<AtlasRegion> flashAnimation;
+    private TextureRegion keyframe;
+    private TextureRegion flashKeyframe;
     private float stateTime;
-
-    public Circle attackRange;
-    public Polygon attackHitShape;
 
     private WeaponAnims weaponAnims;
     private TextureRegion weaponKeyframe;
     private TextureRegion weaponGlowKeyframe;
     private float attackStateTime;
     private boolean isAttacking;
+    public Circle hurtCircle;
+    public Circle attackRange;
+    public Polygon attackHitShape;
+    public float attackInterval;
+    public float attackIntervalNormal = 0.25f;
+    public float attackIntervalWizard = 0.1f;
+    public float attackTimer;
+
+    private float hurtDuration;
+    private float hurtTimer;
+    public boolean isHurt;
 
     public Vector2 velocity;
     public Vector3 mousePos;
@@ -79,18 +88,11 @@ public class Player extends ObjectLocation {
     public int redGemCount;
     public int greenGemCount;
     public int blueGemCount;
-    public float invulnerabilityTimer;
     public Phase phase;
     public State state;
     public boolean isWizard;
     public int wizardPhaseCount;
-    public float attackInterval;
-    public float attackIntervalNormal = 0.25f;
-    public float attackIntervalWizard = 0.1f;
-    public float attackTimer;
-
     public int musicPhase = 1;
-
 
     public Player(GameScreen screen) {
         this.screen = screen;
@@ -105,7 +107,9 @@ public class Player extends ObjectLocation {
         this.tempVec2 = new Vector2();
         this.tempVec = new Vector2();
         this.animation = screen.assets.playerAnimationByPhaseByState.get(phase).get(state);
+        this.flashAnimation = screen.assets.playerFlashAnimationByPhaseByState.get(phase).get(state);
         this.keyframe = animation.getKeyFrame(0f);
+        this.flashKeyframe = flashAnimation.getKeyFrame(0f);
         this.stateTime = 0f;
         this.attackRange = new Circle(position, 2f * SIZE); // NOTE - used for broad phase collision check
         this.weaponAnims = screen.assets.weaponAnimationsByType.get(phase.weaponType);
@@ -118,10 +122,12 @@ public class Player extends ObjectLocation {
         this.redGemCount = 0;
         this.greenGemCount = 0;
         this.blueGemCount = 0;
-        this.invulnerabilityTimer = 0;
         this.attackInterval = attackIntervalNormal;
         this.attackTimer = attackInterval;
         this.wizardPhaseCount = 0;
+        this.hurtCircle = new Circle(position, SIZE / 4f);
+        this.hurtDuration = 0.33f;
+        this.hurtTimer = hurtDuration;
     }
 
     public void update(float dt) {
@@ -130,7 +136,13 @@ public class Player extends ObjectLocation {
         facing.set(mousePos.x, mousePos.y).sub(position).nor();
         setOrientation(facing.angleRad());
 
-        invulnerabilityTimer -= dt;
+        if (isHurt) {
+            hurtTimer -= dt;
+            if (hurtTimer <= 0) {
+                hurtTimer = hurtDuration;
+                isHurt = false;
+            }
+        }
 
         attackInterval = (isWizard) ? attackIntervalWizard : attackIntervalNormal;
         attackTimer -= dt;
@@ -150,7 +162,9 @@ public class Player extends ObjectLocation {
         // TODO - won't need this edge case if we start using Phase.WIZARD as an actual transitionable phase
         Phase animPhase = isWizard ? Phase.WIZARD : phase;
         animation = screen.assets.playerAnimationByPhaseByState.get(animPhase).get(state);
+        flashAnimation = screen.assets.playerFlashAnimationByPhaseByState.get(animPhase).get(state);
         keyframe = animation.getKeyFrame(stateTime);
+        flashKeyframe = flashAnimation.getKeyFrame(stateTime);
 
         // NOTE - wizard doesn't have weapon anims so this will go null when we go wizard
         weaponAnims = screen.assets.weaponAnimationsByType.get(phase.weaponType);
@@ -218,17 +232,21 @@ public class Player extends ObjectLocation {
         float angle = facing.angleDeg();
         if (Calc.between(angle, 0, 90) || Calc.between(angle, 270, 360)) {
             // facing right
-            if (keyframe.isFlipX()) {
-                keyframe.flip(true, false);
-            }
+            if (keyframe.isFlipX())      keyframe.flip(true, false);
+            if (flashKeyframe.isFlipX()) flashKeyframe.flip(true, false);
         } else if (Calc.between(angle, 90, 270)) {
             // facing left
-            if (!keyframe.isFlipX()) {
-                keyframe.flip(true, false);
-            }
+            if (!keyframe.isFlipX())      keyframe.flip(true, false);
+            if (!flashKeyframe.isFlipX()) flashKeyframe.flip(true, false);
         }
 
+        // make sure our wizardly attributes are current
+        SIZE = (isWizard) ? SIZE_WIZARD : SIZE_NORMAL;
+        SPEED = (isWizard) ? SPEED_WIZARD : SPEED_NORMAL;
+        hurtCircle.radius = SIZE / 4f;
+
         screen.playerGemsUI.updatePlayerGemsUIColor(this);
+        hurtCircle.setPosition(position);
     }
 
     public void render(SpriteBatch batch) {
@@ -266,21 +284,39 @@ public class Player extends ObjectLocation {
         // draw character
         batch.draw(keyframe, position.x - (SIZE/2f), position.y - (SIZE/2f), SIZE, SIZE);
 
+        // draw flash frame if hurt
+        if (isHurt) {
+            batch.draw(flashKeyframe, position.x - (SIZE/2f), position.y - (SIZE/2f), SIZE, SIZE);
+        }
+
         // draw debug shapes
         if (Config.Debug.general) {
             ShapeDrawer shapes = screen.assets.shapes;
             shapes.setColor(Color.MAGENTA);
-            shapes.circle(attackRange.x, attackRange.y, attackRange.radius, 3f);
+            shapes.circle(attackRange.x, attackRange.y, attackRange.radius, 1f);
             if (isAttacking && attackHitShape != null) {
                 shapes.setColor(Color.CORAL);
                 shapes.polygon(attackHitShape);
             }
+            shapes.setColor(Color.YELLOW);
+            shapes.circle(hurtCircle.x, hurtCircle.y, hurtCircle.radius, 3f);
             shapes.setColor(Color.WHITE);
         }
     }
 
-    public void getHit(){
-        if (invulnerabilityTimer > 0) return; // Can't be hit
+    public void hurt(float amount, float dirX, float dirY) {
+        if (isHurt) return;
+        isHurt = true;
+
+        // bounce back
+        float bounceBackAmount = 50f;
+        float prevPosX = position.x;
+        float prevPosY = position.y;
+        position.add(dirX * bounceBackAmount, dirY * bounceBackAmount);
+        hurtCircle.setPosition(position);
+        if (attackHitShape != null) {
+            attackHitShape.translate(position.x - prevPosX, position.y - prevPosY);
+        }
 
         // Lose gems when you get hit. minimum of some value
         // TODO make this more robust with minimums and such
@@ -290,8 +326,8 @@ public class Player extends ObjectLocation {
         int totalLost = redToLose + blueToLose + greenToLose;
         if (totalLost == 0){
             // Kill them?
+            Gdx.app.log("Player Hurt", "Ouch, you lost all your gems dog! How you supposed to be a magic now?");
         }
-        invulnerabilityTimer = 1f;
     }
 
     public boolean canPickup(Gem gem){
@@ -382,10 +418,6 @@ public class Player extends ObjectLocation {
                 isWizard = false;
             }
         }
-
-        // make sure our wizardly attributes are current
-        SIZE = (isWizard) ? SIZE_WIZARD : SIZE_NORMAL;
-        SPEED = (isWizard) ? SPEED_WIZARD : SPEED_NORMAL;
     }
 
     public boolean isAttacking() {
@@ -402,7 +434,7 @@ public class Player extends ObjectLocation {
             float y = position.y + facing.y * size * (1f / 2f);
             float angle = facing.angleRad();
             float speed = Calc.max(SPEED + 60f, 250f);
-            Projectile projectile = new Projectile(screen.assets, EffectAnims.Type.meteor, x, y, angle, speed);
+            Projectile projectile = new Projectile(screen.assets, EffectAnims.Type.meteor, x, y, angle, speed, true);
             projectile.size = size;
             screen.projectiles.add(projectile);
             game.audio.playSound(AudioManager.Sounds.fireball, 0.25F);

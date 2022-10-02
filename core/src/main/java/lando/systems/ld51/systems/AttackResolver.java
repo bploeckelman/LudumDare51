@@ -13,11 +13,11 @@ public class AttackResolver {
     private static final Vector2 attackDir = new Vector2();
 
     public static void resolve(Player player, Array<Enemy> enemies, Boss boss, Array<Projectile> projectiles) {
-
+        // hurt enemies and the boss with projectiles
         for (int i = projectiles.size - 1; i >= 0; i--) {
             Projectile projectile = projectiles.get(i);
             for (Enemy enemy : enemies) {
-                if (projectile.alive && projectile.bounds.overlaps(enemy.hurtCircle)) {
+                if (projectile.playerShot && projectile.alive && projectile.bounds.overlaps(enemy.hurtCircle)) {
                     float amount = projectile.damageAmount;
                     float dx = projectile.direction.x;
                     float dy = projectile.direction.y;
@@ -28,7 +28,7 @@ public class AttackResolver {
                 }
             }
 
-            if (projectile.alive && projectile.bounds.overlaps(boss.hurtCircle)){
+            if (projectile.playerShot && projectile.alive && projectile.bounds.overlaps(boss.hurtCircle)){
                 float amount = projectile.damageAmount;
                 float dx = projectile.direction.x;
                 float dy = projectile.direction.y;
@@ -39,12 +39,24 @@ public class AttackResolver {
             }
         }
 
-
-
+        // hurt the player with touching
+        if (!player.isHurt) {
+            for (Enemy enemy : enemies) {
+                if (enemy.isDead()) continue;
+                if (player.hurtCircle.overlaps(enemy.hurtCircle)) {
+                    float dx = player.position.x - enemy.getPosition().x;
+                    float dy = player.position.y - enemy.getPosition().y;
+                    attackDir.set(dx, dy).nor();
+                    player.hurt(1f, attackDir.x, attackDir.y);
+                    break;
+                }
+            }
+        }
 
         if (!player.isAttacking()) return;
         if (player.isWizard()) return;
 
+        // hurt enemies with melee attacks
         for (Enemy enemy : enemies) {
             if (Intersector.overlaps(player.attackRange, enemy.hurtCircle)) {
                 if (player.attackHitShape != null && enemy.hurtShape != null) {

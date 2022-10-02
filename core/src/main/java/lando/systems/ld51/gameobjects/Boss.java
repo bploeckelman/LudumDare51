@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import lando.systems.ld51.assets.EffectAnims;
 import lando.systems.ld51.screens.GameScreen;
 
 public class Boss extends ObjectLocation {
@@ -36,6 +37,7 @@ public class Boss extends ObjectLocation {
 
     private final GameScreen screen;
     public Circle hurtCircle;
+    private State currentState;
 
     private final ObjectMap<State, Animation<AtlasRegion>> animationsByState;
     private Animation<AtlasRegion> animation;
@@ -43,6 +45,7 @@ public class Boss extends ObjectLocation {
     private float stateTime;
     private float shieldState;
     public float health;
+    private float attackTimer;
 
     public Boss(GameScreen screen) {
         this.screen = screen;
@@ -83,8 +86,31 @@ public class Boss extends ObjectLocation {
             if (screen.accum % 10f > 9.15f || screen.accum %10 < .25f){
                 animation = animationsByState.get(State.attack_spell);
                 stateTime = (screen.accum + .85f) % 1;
+                currentState = State.attack_spell;
             } else {
                 animation = animationsByState.get(State.idle_a);
+                currentState = State.idle_a;
+            }
+        } else {
+            attackTimer -= dt;
+            // Fighting time
+            if (health > MAX_HEALTH * .75f){
+                if ((int)(screen.accum % 5f) == 0){
+                    if (attackTimer < 0){
+                        attackTimer = .3f;
+                        shootFireball(screen.player.position, Gem.Type.RED);
+                    }
+                } else {
+                    animation = animationsByState.get(State.idle_b);
+                    currentState = State.idle_a;
+                }
+
+            } else if (health > MAX_HEALTH * .5f) {
+
+            } else if (health > MAX_HEALTH * .25f) {
+
+            } else {
+                // final form
             }
         }
 
@@ -112,5 +138,12 @@ public class Boss extends ObjectLocation {
 
     public boolean isAlive() {
         return health >= 0;
+    }
+
+    Vector2 tempVec = new Vector2();
+    private void shootFireball(Vector2 target, Gem.Type type) {
+        tempVec.set(target).sub(position);
+        Projectile proj = new Projectile(screen.assets, EffectAnims.Type.fireball_red, position.x, position.y, tempVec.angleRad(), 100, false);
+        screen.projectiles.add(proj);
     }
 }

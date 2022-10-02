@@ -50,7 +50,7 @@ public class Enemy implements Steerable<Vector2> {
 
     public Circle hurtCircle;  // NOTE - this is for broad phase simple checks
     public Polygon hurtShape; // NOTE - this is for narrow phase convex poly/poly checks
-    private float hurtDuration = 0.5f;
+    private float hurtDuration;
     private float hurtTimer;
     private boolean isHurt;
 
@@ -163,13 +163,10 @@ public class Enemy implements Steerable<Vector2> {
         if (isHurt) return;
         isHurt = true;
 
-
         if(screen.player.isWizard) {
-            game.audio.playSound(AudioManager.Sounds.scorch, 0.25F);
-
-        }
-        else {
-            game.audio.playSound(AudioManager.Sounds.impact, 0.125F);
+            game.audio.playSound(AudioManager.Sounds.scorch, 0.25f);
+        } else {
+            game.audio.playSound(AudioManager.Sounds.impact, 0.125f);
         }
 
         health -= amount;

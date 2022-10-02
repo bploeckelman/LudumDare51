@@ -3,24 +3,37 @@ package lando.systems.ld51.gameobjects;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
 import lando.systems.ld51.screens.GameScreen;
 
-public class Boss {
+public class Boss extends ObjectLocation {
 
-    public static float SIZE = 150;
+    public enum State {
+          idle_a        ("characters/boss/boss-idle-a/boss-idle-a")
+        , idle_b        ("characters/boss/boss-idle-b/boss-idle-b")
+        , attack_spell  ("characters/boss/boss-attack-spell/boss-attack-spell")
+        , attack_punch  ("characters/boss/boss-attack-punch/boss-attack-punch")
+        ;
+        private final String frameRegionsName;
+        State(String frameRegionsName) {
+            this.frameRegionsName = frameRegionsName;
+        }
+    }
 
+    public static float SIZE = 200;
 
     public float protectedRadius = 130;
-    public Vector2 position;
 
     private float accum;
 
     private final GameScreen screen;
-    private final Animation<TextureAtlas.AtlasRegion> animation;
+
+    private final ObjectMap<State, Animation<AtlasRegion>> animationsByState;
+    private Animation<AtlasRegion> animation;
     private TextureRegion keyframe;
     private float stateTime;
 
@@ -28,14 +41,21 @@ public class Boss {
         this.screen = screen;
         this.position = new Vector2(screen.arena.bounds.x + screen.arena.bounds.width/2f,
                           screen.arena.bounds.y + screen.arena.bounds.height/2f);
-        Array<TextureAtlas.AtlasRegion> frames = screen.assets.atlas.findRegions("characters/boss-idle");
-        this.animation = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
+        this.animationsByState = new ObjectMap<>();
+        for (State state : State.values()) {
+            Array<AtlasRegion> frames = screen.assets.atlas.findRegions(state.frameRegionsName);
+            Animation<AtlasRegion> animation = new Animation<>(0.2f, frames, Animation.PlayMode.LOOP);
+            animationsByState.put(state, animation);
+        }
+        this.animation = animationsByState.get(State.idle_a);
         this.keyframe = animation.getKeyFrame(0);
         this.stateTime = 0f;
     }
 
     public void update(float dt){
         accum += dt;
+
+        // TODO - handle state changes and switch animation as needed
 
         stateTime += dt;
         keyframe = animation.getKeyFrame(stateTime);

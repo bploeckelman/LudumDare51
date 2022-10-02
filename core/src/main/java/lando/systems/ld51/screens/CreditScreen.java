@@ -31,7 +31,7 @@ public class CreditScreen extends BaseScreen {
     private final String emotionalSupport = "{COLOR=cyan}Emotional Support:{COLOR=white}\n  Asuka, Osha,\n  Cherry";
     private final String music = "{COLOR=gray}Sound by:{COLOR=white}\n {GRADIENT=white;gray}Pete Valeo{ENDGRADIENT}";
     private final String libgdx = "Made with {COLOR=red}<3{COLOR=white}\nand LibGDX";
-    private final String disclaimer = "{GRADIENT=black;gray}Disclaimer:{ENDGRADIENT}  {GRADIENT=gold;yellow}{JUMP=.2}{WAVE=0.8;1.1;1.1}No wizards were harmed in the making of this game{ENDWAVE}{ENDJUMP}{ENDGRADIENT}";
+    private final String disclaimer = "{GRADIENT=black;gray}Disclaimer:{ENDGRADIENT}  {GRADIENT=gold;yellow}{JUMP=.2}{WAVE=0.8;1.1;1.1}No rabbits were harmed in the making of this game{ENDWAVE}{ENDJUMP}{ENDGRADIENT}";
 
     private float accum = 0f;
 

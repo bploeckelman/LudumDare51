@@ -198,19 +198,24 @@ public class GameScreen extends BaseScreen {
     }
 
     private void updateCircularTimer() {
-        switch (player.getCurrentPhase()) {
-            case RED:
-                cooldownTimer.setColor(Color.RED);
-                break;
-            case BLUE:
-                cooldownTimer.setColor(Color.BLUE);
-                break;
-            case GREEN:
-                cooldownTimer.setColor(Color.FOREST);
-                break;
-        }
         bossCooldownRemainingPercentage = (accum % 10f) / 10f;
         cooldownTimer.update(bossCooldownRemainingPercentage);
+        if (player.isWizard) {
+            cooldownTimer.setColor(Color.WHITE);
+        }
+        else {
+            switch (player.getCurrentPhase()) {
+                case RED:
+                    cooldownTimer.setColor(Color.RED);
+                    break;
+                case BLUE:
+                    cooldownTimer.setColor(Color.BLUE);
+                    break;
+                case GREEN:
+                    cooldownTimer.setColor(Color.FOREST);
+                    break;
+            }
+        }
     }
 
 }

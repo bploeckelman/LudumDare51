@@ -3,6 +3,8 @@ package lando.systems.ld51.particles;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -10,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.*;
 import lando.systems.ld51.assets.Assets;
 import lando.systems.ld51.assets.EffectAnims;
+import lando.systems.ld51.gameobjects.Gem;
 
 public class Particles implements Disposable {
 
@@ -92,6 +95,57 @@ public class Particles implements Disposable {
                 .timeToLive(animation.getAnimationDuration())
                 .startPos(x, y)
                 .init());
+    }
+
+    public void dropCoins(int numRed, int numGreen, int numBlue, float x, float y) {
+        for (int i = 0; i < numRed; i++) {
+            tempVec2.setToRandomDirection();
+            float speed = MathUtils.random(100f, 200f);
+            float ttl = MathUtils.random(2f, 4f);
+            activeParticles.get(Layer.foreground).add(Particle.initializer(particlePool.obtain())
+                    .animation(assets.gemRedSpin)
+                    .animUnlocked(true)
+                    .startSize(Gem.SIZE)
+                    .startAlpha(1f)
+                    .endAlpha(0f)
+                    .startPos(x, y)
+                    .timeToLive(ttl)
+                    .velocity(tempVec2.x * speed, tempVec2.y * speed)
+                    .init()
+            );
+        }
+        for (int i = 0; i < numGreen; i++) {
+            tempVec2.setToRandomDirection();
+            float speed = MathUtils.random(100f, 200f);
+            float ttl = MathUtils.random(2f, 4f);
+            activeParticles.get(Layer.foreground).add(Particle.initializer(particlePool.obtain())
+                    .animation(assets.gemGreenSpin)
+                    .animUnlocked(true)
+                    .startSize(Gem.SIZE)
+                    .startAlpha(1f)
+                    .endAlpha(0f)
+                    .startPos(x, y)
+                    .timeToLive(ttl)
+                    .velocity(tempVec2.x * speed, tempVec2.y * speed)
+                    .init()
+            );
+        }
+        for (int i = 0; i < numBlue; i++) {
+            tempVec2.setToRandomDirection();
+            float speed = MathUtils.random(100f, 200f);
+            float ttl = MathUtils.random(2f, 4f);
+            activeParticles.get(Layer.foreground).add(Particle.initializer(particlePool.obtain())
+                    .animation(assets.gemBlueSpin)
+                    .animUnlocked(true)
+                    .startSize(Gem.SIZE)
+                    .startAlpha(1f)
+                    .endAlpha(0f)
+                    .startPos(x, y)
+                    .timeToLive(ttl)
+                    .velocity(tempVec2.x * speed, tempVec2.y * speed)
+                    .init()
+            );
+        }
     }
 
     Vector2 tempStart = new Vector2();

@@ -30,6 +30,7 @@ public class Particle implements Pool.Poolable {
 
     private Animation<TextureRegion> animation;
     private float animTime;
+    private boolean animUnlocked;
 
     private float xStart;
     private float yStart;
@@ -94,8 +95,11 @@ public class Particle implements Pool.Poolable {
         progress = interpolation.apply(0f, 1f, MathUtils.clamp(1f - lifetime, 0f, 1f));
 
         if (animation != null) {
-            if (!persistent && timed) animTime = progress * animation.getAnimationDuration();
-            else                      animTime += dt;
+            if (!persistent && !animUnlocked && timed) {
+                animTime = progress * animation.getAnimationDuration();
+            } else {
+                animTime += dt;
+            }
             keyframe = animation.getKeyFrame(animTime);
         }
 
@@ -157,6 +161,7 @@ public class Particle implements Pool.Poolable {
         this.keyframe = null;
 
         this.animation = null;
+        this.animUnlocked = false;
         this.animTime = 0f;
 
         this.xStart = 0f;
@@ -217,6 +222,7 @@ public class Particle implements Pool.Poolable {
         private TextureRegion keyframe = null;
         private Animation<TextureRegion> animation = null;
         private Interpolation interpolation = Interpolation.linear;
+        private boolean animUnlocked = false;
 
         private float xStart = 0f;
         private float yStart = 0f;
@@ -283,6 +289,11 @@ public class Particle implements Pool.Poolable {
 
         Initializer animation(Animation<TextureRegion> animation) {
             this.animation = animation;
+            return this;
+        }
+
+        Initializer animUnlocked(boolean animUnlocked) {
+            this.animUnlocked = animUnlocked;
             return this;
         }
 
@@ -424,6 +435,7 @@ public class Particle implements Pool.Poolable {
             if (animation != null) {
                 particle.animation = animation;
                 particle.animTime = 0f;
+                particle.animUnlocked = animUnlocked;
             }
             if (path != null) {
                 if (!timed) {

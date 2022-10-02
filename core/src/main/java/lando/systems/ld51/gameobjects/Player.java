@@ -63,6 +63,8 @@ public class Player extends ObjectLocation {
     public float attackIntervalWizard = 0.1f;
     public float attackTimer;
 
+    public int musicPhase = 1;
+
 
     public Player(GameScreen screen) {
         this.screen = screen;
@@ -268,17 +270,33 @@ public class Player extends ObjectLocation {
         currentPhase = nextPhase;
         switch (currentPhase){
             case RED:
+//                musicEnumValue = 'warriorMusic';
                 this.animation = screen.assets.creatureAnims.get(CreatureAnims.Type.warrior);
-                screen.audio.playSound(AudioManager.Sounds.warriorMusic1, 1.0f);
+                screen.audio.playSound(AudioManager.Sounds.valueOf("warriorMusic" + musicPhase), 1.0f);
+//                if (musicPhase == 3) {
+//                    musicPhase = 1;
+//                } else {
+//                    musicPhase++;
+//                }
                 break;
             case GREEN:
                 this.animation = screen.assets.creatureAnims.get(CreatureAnims.Type.rogue);
-                screen.audio.playSound(AudioManager.Sounds.rogueMusic1, 1.0f);
+                screen.audio.playSound(AudioManager.Sounds.valueOf("rogueMusic" + musicPhase), 1.0f);
 //                screen.audio.playSound(AudioManager.Sounds.wizardMusic1, 1.0f);
+//                if (musicPhase == 3) {
+//                    musicPhase = 1;
+//                } else {
+//                    musicPhase++;
+//                }
                 break;
             case BLUE:
                 this.animation = screen.assets.creatureAnims.get(CreatureAnims.Type.cleric);
-                screen.audio.playSound(AudioManager.Sounds.clericMusic1, 1.0f);
+                screen.audio.playSound(AudioManager.Sounds.valueOf("clericMusic"+musicPhase), 1.0f);
+                if (musicPhase == 3) {
+                    musicPhase = 1;
+                } else {
+                    musicPhase++;
+                }
                 break;
         }
 

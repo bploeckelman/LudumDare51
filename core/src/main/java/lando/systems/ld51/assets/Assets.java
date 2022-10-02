@@ -134,16 +134,17 @@ public class Assets implements Disposable {
 
 
             mgr.load("audio/sound/introMusic.ogg", Sound.class);
-            mgr.load("audio/sound/warriorMusic1.ogg", Sound.class);
-            mgr.load("audio/sound/rogueMusic1.ogg", Sound.class);
-            mgr.load("audio/sound/clericMusic1.ogg", Sound.class);
-            mgr.load("audio/sound/warriorMusic2.ogg", Sound.class);
-            mgr.load("audio/sound/rogueMusic2.ogg", Sound.class);
-            mgr.load("audio/sound/clericMusic2.ogg", Sound.class);
-            mgr.load("audio/sound/warriorMusic3.ogg", Sound.class);
-            mgr.load("audio/sound/rogueMusic3.ogg", Sound.class);
-            mgr.load("audio/sound/clericMusic3.ogg", Sound.class);
             mgr.load("audio/sound/wizardMusic1.ogg", Sound.class);
+
+            mgr.load("audio/sound/warriorMusicA.ogg", Sound.class);
+            mgr.load("audio/sound/warriorMusicB.ogg", Sound.class);
+            mgr.load("audio/sound/warriorMusicC.ogg", Sound.class);
+            mgr.load("audio/sound/rogueMusicA.ogg", Sound.class);
+            mgr.load("audio/sound/rogueMusicB.ogg", Sound.class);
+            mgr.load("audio/sound/rogueMusicC.ogg", Sound.class);
+            mgr.load("audio/sound/clericMusicA.ogg", Sound.class);
+            mgr.load("audio/sound/clericMusicB.ogg", Sound.class);
+            mgr.load("audio/sound/clericMusicC.ogg", Sound.class);
 //            mgr.load("audio/sound/introMusic.ogg", Sound.class);
 
         }
@@ -240,16 +241,19 @@ public class Assets implements Disposable {
 
         // Music clips as Sound objects
         introMusicSound = mgr.get("audio/sound/introMusic.ogg", Sound.class);
-        warriorMusic1 = mgr.get("audio/sound/warriorMusic1.ogg", Sound.class);
-        warriorMusic2 = mgr.get("audio/sound/warriorMusic2.ogg", Sound.class);
-        warriorMusic3 = mgr.get("audio/sound/warriorMusic3.ogg", Sound.class);
-        rogueMusic1 = mgr.get("audio/sound/rogueMusic1.ogg", Sound.class);
-        rogueMusic2 = mgr.get("audio/sound/rogueMusic2.ogg", Sound.class);
-        rogueMusic3 = mgr.get("audio/sound/rogueMusic3.ogg", Sound.class);
-        clericMusic1 = mgr.get("audio/sound/clericMusic1.ogg", Sound.class);
-        clericMusic2 = mgr.get("audio/sound/clericMusic2.ogg", Sound.class);
-        clericMusic3 = mgr.get("audio/sound/clericMusic3.ogg", Sound.class);
         wizardMusic1 = mgr.get("audio/sound/wizardMusic1.ogg", Sound.class);
+
+        warriorMusic1 = mgr.get("audio/sound/warriorMusicB.ogg", Sound.class);
+        warriorMusic2 = mgr.get("audio/sound/warriorMusicA.ogg", Sound.class);
+        warriorMusic3 = mgr.get("audio/sound/warriorMusicC.ogg", Sound.class);
+
+        rogueMusic1 = mgr.get("audio/sound/rogueMusicA.ogg", Sound.class);
+        rogueMusic2 = mgr.get("audio/sound/rogueMusicC.ogg", Sound.class);
+        rogueMusic3 = mgr.get("audio/sound/rogueMusicB.ogg", Sound.class);
+
+        clericMusic1 = mgr.get("audio/sound/clericMusicC.ogg", Sound.class);
+        clericMusic2 = mgr.get("audio/sound/clericMusicB.ogg", Sound.class);
+        clericMusic3 = mgr.get("audio/sound/clericMusicA.ogg", Sound.class);
 
         initialized = true;
         return 1;

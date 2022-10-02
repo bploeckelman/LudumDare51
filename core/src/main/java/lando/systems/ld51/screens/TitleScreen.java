@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
+import lando.systems.ld51.audio.AudioManager;
 
 public class TitleScreen extends BaseScreen {
 
@@ -15,6 +16,7 @@ public class TitleScreen extends BaseScreen {
     public void create() {
         gdx = assets.atlas.findRegion("libgdx");
         state = 0f;
+        game.audio.loopSound(AudioManager.Sounds.introMusic, 0.8f);
     }
 
     @Override
@@ -23,6 +25,7 @@ public class TitleScreen extends BaseScreen {
         state += delta;
 
         if (Gdx.input.justTouched()){
+            game.audio.stopAllSounds();
             game.getScreenManager().pushScreen("game", "blend");
         }
     }

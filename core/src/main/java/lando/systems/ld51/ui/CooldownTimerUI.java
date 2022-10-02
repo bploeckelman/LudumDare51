@@ -19,6 +19,7 @@ public class CooldownTimerUI extends VisWindow {
         this.assets = assets;
         setPosition(x, y);
         setSize(width, height);
+        setColor(getColor().r, getColor().g, getColor().b, .5f);
         setZIndex(1);
         timerProgressBar = new VisProgressBar(0f, 100f, 1f, false);
         VisProgressBar.ProgressBarStyle defaultStyle = skin.get("default-horizontal", ProgressBar.ProgressBarStyle.class);

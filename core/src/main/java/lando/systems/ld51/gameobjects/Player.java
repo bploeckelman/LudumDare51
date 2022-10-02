@@ -241,12 +241,15 @@ public class Player extends ObjectLocation {
         switch (gem.type){
             case RED:
                 redGemCount++;
+                screen.playerGemsUI.redProgressBar.flashIt();
                 break;
             case GREEN:
                 greenGemCount++;
+                screen.playerGemsUI.greenProgressBar.flashIt();
                 break;
             case BLUE:
                 blueGemCount++;
+                screen.playerGemsUI.blueProgressBar.flashIt();
                 break;
         }
     }

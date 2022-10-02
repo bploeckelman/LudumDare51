@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.kotcrab.vis.ui.widget.VisWindow;
 import lando.systems.ld51.assets.Assets;
-import lando.systems.ld51.assets.ItemTextures;
+import lando.systems.ld51.gameobjects.Gem;
 import lando.systems.ld51.gameobjects.Player;
 
 public class PlayerGemsUI extends Group {
@@ -32,7 +32,7 @@ public class PlayerGemsUI extends Group {
         redGemUI.setColor(1f, 0f, 0f, INACTIVE_ALPHA_VALUE);
         redGemUI.setZIndex(1);
 
-        redProgressBar = new GemProgressBar(1f, false, redGemUI.getX() + 10f, redGemUI.getY() + 2.5f, redGemUI.getWidth() - 20f, redGemUI.getHeight() - 5f, skin, assets.itemTextures.get(ItemTextures.Type.gem_red), assets.redProgressBar);
+        redProgressBar = new GemProgressBar(1f, false, redGemUI.getX() + 10f, redGemUI.getY() + 2.5f, redGemUI.getWidth() - 20f, redGemUI.getHeight() - 5f, skin, assets, Gem.Type.RED);
 //        redGemUI.addActor(redProgressBar);
 
         greenGemUI = new VisWindow("");
@@ -41,7 +41,7 @@ public class PlayerGemsUI extends Group {
         greenGemUI.setStyle(gemUIStyle);
         greenGemUI.setColor(Color.FOREST);
         greenGemUI.setZIndex(1);
-        greenProgressBar = new GemProgressBar(1f, false, greenGemUI.getX() + 10f, greenGemUI.getY() + 2.5f, greenGemUI.getWidth() - 20f, greenGemUI.getHeight() - 5f, skin, assets.itemTextures.get(ItemTextures.Type.gem_green), assets.greenProgressBar);
+        greenProgressBar = new GemProgressBar(1f, false, greenGemUI.getX() + 10f, greenGemUI.getY() + 2.5f, greenGemUI.getWidth() - 20f, greenGemUI.getHeight() - 5f, skin, assets, Gem.Type.GREEN);
 
         blueGemUI = new VisWindow("");
         blueGemUI.setPosition(x + 2f / 3f * width, y);
@@ -49,7 +49,7 @@ public class PlayerGemsUI extends Group {
         blueGemUI.setStyle(gemUIStyle);
         blueGemUI.setColor(0f, 0f, 1f, INACTIVE_ALPHA_VALUE);
         blueGemUI.setZIndex(1);
-        blueProgressBar = new GemProgressBar(1f, false, blueGemUI.getX() + 10f, blueGemUI.getY() + 2.5f, blueGemUI.getWidth() - 20f, blueGemUI.getHeight() - 5f, skin, assets.itemTextures.get(ItemTextures.Type.gem_blue), assets.blueProgressBar);
+        blueProgressBar = new GemProgressBar(1f, false, blueGemUI.getX() + 10f, blueGemUI.getY() + 2.5f, blueGemUI.getWidth() - 20f, blueGemUI.getHeight() - 5f, skin, assets, Gem.Type.BLUE);
 
         addActor(redGemUI);
         addActor(blueGemUI);

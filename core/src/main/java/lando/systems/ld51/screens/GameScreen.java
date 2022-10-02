@@ -167,9 +167,9 @@ public class GameScreen extends BaseScreen {
         ((FollowOrthographicCamera)worldCamera).update(player.position, arena.bounds, delta);
 
         debugWindow.update();
-        playerGemsUI.redProgressBar.updateProgress(player.redGemCount, player.FULL_GEM_COUNT);
-        playerGemsUI.blueProgressBar.updateProgress(player.blueGemCount, player.FULL_GEM_COUNT);
-        playerGemsUI.greenProgressBar.updateProgress(player.greenGemCount, player.FULL_GEM_COUNT);
+        playerGemsUI.redProgressBar.update(delta, player.redGemCount, player.FULL_GEM_COUNT);
+        playerGemsUI.blueProgressBar.update(delta, player.blueGemCount, player.FULL_GEM_COUNT);
+        playerGemsUI.greenProgressBar.update(delta, player.greenGemCount, player.FULL_GEM_COUNT);
         cooldownTimerUI.updateTimerValue(player, accum);
         uiStage.act();
     }

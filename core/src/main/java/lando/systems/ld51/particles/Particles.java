@@ -96,11 +96,11 @@ public class Particles implements Disposable {
         tempVec2.set(end).sub(start).nor();
         float angle = tempVec2.angleDeg();
         for (int i = 0; i < dist/5f; i++) {
-            float size = MathUtils.random(8f, 20f);
+            float size = MathUtils.random(8f, 30f);
             activeParticles.get(Layer.foreground).add(Particle.initializer(particlePool.obtain())
                     .keyframe(keyframe)
                             .startPos(start.x + tempVec2.x * (5*i), start.y + tempVec2.y * (5*i))
-                            .startSize(size, size)
+                            .startSize(size, 10)
                             .startColor(1f, 1f, 0, 1f)
                             .endColor(.3f, .3f, .3f, .3f)
                             .startRotation(angle + MathUtils.random(-30, 30))

@@ -273,6 +273,7 @@ public class Player extends ObjectLocation {
             case GREEN:
                 this.animation = screen.assets.creatureAnims.get(CreatureAnims.Type.rogue);
                 screen.audio.playSound(AudioManager.Sounds.rogueMusic1, 1.0f);
+//                screen.audio.playSound(AudioManager.Sounds.wizardMusic1, 1.0f);
                 break;
             case BLUE:
                 this.animation = screen.assets.creatureAnims.get(CreatureAnims.Type.cleric);

@@ -25,9 +25,16 @@ public class AudioManager implements Disposable {
     public enum Sounds {
         none
         , introMusic
-        , rogueMusic1
         , warriorMusic1
+        , warriorMusic2
+        , warriorMusic3
+        , rogueMusic1
+        , rogueMusic2
+        , rogueMusic3
         , clericMusic1
+        , clericMusic2
+        , clericMusic3
+        , wizardMusic1
 
     }
 
@@ -55,8 +62,15 @@ public class AudioManager implements Disposable {
 
         putSound(Sounds.introMusic, assets.introMusicSound);
         putSound(Sounds.warriorMusic1, assets.warriorMusic1);
+        putSound(Sounds.warriorMusic2, assets.warriorMusic2);
+        putSound(Sounds.warriorMusic3, assets.warriorMusic3);
         putSound(Sounds.rogueMusic1, assets.rogueMusic1);
+        putSound(Sounds.rogueMusic2, assets.rogueMusic2);
+        putSound(Sounds.rogueMusic3, assets.rogueMusic3);
         putSound(Sounds.clericMusic1, assets.clericMusic1);
+        putSound(Sounds.clericMusic2, assets.clericMusic2);
+        putSound(Sounds.clericMusic3, assets.clericMusic3);
+        putSound(Sounds.wizardMusic1, assets.wizardMusic1);
 
 
 //        putSound(Musics.introMusic, assets.introMusicSound);
@@ -66,7 +80,7 @@ public class AudioManager implements Disposable {
 
 
         musicVolume = new MutableFloat(.5f); 
-        soundVolume = new MutableFloat(.5f);
+        soundVolume = new MutableFloat(1.0f);
 
         isMusicMuted = false;
         isSoundMuted = false;

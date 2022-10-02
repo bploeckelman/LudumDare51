@@ -73,6 +73,7 @@ public class Assets implements Disposable {
     public Sound clericMusic1;
     public Sound clericMusic2;
     public Sound clericMusic3;
+    public Sound wizardMusic1;
 
     public enum Patch {
         debug, panel, metal, glass,
@@ -135,6 +136,13 @@ public class Assets implements Disposable {
             mgr.load("audio/sound/warriorMusic1.ogg", Sound.class);
             mgr.load("audio/sound/rogueMusic1.ogg", Sound.class);
             mgr.load("audio/sound/clericMusic1.ogg", Sound.class);
+            mgr.load("audio/sound/warriorMusic2.ogg", Sound.class);
+            mgr.load("audio/sound/rogueMusic2.ogg", Sound.class);
+            mgr.load("audio/sound/clericMusic2.ogg", Sound.class);
+            mgr.load("audio/sound/warriorMusic3.ogg", Sound.class);
+            mgr.load("audio/sound/rogueMusic3.ogg", Sound.class);
+            mgr.load("audio/sound/clericMusic3.ogg", Sound.class);
+            mgr.load("audio/sound/wizardMusic1.ogg", Sound.class);
 //            mgr.load("audio/sound/introMusic.ogg", Sound.class);
 
         }
@@ -218,8 +226,15 @@ public class Assets implements Disposable {
         // Music clips as Sound objects
         introMusicSound = mgr.get("audio/sound/introMusic.ogg", Sound.class);
         warriorMusic1 = mgr.get("audio/sound/warriorMusic1.ogg", Sound.class);
+        warriorMusic2 = mgr.get("audio/sound/warriorMusic2.ogg", Sound.class);
+        warriorMusic3 = mgr.get("audio/sound/warriorMusic3.ogg", Sound.class);
         rogueMusic1 = mgr.get("audio/sound/rogueMusic1.ogg", Sound.class);
+        rogueMusic2 = mgr.get("audio/sound/rogueMusic2.ogg", Sound.class);
+        rogueMusic3 = mgr.get("audio/sound/rogueMusic3.ogg", Sound.class);
         clericMusic1 = mgr.get("audio/sound/clericMusic1.ogg", Sound.class);
+        clericMusic2 = mgr.get("audio/sound/clericMusic2.ogg", Sound.class);
+        clericMusic3 = mgr.get("audio/sound/clericMusic3.ogg", Sound.class);
+        wizardMusic1 = mgr.get("audio/sound/wizardMusic1.ogg", Sound.class);
 
         initialized = true;
         return 1;

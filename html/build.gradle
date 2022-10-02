@@ -47,7 +47,8 @@ dependencies {
 	implementation "space.earlygrey:shapedrawer:$shapeDrawerVersion:sources"
     implementation "org.mini2Dx:universal-tween-engine:$tweenEngineVersion:sources"
     implementation "com.badlogicgames.gdx:gdx-ai:$aiVersion:sources"
-	implementation project(':core')
+    implementation "com.github.tommyettinger:regexodus:$regexodusVersion:sources"
+    implementation project(':core')
 
 //// You can use the lines below instead of the "com.badlogicgames.gdx:gdx-backend-gwt" dependencies.
 //// If you do, follow the steps at https://github.com/tommyettinger/gdx-backends#gwt-290-support

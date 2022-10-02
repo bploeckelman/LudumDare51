@@ -56,6 +56,7 @@ public class Assets implements Disposable {
 
     public Animation<TextureRegion> cat;
     public Animation<TextureRegion> dog;
+    public Animation<TextureRegion> kitten;
     public Animation<TextureRegion> gemBlueIdle;
     public Animation<TextureRegion> gemRedIdle;
     public Animation<TextureRegion> gemGreenIdle;
@@ -224,6 +225,7 @@ public class Assets implements Disposable {
 
         cat = new Animation<>(0.1f, atlas.findRegions("pets/cat"), Animation.PlayMode.LOOP);
         dog = new Animation<>(0.1f, atlas.findRegions("pets/dog"), Animation.PlayMode.LOOP);
+        kitten = new Animation<>(.1f, atlas.findRegions("pets/kitten"), Animation.PlayMode.LOOP);
         gemBlueIdle = new Animation<>(0.1f, atlas.findRegions("gems/gem-blue/gem-blue-idle/gem-blue-idle"), Animation.PlayMode.LOOP);
         gemBlueSpin = new Animation<>(0.1f, atlas.findRegions("gems/gem-blue/gem-blue-spin/gem-blue-spin"), Animation.PlayMode.LOOP);
         gemRedIdle = new Animation<>(0.1f, atlas.findRegions("gems/gem-red/gem-red-idle/gem-red-idle"), Animation.PlayMode.LOOP);

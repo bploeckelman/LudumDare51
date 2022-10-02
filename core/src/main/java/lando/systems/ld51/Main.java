@@ -87,6 +87,7 @@ public class Main extends ManagedGame<BaseScreen, ScreenTransition> {
 		screenManager.addScreen("title", new TitleScreen());
 		screenManager.addScreen("game", new GameScreen());
 		screenManager.addScreen("endScreen", new EndScreen());
+		screenManager.addScreen("credit", new CreditScreen());
 		screenManager.addScreenTransition("blend", new BlendingTransition(assets.batch, 0.25f));
 		screenManager.addScreenTransition("push", new PushTransition(assets.batch, SlidingDirection.UP, 0.25f));
 

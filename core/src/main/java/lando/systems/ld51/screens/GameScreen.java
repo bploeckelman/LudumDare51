@@ -11,9 +11,7 @@ import lando.systems.ld51.assets.CreatureAnims;
 import lando.systems.ld51.gameobjects.*;
 import lando.systems.ld51.particles.Particles;
 import lando.systems.ld51.systems.AttackResolver;
-import lando.systems.ld51.ui.BossHealthUI;
-import lando.systems.ld51.ui.DebugWindow;
-import lando.systems.ld51.ui.PlayerGemsUI;
+import lando.systems.ld51.ui.*;
 import lando.systems.ld51.utils.FollowOrthographicCamera;
 
 public class GameScreen extends BaseScreen {
@@ -35,6 +33,8 @@ public class GameScreen extends BaseScreen {
 
     private final float BOSS_HEALTH_UI_HEIGHT = 30f;
     private final float PLAYER_GEMS_UI_HEIGHT = 30f;
+    public float bossCooldownRemainingPercentage = 1f;
+    public CooldownTimer cooldownTimer;
 
     public GameScreen(){
         this.arena = new Arena(this);
@@ -60,8 +60,15 @@ public class GameScreen extends BaseScreen {
         bossHealthUI.setVisible(true);
         uiStage.addActor(bossHealthUI);
 
+
         playerGemsUI = new PlayerGemsUI("", 0f, 0f, windowCamera.viewportWidth, PLAYER_GEMS_UI_HEIGHT, skin, assets);
         uiStage.addActor(playerGemsUI);
+
+        cooldownTimer = new CooldownTimer(false);
+        cooldownTimer.setSize(50f, 50f);
+        cooldownTimer.setPosition(windowCamera.viewportWidth - 50f, windowCamera.viewportHeight - 50f);
+        uiStage.addActor(cooldownTimer);
+
 
     }
 
@@ -128,6 +135,7 @@ public class GameScreen extends BaseScreen {
         playerGemsUI.redProgressBar.updateProgress(player.redGemCount, player.FULL_GEM_COUNT);
         playerGemsUI.blueProgressBar.updateProgress(player.blueGemCount, player.FULL_GEM_COUNT);
         playerGemsUI.greenProgressBar.updateProgress(player.greenGemCount, player.FULL_GEM_COUNT);
+        updateCircularTimer();
         uiStage.act();
     }
 
@@ -187,6 +195,22 @@ public class GameScreen extends BaseScreen {
             enemy.targetPos = playerPos;
             return enemy;
         }
+    }
+
+    private void updateCircularTimer() {
+        switch (player.getCurrentPhase()) {
+            case RED:
+                cooldownTimer.setColor(Color.RED);
+                break;
+            case BLUE:
+                cooldownTimer.setColor(Color.BLUE);
+                break;
+            case GREEN:
+                cooldownTimer.setColor(Color.FOREST);
+                break;
+        }
+        bossCooldownRemainingPercentage = (accum % 10f) / 10f;
+        cooldownTimer.update(bossCooldownRemainingPercentage);
     }
 
 }

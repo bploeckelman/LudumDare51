@@ -1,5 +1,6 @@
 package lando.systems.ld51.ui;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.kotcrab.vis.ui.widget.VisWindow;
@@ -38,7 +39,7 @@ public class PlayerGemsUI extends Group {
         greenGemUI.setPosition(x + width / 3f, y);
         greenGemUI.setSize(width / 3f, height);
         greenGemUI.setStyle(gemUIStyle);
-        greenGemUI.setColor(0f, 1f, 0f, INACTIVE_ALPHA_VALUE);
+        greenGemUI.setColor(Color.FOREST);
         greenProgressBar = new GemProgressBar(.1f, false, greenGemUI.getX() + 5f, greenGemUI.getY() + 2.5f, greenGemUI.getWidth() - 10f, greenGemUI.getHeight() - 5f, skin, assets.itemTextures.get(ItemTextures.Type.gem_green), assets.pixelUIs.get(PixelUIs.Type.narrow_green_pill_center));
 
         blueGemUI = new VisWindow("");
@@ -65,7 +66,7 @@ public class PlayerGemsUI extends Group {
         } else if (phase == Player.Phase.GREEN) {
             blueGemUI.setColor(0f, 0f, 0f, INACTIVE_ALPHA_VALUE);
             redGemUI.setColor(0f, 0f, 0f, INACTIVE_ALPHA_VALUE);
-            greenGemUI.setColor(0f, 1f, 0f, ACTIVE_ALPHA_VALUE);
+            greenGemUI.setColor(Color.FOREST);
         } else if (phase == Player.Phase.RED) {
             blueGemUI.setColor(0f, 0f, 0f, INACTIVE_ALPHA_VALUE);
             redGemUI.setColor(1f, 0f, 0f, ACTIVE_ALPHA_VALUE);

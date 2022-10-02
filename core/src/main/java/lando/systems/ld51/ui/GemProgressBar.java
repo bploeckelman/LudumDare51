@@ -21,7 +21,6 @@ public class GemProgressBar extends VisProgressBar {
         setPosition(x, y);
         setValue(0f);
         setSize(width, height);
-        setFillParent(true);
     }
 
     public void updateProgress(float current, float max) {

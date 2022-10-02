@@ -51,7 +51,7 @@ public class Player extends ObjectLocation {
     public static float SPEED_NORMAL = 300f;
     public static float SPEED_WIZARD = 450f;
     public static float SPEED = SPEED_NORMAL;
-    public static int FULL_GEM_COUNT = 50;
+    public static int FULL_GEM_COUNT = 10;
 
 
     private final GameScreen screen;
@@ -396,7 +396,7 @@ public class Player extends ObjectLocation {
             float y = position.y + facing.y * size * (1f / 2f);
             float angle = facing.angleRad();
             float speed = Calc.max(SPEED + 60f, 250f);
-            Projectile projectile = new Projectile(screen.assets, EffectAnims.Type.meteor, x, y, angle, speed);
+            Projectile projectile = new Projectile(screen.assets, EffectAnims.Type.meteor, x, y, angle, speed, true);
             projectile.size = size;
             screen.projectiles.add(projectile);
             game.audio.playSound(AudioManager.Sounds.fireball, 0.25F);

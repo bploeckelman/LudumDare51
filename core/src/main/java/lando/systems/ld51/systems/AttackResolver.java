@@ -17,7 +17,7 @@ public class AttackResolver {
         for (int i = projectiles.size - 1; i >= 0; i--) {
             Projectile projectile = projectiles.get(i);
             for (Enemy enemy : enemies) {
-                if (projectile.alive && projectile.bounds.overlaps(enemy.hurtCircle)) {
+                if (projectile.playerShot && projectile.alive && projectile.bounds.overlaps(enemy.hurtCircle)) {
                     float amount = projectile.damageAmount;
                     float dx = projectile.direction.x;
                     float dy = projectile.direction.y;
@@ -28,7 +28,7 @@ public class AttackResolver {
                 }
             }
 
-            if (projectile.alive && projectile.bounds.overlaps(boss.hurtCircle)){
+            if (projectile.playerShot && projectile.alive && projectile.bounds.overlaps(boss.hurtCircle)){
                 float amount = projectile.damageAmount;
                 float dx = projectile.direction.x;
                 float dy = projectile.direction.y;

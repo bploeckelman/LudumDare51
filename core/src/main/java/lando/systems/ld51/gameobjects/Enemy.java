@@ -32,13 +32,14 @@ public class Enemy {
     private float hurtTimer;
     private boolean isHurt;
 
-    public float health = 3f;
+    public float health;
     public float speed = 30f;
     public float size = 50f;
 
     public Enemy(GameScreen screen, CreatureAnims.Type type, float x, float y) {
         this.screen = screen;
         this.type = type;
+        this.health = type.health;
         this.animation = screen.assets.creatureAnims.get(type);
         this.keyframe = animation.getKeyFrame(0f);
         this.stateTime = 0f;
@@ -93,8 +94,8 @@ public class Enemy {
 
         if (Config.Debug.general) {
             ShapeDrawer shapes = screen.assets.shapes;
-//            shapes.setColor(Color.MAGENTA);
-//            shapes.circle(hurtCircle.x, hurtCircle.y, hurtCircle.radius, 2f);
+            shapes.setColor(Color.MAGENTA);
+            shapes.circle(hurtCircle.x, hurtCircle.y, hurtCircle.radius, 2f);
             shapes.setColor(Color.CORAL);
             shapes.polygon(hurtShape);
             shapes.setColor(Color.WHITE);
@@ -121,7 +122,7 @@ public class Enemy {
     }
 
     public void kill() {
-        screen.particles.explode(position.x, position.y);
+        screen.particles.explode(position.x, position.y, size);
         VectorPool.vec2.free(position);
         VectorPool.vec2.free(velocity);
     }

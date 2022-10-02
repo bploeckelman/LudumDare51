@@ -80,11 +80,11 @@ public class Particles implements Disposable {
                 .init());
     }
 
-    public void explode(float x, float y) {
+    public void explode(float x, float y, float size) {
         Animation<TextureRegion> animation = assets.effectAnims.get(EffectAnims.Type.explode_puff);
         activeParticles.get(Layer.foreground).add(Particle.initializer(particlePool.obtain())
                 .animation(animation)
-                .startSize(32)
+                .startSize(size)
                 .timeToLive(animation.getAnimationDuration())
                 .startPos(x, y)
                 .init());

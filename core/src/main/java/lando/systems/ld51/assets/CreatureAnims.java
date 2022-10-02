@@ -72,18 +72,20 @@ public class CreatureAnims {
     }
 
     public enum Type {
-          warrior(5, 0)
-        , cleric(4, 0)
-        , rogue(7, 0)
-        , wizard_blue(0, 0)
-        , rat_small(0, 5)
-        , rat_big(1, 5)
+          warrior(5, 0, 5)
+        , cleric(4, 0, 3)
+        , rogue(7, 0, 2)
+        , wizard_blue(0, 0, 2)
+        , rat_small(0, 5, 1)
+        , rat_big(1, 5, 3)
         ;
         public final int x;
         public final int y;
-        Type(int x, int y) {
+        public final float health;
+        Type(int x, int y, float health) {
             this.x = x;
             this.y = y;
+            this.health = health;
         }
         public static Type random() {
             int numTypes = values().length;

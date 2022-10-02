@@ -53,14 +53,14 @@ public class Gem {
         this.animation = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
         this.keyframe = animation.getKeyFrame(0f);
         this.stateTime = 0f;
-        this.spawnTimer = MathUtils.random(2f, 4f);
+        this.spawnTimer = MathUtils.random(1f, 2f);
     }
 
     public void update(float dt) {
         spawnTimer -= dt;
         if (spawnTimer > 0) {
-            initialVelocity.y -= 100 * dt;
-            if (initialVelocity.y < -50){
+            initialVelocity.y -= 130 * dt;
+            if (initialVelocity.y < -80){
                 initialVelocity.y *= -1;
             }
 

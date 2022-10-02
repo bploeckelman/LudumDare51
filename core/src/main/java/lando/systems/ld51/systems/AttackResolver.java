@@ -3,6 +3,7 @@ package lando.systems.ld51.systems;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import lando.systems.ld51.gameobjects.Boss;
 import lando.systems.ld51.gameobjects.Enemy;
 import lando.systems.ld51.gameobjects.Player;
 import lando.systems.ld51.gameobjects.Projectile;
@@ -11,10 +12,11 @@ public class AttackResolver {
 
     private static final Vector2 attackDir = new Vector2();
 
-    public static void resolve(Player player, Array<Enemy> enemies, Array<Projectile> projectiles) {
-        for (Enemy enemy : enemies) {
-            for (int i = projectiles.size - 1; i >= 0; i--) {
-                Projectile projectile = projectiles.get(i);
+    public static void resolve(Player player, Array<Enemy> enemies, Boss boss, Array<Projectile> projectiles) {
+
+        for (int i = projectiles.size - 1; i >= 0; i--) {
+            Projectile projectile = projectiles.get(i);
+            for (Enemy enemy : enemies) {
                 if (projectile.bounds.overlaps(enemy.hurtCircle)) {
                     float amount = projectile.damageAmount;
                     float dx = projectile.direction.x;
@@ -25,7 +27,20 @@ public class AttackResolver {
                     projectiles.removeIndex(i);
                 }
             }
+
+            if (projectile.alive && projectile.bounds.overlaps(boss.hurtCircle)){
+                float amount = projectile.damageAmount;
+                float dx = projectile.direction.x;
+                float dy = projectile.direction.y;
+                boss.getHit(amount, dx, dy);
+
+                projectile.kill();
+                projectiles.removeIndex(i);
+            }
         }
+
+
+
 
         if (!player.isAttacking()) return;
         if (player.isWizard()) return;

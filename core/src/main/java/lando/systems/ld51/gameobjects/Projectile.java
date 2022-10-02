@@ -21,6 +21,7 @@ public class Projectile extends ObjectLocation {
     private float stateTime;
 
     private float speed;
+    public boolean alive;
 
     public float size;
     public float damageAmount = 1f;
@@ -38,6 +39,7 @@ public class Projectile extends ObjectLocation {
         this.size = Calc.max(keyframe.getRegionWidth(), keyframe.getRegionHeight());
         this.bounds = new Circle(x, y, size / 2f);
         this.direction = new Vector2(Vector2.X).setAngleRad(orientation).nor();
+        this.alive = true;
     }
 
     public void update(float dt) {
@@ -69,5 +71,6 @@ public class Projectile extends ObjectLocation {
 
     public void kill() {
         Main.game.particles.explode(EffectAnims.Type.explode_fast_orange, bounds.x, bounds.y, bounds.radius * 2);
+        alive = false;
     }
 }

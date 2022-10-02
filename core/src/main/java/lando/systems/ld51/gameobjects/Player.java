@@ -51,6 +51,7 @@ public class Player extends ObjectLocation {
     public static float SPEED = SPEED_NORMAL;
     public static int FULL_GEM_COUNT = 50;
 
+
     private final GameScreen screen;
 
     private TextureRegion keyframe;

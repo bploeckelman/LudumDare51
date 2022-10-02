@@ -95,6 +95,12 @@ public class GameScreen extends BaseScreen {
     @Override
     public void update(float delta) {
         super.update(delta);
+        if (!boss.isAlive()) {
+            // Game Over dude...
+            // TODO: some exposition
+            Main.game.getScreenManager().pushScreen("endScreen", "blend");
+            return;
+        }
         screenShaker.update(delta);
         accum += delta;
 
@@ -129,7 +135,7 @@ public class GameScreen extends BaseScreen {
 
         player.update(delta);
         boss.update(delta);
-        AttackResolver.resolve(player, enemies, projectiles);
+        AttackResolver.resolve(player, enemies, boss, projectiles);
 
         for (int i = gems.size -1; i >= 0; i--) {
             Gem gem = gems.get(i);

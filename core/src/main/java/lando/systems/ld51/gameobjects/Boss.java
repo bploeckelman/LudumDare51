@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -12,6 +13,8 @@ import com.badlogic.gdx.utils.ObjectMap;
 import lando.systems.ld51.screens.GameScreen;
 
 public class Boss extends ObjectLocation {
+
+    public static float MAX_HEALTH = 1000f;
 
     public enum State {
           idle_a        ("characters/boss/boss-idle-a/boss-idle-a")
@@ -32,17 +35,20 @@ public class Boss extends ObjectLocation {
     private float accum;
 
     private final GameScreen screen;
+    public Circle hurtCircle;
 
     private final ObjectMap<State, Animation<AtlasRegion>> animationsByState;
     private Animation<AtlasRegion> animation;
     private TextureRegion keyframe;
     private float stateTime;
     private float shieldState;
+    public float health;
 
     public Boss(GameScreen screen) {
         this.screen = screen;
         this.position = new Vector2(screen.arena.bounds.x + screen.arena.bounds.width/2f,
                           screen.arena.bounds.y + screen.arena.bounds.height/2f);
+        this.hurtCircle = new Circle(position, SIZE/2f);
         this.animationsByState = new ObjectMap<>();
         for (State state : State.values()) {
             Array<AtlasRegion> frames = screen.assets.atlas.findRegions(state.frameRegionsName);
@@ -53,11 +59,12 @@ public class Boss extends ObjectLocation {
         this.keyframe = animation.getKeyFrame(0);
         this.stateTime = 0f;
         this.shieldState = 1f;
+        this.health = MAX_HEALTH;
     }
 
     public void update(float dt){
         accum += dt;
-        if (screen.player.isWizard){
+        if (screen.player.isWizard()){
             shieldState -= dt;
         } else {
             shieldState += dt;
@@ -82,5 +89,14 @@ public class Boss extends ObjectLocation {
         batch.draw(screen.assets.noiseTex, position.x - protectedRadius, position.y - protectedRadius, protectedRadius*2f, protectedRadius*2f);
         batch.setColor(Color.WHITE);
         batch.setShader(null);
+    }
+
+    public void getHit(float damage, float dx, float dy) {
+        health -= damage;
+        // TODO some particles or some shit
+    }
+
+    public boolean isAlive() {
+        return health >= 0;
     }
 }

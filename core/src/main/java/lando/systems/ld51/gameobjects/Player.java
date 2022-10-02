@@ -232,7 +232,7 @@ public class Player extends ObjectLocation {
         // draw melee attack
         if (isAttacking && !isWizard && weaponKeyframe != null && weaponGlowKeyframe != null) {
             float attackSize = SIZE;
-            batch.draw(weaponKeyframe,
+            batch.draw(weaponGlowKeyframe,
                     position.x + (attackSize / 2f),
                     position.y - (attackSize / 2f),
                     -attackSize / 2f,
@@ -241,7 +241,7 @@ public class Player extends ObjectLocation {
                     1f, 1f,
                     facing.angleDeg()
             );
-            batch.draw(weaponGlowKeyframe,
+            batch.draw(weaponKeyframe,
                     position.x + (attackSize / 2f),
                     position.y - (attackSize / 2f),
                     -attackSize / 2f,

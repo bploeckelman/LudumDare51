@@ -5,13 +5,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import lando.systems.ld51.Config;
-import lando.systems.ld51.assets.CreatureAnims;
 import lando.systems.ld51.assets.EffectAnims;
 import lando.systems.ld51.audio.AudioManager;
 import lando.systems.ld51.screens.GameScreen;
@@ -20,7 +20,18 @@ import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class Player extends ObjectLocation {
 
-    public enum Phase {RED, GREEN, BLUE};
+    public enum Phase {
+          RED    ("warrior")
+        , GREEN  ("thief")
+        , BLUE   ("cleric")
+        , WIZARD ("wizard")
+        ;
+        public final String charClassImageName;
+        Phase(String charClassImageName) {
+            this.charClassImageName = charClassImageName;
+        }
+    }
+    public enum State {SWING} // TODO - idle / run?
 
     public static float SIZE_NORMAL = 75f;
     public static float SIZE_WIZARD = 125f;
@@ -28,17 +39,18 @@ public class Player extends ObjectLocation {
     public static float SPEED_NORMAL = 300f;
     public static float SPEED_WIZARD = 450f;
     public static float SPEED = SPEED_NORMAL;
-    public static int FULL_GEM_COUNT = 100;
+    public static int FULL_GEM_COUNT = 10;
 
     private final GameScreen screen;
 
     private TextureRegion keyframe;
-    private Animation<TextureRegion> animation;
+    private Animation<AtlasRegion> animation;
     private float stateTime;
 
     public Circle attackRange;
     public Polygon attackHitShape;
 
+    // TODO - wire up player weapon anims (and swipe anims) in here
     private Animation<TextureRegion> attackAnimation;
     private TextureRegion attackKeyframe;
     private float attackStateTime;
@@ -55,7 +67,8 @@ public class Player extends ObjectLocation {
     public int greenGemCount;
     public int blueGemCount;
     public float invulnerabilityTimer;
-    public Phase currentPhase;
+    public Phase phase;
+    public State state;
     public boolean isWizard;
     public int wizardPhaseCount;
     public float attackInterval;
@@ -68,6 +81,8 @@ public class Player extends ObjectLocation {
 
     public Player(GameScreen screen) {
         this.screen = screen;
+        this.phase = Phase.RED;
+        this.state = State.SWING;
         this.position = new Vector2(Config.Screen.window_width/2f, Config.Screen.window_height/2f);
         this.velocity = new Vector2();
         this.facing = new Vector2();
@@ -76,7 +91,7 @@ public class Player extends ObjectLocation {
         this.tempPos = new Vector2();
         this.tempVec2 = new Vector2();
         this.tempVec = new Vector2();
-        this.animation = screen.assets.creatureAnims.get(CreatureAnims.Type.warrior);
+        this.animation = screen.assets.playerAnimationByPhaseByState.get(phase).get(state);
         this.keyframe = animation.getKeyFrame(0f);
         this.stateTime = 0f;
         this.attackRange = new Circle(position, 2f * SIZE); // NOTE - used for broad phase collision check
@@ -84,7 +99,6 @@ public class Player extends ObjectLocation {
         this.attackKeyframe = attackAnimation.getKeyFrame(0f);
         this.attackStateTime = 0f;
         this.isAttacking = false;
-        this.currentPhase = Phase.RED;
         // player gem ui switch update
         this.isWizard = false;
         this.redGemCount = 0;
@@ -120,6 +134,9 @@ public class Player extends ObjectLocation {
 
 
         stateTime += dt;
+        // TODO - won't need this edge case if we start using Phase.WIZARD as an actual transitionable phase
+        Phase animPhase = isWizard ? Phase.WIZARD : phase;
+        animation = screen.assets.playerAnimationByPhaseByState.get(animPhase).get(state);
         keyframe = animation.getKeyFrame(stateTime);
 
         // save previous position so the attack hit shape can be moved if the player moves
@@ -263,37 +280,23 @@ public class Player extends ObjectLocation {
             break;
             case 2: nextPhase = Phase.BLUE;
         }
-        if (currentPhase == nextPhase) {
+        if (this.phase == nextPhase) {
             return;
         }
 
         // TODO: anything that needs to happen on the phase change
         // Particle effects etc
-        screen.screenShaker.addDamage(.5f);
-        currentPhase = nextPhase;
-        switch (currentPhase){
+        screen.screenShaker.addDamage(.8f);
+        this.phase = nextPhase;
+        // NOTE: the animation should be changed correctly in update based on whatever phase happens to be
+        switch (this.phase){
             case RED:
-//                musicEnumValue = 'warriorMusic';
-                this.animation = screen.assets.creatureAnims.get(CreatureAnims.Type.warrior);
                 screen.audio.playSound(AudioManager.Sounds.valueOf("warriorMusic" + musicPhase), 1.0f);
-//                if (musicPhase == 3) {
-//                    musicPhase = 1;
-//                } else {
-//                    musicPhase++;
-//                }
                 break;
             case GREEN:
-                this.animation = screen.assets.creatureAnims.get(CreatureAnims.Type.rogue);
                 screen.audio.playSound(AudioManager.Sounds.valueOf("rogueMusic" + musicPhase), 1.0f);
-//                screen.audio.playSound(AudioManager.Sounds.wizardMusic1, 1.0f);
-//                if (musicPhase == 3) {
-//                    musicPhase = 1;
-//                } else {
-//                    musicPhase++;
-//                }
                 break;
             case BLUE:
-                this.animation = screen.assets.creatureAnims.get(CreatureAnims.Type.cleric);
                 screen.audio.playSound(AudioManager.Sounds.valueOf("clericMusic"+musicPhase), 1.0f);
                 if (musicPhase == 3) {
                     musicPhase = 1;
@@ -321,9 +324,6 @@ public class Player extends ObjectLocation {
         // make sure our wizardly attributes are current
         SIZE = (isWizard) ? SIZE_WIZARD : SIZE_NORMAL;
         SPEED = (isWizard) ? SPEED_WIZARD : SPEED_NORMAL;
-        if (isWizard) {
-            animation = screen.assets.creatureAnims.get(CreatureAnims.Type.king_red);
-        }
     }
 
     public boolean isAttacking() {
@@ -367,7 +367,7 @@ public class Player extends ObjectLocation {
     }
 
     public Phase getCurrentPhase() {
-        return currentPhase;
+        return phase;
     }
 
     public boolean isWizard() {

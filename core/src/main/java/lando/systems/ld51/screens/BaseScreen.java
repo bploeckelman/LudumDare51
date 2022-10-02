@@ -1,6 +1,8 @@
 package lando.systems.ld51.screens;
 
 import aurelienribon.tweenengine.TweenManager;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
@@ -16,7 +18,7 @@ import lando.systems.ld51.Main;
 import lando.systems.ld51.assets.Assets;
 import lando.systems.ld51.audio.AudioManager;
 
-public abstract class BaseScreen extends ManagedScreen implements Disposable {
+public abstract class BaseScreen extends ManagedScreen implements Disposable, InputProcessor {
 
     public final Main game;
     public final Assets assets;
@@ -47,11 +49,12 @@ public abstract class BaseScreen extends ManagedScreen implements Disposable {
         worldCamera = new OrthographicCamera();
         worldCamera.setToOrtho(false, Config.Screen.window_width, Config.Screen.window_height);
         worldCamera.update();
+        Gdx.input.setInputProcessor(this);
     }
 
     @Override
     public void hide() {
-
+        Gdx.input.setInputProcessor(null);
     }
 
     public void update(float delta) {
@@ -62,7 +65,6 @@ public abstract class BaseScreen extends ManagedScreen implements Disposable {
         audio.update(delta);
         uiStage.act(delta);
     }
-
 
     @Override
     public void resize(int width, int height) {
@@ -82,5 +84,45 @@ public abstract class BaseScreen extends ManagedScreen implements Disposable {
         skin = VisUI.getSkin();
         StretchViewport viewport = new StretchViewport(windowCamera.viewportWidth, windowCamera.viewportHeight);
         uiStage = new Stage(viewport, batch);
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(float amountX, float amountY) {
+        return false;
     }
 }

@@ -15,5 +15,6 @@ dependencies {
 	api "org.mini2Dx:universal-tween-engine:$tweenEngineVersion"
 	api "org.mini2Dx:universal-tween-engine:$tweenEngineVersion:sources"
 	api 'com.github.tommyettinger:formic:0.1.4'
+	api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
 	annotationProcessor "org.projectlombok:lombok:$lombokVersion"
 }

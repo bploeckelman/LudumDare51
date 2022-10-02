@@ -21,8 +21,8 @@ public class Player extends ObjectLocation {
 
     public enum Phase {RED, GREEN, BLUE};
 
-    public static float SIZE = 50f;
-    public static float SPEED = 100f;
+    public static float SIZE = 75f;
+    public static float SPEED = 300f;
     public static int FULL_GEM_COUNT = 100;
 
     private final GameScreen gameScreen;
@@ -82,7 +82,7 @@ public class Player extends ObjectLocation {
         this.greenGemCount = 0;
         this.blueGemCount = 0;
         this.invulnerabilityTimer = 0;
-        this.attackInterval = .5f;
+        this.attackInterval = .25f;
         this.attackTimer = attackInterval;
         this.wizardPhaseCount = 0;
     }

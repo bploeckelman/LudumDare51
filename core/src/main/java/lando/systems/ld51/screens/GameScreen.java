@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import lando.systems.ld51.Config;
 import lando.systems.ld51.assets.CreatureAnims;
+import lando.systems.ld51.audio.AudioManager;
 import lando.systems.ld51.gameobjects.*;
 import lando.systems.ld51.particles.Particles;
 import lando.systems.ld51.systems.AttackResolver;
@@ -77,6 +78,7 @@ public class GameScreen extends BaseScreen {
         worldCamera = new FollowOrthographicCamera();
         worldCamera.setToOrtho(false, Config.Screen.window_width, Config.Screen.window_height);
         worldCamera.update();
+        game.audio.playSound(AudioManager.Sounds.warriorMusic1);
     }
 
     @Override

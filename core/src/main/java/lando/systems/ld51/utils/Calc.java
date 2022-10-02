@@ -1,6 +1,7 @@
 package lando.systems.ld51.utils;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 
 public class Calc {
 
@@ -86,6 +87,16 @@ public class Calc {
         return    value < min ? min
                 : value > max ? max
                 : value;
+    }
+
+    public static float vectorToAngle(Vector2 vector) {
+        return (float) Math.atan2(-vector.x, vector.y);
+    }
+
+    public static Vector2 angleToVector(Vector2 outVector, float angle) {
+        outVector.x = -(float) Math.sin(angle);
+        outVector.y =  (float) Math.cos(angle);
+        return outVector;
     }
 
 }

@@ -1,5 +1,10 @@
 package lando.systems.ld51.screens;
 
+import com.badlogic.gdx.ai.steer.SteeringBehavior;
+import com.badlogic.gdx.ai.steer.behaviors.BlendedSteering;
+import com.badlogic.gdx.ai.steer.behaviors.CollisionAvoidance;
+import com.badlogic.gdx.ai.steer.behaviors.Seek;
+import com.badlogic.gdx.ai.steer.proximities.RadiusProximity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
@@ -12,7 +17,10 @@ import lando.systems.ld51.audio.AudioManager;
 import lando.systems.ld51.gameobjects.*;
 import lando.systems.ld51.particles.Particles;
 import lando.systems.ld51.systems.AttackResolver;
-import lando.systems.ld51.ui.*;
+import lando.systems.ld51.ui.BossHealthUI;
+import lando.systems.ld51.ui.CooldownTimer;
+import lando.systems.ld51.ui.DebugWindow;
+import lando.systems.ld51.ui.PlayerGemsUI;
 import lando.systems.ld51.utils.FollowOrthographicCamera;
 
 public class GameScreen extends BaseScreen {
@@ -118,6 +126,14 @@ public class GameScreen extends BaseScreen {
 
         Enemy enemy = enemySpawner.update(delta);
         if (enemy != null) {
+            // add a group steering behavior in addition to the default behaviors
+            SteeringBehavior<Vector2> steeringBehavior = enemy.getSteeringBehavior();
+            if (enemy.getSteeringBehavior() instanceof BlendedSteering) {
+                float radius = enemy.size * enemy.type.avoidanceScale;
+                BlendedSteering<Vector2> blendedSteering = (BlendedSteering<Vector2>) enemy.getSteeringBehavior();
+                RadiusProximity<Vector2> radiusProximity = new RadiusProximity<>(enemy, enemies, radius);
+                blendedSteering.add(new CollisionAvoidance<>(enemy, radiusProximity), 2f);
+            }
             enemies.add(enemy);
         }
         for (int i = enemies.size - 1; i >= 0; i--) {
@@ -168,37 +184,6 @@ public class GameScreen extends BaseScreen {
         uiStage.draw();
     }
 
-    // ------------------------------------------------------------------------
-    // Helper classes
-    // ------------------------------------------------------------------------
-
-    class EnemySpawner {
-        private float timer = 0f;
-        private float duration = 3f;
-        Enemy update(float delta) {
-            Enemy enemy = null;
-            timer += delta;
-            if (timer >= duration) {
-                timer -= duration;
-                enemy = spawn();
-            }
-            return enemy;
-        }
-        Enemy spawn() {
-            CreatureAnims.Type type = CreatureAnims.Type.random();
-            Vector2 playerPos = player.position;
-            float setback = 100f;
-            float angle = MathUtils.random(0, 360f);
-            float xDist = worldCamera.viewportWidth / 2f + setback;
-            float yDist = worldCamera.viewportHeight / 2f + setback;
-            float x = MathUtils.cosDeg(angle) * xDist;
-            float y = MathUtils.sinDeg(angle) * yDist;
-            Enemy enemy = new Enemy(GameScreen.this, type, x, y);
-            enemy.targetPos = playerPos;
-            return enemy;
-        }
-    }
-
     private void updateCircularTimer() {
         bossCooldownRemainingPercentage = (accum % 10f) / 10f;
         cooldownTimer.update(bossCooldownRemainingPercentage);
@@ -217,6 +202,40 @@ public class GameScreen extends BaseScreen {
                     cooldownTimer.setColor(Color.FOREST);
                     break;
             }
+        }
+    }
+
+    // ------------------------------------------------------------------------
+    // Helper classes
+    // ------------------------------------------------------------------------
+
+    class EnemySpawner {
+        private float timer = 0f;
+        private float duration = 3f;
+        Enemy update(float delta) {
+            Enemy enemy = null;
+            timer += delta;
+            if (timer >= duration) {
+                timer -= duration;
+                enemy = spawn();
+            }
+            return enemy;
+        }
+        Enemy spawn() {
+            CreatureAnims.Type type = CreatureAnims.Type.random();
+            float setback = 100f;
+            float angle = MathUtils.random(0, 360f);
+            float xDist = worldCamera.viewportWidth / 2f + setback;
+            float yDist = worldCamera.viewportHeight / 2f + setback;
+            float x = MathUtils.cosDeg(angle) * xDist;
+            float y = MathUtils.sinDeg(angle) * yDist;
+            Enemy enemy = new Enemy(GameScreen.this, type, x, y);
+            // TODO - set enemy speed values based on type
+            // TODO - add in special steering behaviors for certain types of enemies
+            BlendedSteering<Vector2> steering = new BlendedSteering<>(enemy);
+            steering.add(new Seek<>(enemy, player), 1f);
+            enemy.setSteeringBehavior(steering);
+            return enemy;
         }
     }
 

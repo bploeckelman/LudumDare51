@@ -5,6 +5,7 @@ import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.ai.GdxAI;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -106,6 +107,7 @@ public class Main extends ManagedGame<BaseScreen, ScreenTransition> {
 		// update things that must update every tick
 		{
 			Time.update();
+			GdxAI.getTimepiece().update(Time.delta);
 			tween.update(Time.delta);
 		}
 

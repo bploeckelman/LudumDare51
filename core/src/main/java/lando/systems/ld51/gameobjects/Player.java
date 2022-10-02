@@ -16,7 +16,7 @@ import lando.systems.ld51.audio.AudioManager;
 import lando.systems.ld51.screens.GameScreen;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
-public class Player {
+public class Player extends ObjectLocation {
 
     public enum Phase {RED, GREEN, BLUE};
 
@@ -38,7 +38,6 @@ public class Player {
     private float attackStateTime;
     private boolean isAttacking;
 
-    public Vector2 position;
     public Vector2 velocity;
     public Vector3 mousePos;
     public Vector2 facing;
@@ -93,6 +92,7 @@ public class Player {
         mousePos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
         gameScreen.worldCamera.unproject(mousePos);
         facing.set(mousePos.x, mousePos.y).sub(position).nor();
+        setOrientation(facing.angleRad()); // TODO - double check that gdx-ai steering expects orientation in radians
 
         invulnerabilityTimer -= dt;
 

@@ -87,6 +87,11 @@ public class Gem {
     }
 
     public void render(SpriteBatch batch) {
+        if (screen.player.canPickup(this)) {
+            batch.setColor(Color.WHITE);
+        } else {
+            batch.setColor(0.25f, 0.25f, 0.25f, 1f);
+        }
         batch.draw(keyframe, pos.x - SIZE / 2f, pos.y - SIZE / 2f, SIZE, SIZE);
         batch.setColor(Color.WHITE);
     }

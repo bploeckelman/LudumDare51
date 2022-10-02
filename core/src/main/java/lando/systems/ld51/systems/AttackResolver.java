@@ -32,12 +32,14 @@ public class AttackResolver {
 
         for (Enemy enemy : enemies) {
             if (Intersector.overlaps(player.attackRange, enemy.hurtCircle)) {
-                if (Intersector.overlapConvexPolygons(player.attackHitShape, enemy.hurtShape)) {
-                    float dx = enemy.getPosition().x - player.position.x;
-                    float dy = enemy.getPosition().y - player.position.y;
-                    attackDir.set(dx, dy).nor();
-                    // TODO - amount should scale based on player class and type of enemy
-                    enemy.hurt(1f, attackDir.x, attackDir.y);
+                if (player.attackHitShape != null && enemy.hurtShape != null) {
+                    if (Intersector.overlapConvexPolygons(player.attackHitShape, enemy.hurtShape)) {
+                        float dx = enemy.getPosition().x - player.position.x;
+                        float dy = enemy.getPosition().y - player.position.y;
+                        attackDir.set(dx, dy).nor();
+                        // TODO - amount should scale based on player class and type of enemy
+                        enemy.hurt(1f, attackDir.x, attackDir.y);
+                    }
                 }
             }
         }

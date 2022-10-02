@@ -40,11 +40,10 @@ public class Enemy implements Steerable<Vector2> {
     private SteeringBehavior<Vector2> steeringBehavior;
     private boolean independentFacing;
     private boolean tagged;
-    // TODO - these should all be set based on creature type
-    private float maxLinearSpeed = 60;
-    private float maxLinearAcceleration = 120;
-    private float maxAngularSpeed = 0;
-    private float maxAngularAcceleration = 10;
+    private float maxLinearSpeed;
+    private float maxLinearAcceleration;
+    private float maxAngularSpeed;
+    private float maxAngularAcceleration;
 
     public Circle hurtCircle;  // NOTE - this is for broad phase simple checks
     public Polygon hurtShape; // NOTE - this is for narrow phase convex poly/poly checks
@@ -59,6 +58,10 @@ public class Enemy implements Steerable<Vector2> {
         this.screen = screen;
         this.type = type;
         this.health = type.health;
+        this.maxLinearSpeed = type.maxLinearSpeed;
+        this.maxLinearAcceleration = type.maxLinearAccel;
+        this.maxAngularSpeed = type.maxAngularSpeed;
+        this.maxAngularAcceleration = type.maxAngularAccel;
         this.size = 50f;
 
         this.animation = screen.assets.creatureAnims.get(type);

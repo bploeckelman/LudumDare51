@@ -73,24 +73,39 @@ public class CreatureAnims {
     }
 
     public enum Type {
-          warrior      (5, 0,  5,  4f, Gem.Type.RED)
-        , cleric       (4, 0,  3,  1f, Gem.Type.BLUE)
-        , rogue        (7, 0,  2,  1f, Gem.Type.GREEN)
-        , king_red     (0, 10, 10, 10, Gem.Type.RED) // TODO - gem type all?
-        , wizard_blue  (0, 0,  2,  1f, Gem.Type.RED)
-        , rat_small    (0, 5,  1,  0.2f, Gem.Type.GREEN)
-        , rat_big      (1, 5,  3,  3f, Gem.Type.BLUE)
+          warrior      (5, 0,  5,  4f,    30f,  60f, 0f, 10f, Gem.Type.RED)
+        , cleric       (4, 0,  3,  1f,    80f, 100f, 0f, 30f, Gem.Type.BLUE)
+        , rogue        (7, 0,  2,  1f,   100f, 200f, 0f, 30f, Gem.Type.GREEN)
+        , king_red     (0, 10, 10, 10,    60f, 120f, 0f, 50f, Gem.Type.RED) // TODO - gem type all?
+        , wizard_blue  (0, 0,  2,  1f,    80f, 100f, 0f, 20f, Gem.Type.RED)
+        , rat_small    (0, 5,  1,  0.2f, 150f, 250f, 0f, 80f, Gem.Type.GREEN)
+        , rat_big      (1, 5,  3,  3f,    50f,  80f, 0f, 10f, Gem.Type.BLUE)
         ;
         public final int x;
         public final int y;
         public final float health;
         public final float avoidanceScale;
+        public final float maxLinearSpeed;
+        public final float maxLinearAccel;
+        public final float maxAngularSpeed;
+        public final float maxAngularAccel;
         public final Gem.Type gemColor;
-        Type(int x, int y, float health, float avoidanceScale, Gem.Type gemColor) {
+        Type(int x, int y,
+             float health,
+             float avoidanceScale,
+             float maxLinearSpeed,
+             float maxLinearAccel,
+             float maxAngularSpeed,
+             float maxAngularAccel,
+             Gem.Type gemColor) {
             this.x = x;
             this.y = y;
             this.health = health;
             this.avoidanceScale = avoidanceScale;
+            this.maxLinearSpeed = maxLinearSpeed;
+            this.maxLinearAccel = maxLinearAccel;
+            this.maxAngularSpeed = maxAngularSpeed;
+            this.maxAngularAccel = maxAngularAccel;
             this.gemColor = gemColor;
         }
         public static Type random() {

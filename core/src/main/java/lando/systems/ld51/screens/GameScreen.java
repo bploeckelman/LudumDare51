@@ -14,7 +14,6 @@ import lando.systems.ld51.systems.AttackResolver;
 import lando.systems.ld51.ui.BossHealthUI;
 import lando.systems.ld51.ui.DebugWindow;
 import lando.systems.ld51.ui.PlayerGemsUI;
-import lando.systems.ld51.ui.TimerUI;
 import lando.systems.ld51.utils.FollowOrthographicCamera;
 
 public class GameScreen extends BaseScreen {
@@ -31,12 +30,11 @@ public class GameScreen extends BaseScreen {
     private DebugWindow debugWindow;
     private BossHealthUI bossHealthUI;
     public PlayerGemsUI playerGemsUI;
-    public TimerUI timerUI;
 
     private final EnemySpawner enemySpawner;
 
-    private final float BOSS_HEALTH_UI_HEIGHT = 50f;
-    private final float PLAYER_GEMS_UI_HEIGHT = 50f;
+    private final float BOSS_HEALTH_UI_HEIGHT = 30f;
+    private final float PLAYER_GEMS_UI_HEIGHT = 30f;
 
     public GameScreen(){
         this.arena = new Arena(this);
@@ -62,7 +60,7 @@ public class GameScreen extends BaseScreen {
         bossHealthUI.setVisible(true);
         uiStage.addActor(bossHealthUI);
 
-        playerGemsUI = new PlayerGemsUI("", 0f, 0f, windowCamera.viewportWidth, PLAYER_GEMS_UI_HEIGHT, skin);
+        playerGemsUI = new PlayerGemsUI("", 0f, 0f, windowCamera.viewportWidth, PLAYER_GEMS_UI_HEIGHT, skin, assets);
         uiStage.addActor(playerGemsUI);
 
     }
@@ -127,6 +125,9 @@ public class GameScreen extends BaseScreen {
         ((FollowOrthographicCamera)worldCamera).update(player.position, delta);
 
         debugWindow.update();
+        playerGemsUI.redProgressBar.updateProgress(player.redGemCount, player.FULL_GEM_COUNT);
+        playerGemsUI.blueProgressBar.updateProgress(player.blueGemCount, player.FULL_GEM_COUNT);
+        playerGemsUI.greenProgressBar.updateProgress(player.greenGemCount, player.FULL_GEM_COUNT);
         uiStage.act();
     }
 

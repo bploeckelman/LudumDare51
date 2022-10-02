@@ -1,10 +1,7 @@
 package lando.systems.ld51.assets;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.ObjectMap;
 
 public class PixelUIs {
 
@@ -12,13 +9,13 @@ public class PixelUIs {
     private final TextureRegion[][] regions;
 
     public PixelUIs(Assets assets) {
-        String name = "icons/input-prompts";
+        String name = "pixel-ui-pack/pixel-ui";
         this.sheet = assets.atlas.findRegion(name);
         if (this.sheet == null) {
             throw new GdxRuntimeException("Unable to find '" + name + "' region in texture atlas. Does sprites/" + name + " exist?");
         }
 
-        this.regions = sheet.split(30, 33);
+        this.regions = sheet.split(18, 18);
     }
 
     public TextureRegion get(PixelUIs.Type type) {
@@ -41,6 +38,10 @@ public class PixelUIs {
         , narrow_red_pill_left(22, 16)
         , narrow_red_pill_center(23, 16)
         , narrow_red_pill_right(24, 16)
+        , narrow_blue_pill_left(25, 16)
+        , narrow_blue_pill_center(26, 16)
+        , narrow_blue_pill_right(27, 16)
+
         ;
 
         public final int x;

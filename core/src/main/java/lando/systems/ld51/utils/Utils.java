@@ -2,6 +2,10 @@ package lando.systems.ld51.utils;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 public class Utils {
@@ -62,6 +66,15 @@ public class Utils {
             }
         }
         return polygon.contains(circle.x, circle.y);
+    }
+
+    public static TextureRegion getColoredTextureRegion(Color color) {
+        Pixmap pixMap = new Pixmap(100, 20, Pixmap.Format.RGBA8888);
+        pixMap.setColor(color);
+        pixMap.fill();
+        TextureRegion textureRegion = new TextureRegion(new Texture(pixMap));
+        pixMap.dispose();
+        return textureRegion;
     }
 
 }

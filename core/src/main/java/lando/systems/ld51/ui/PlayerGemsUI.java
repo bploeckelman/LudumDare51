@@ -30,6 +30,7 @@ public class PlayerGemsUI extends Group {
         redGemUI.setSize(width / 3f, height);
         redGemUI.setStyle(gemUIStyle);
         redGemUI.setColor(1f, 0f, 0f, INACTIVE_ALPHA_VALUE);
+        redGemUI.setZIndex(1);
 
         redProgressBar = new GemProgressBar(1f, false, redGemUI.getX() + 10f, redGemUI.getY() + 2.5f, redGemUI.getWidth() - 20f, redGemUI.getHeight() - 5f, skin, assets.itemTextures.get(ItemTextures.Type.gem_red), assets.redProgressBar);
 //        redGemUI.addActor(redProgressBar);
@@ -39,6 +40,7 @@ public class PlayerGemsUI extends Group {
         greenGemUI.setSize(width / 3f, height);
         greenGemUI.setStyle(gemUIStyle);
         greenGemUI.setColor(Color.FOREST);
+        greenGemUI.setZIndex(1);
         greenProgressBar = new GemProgressBar(1f, false, greenGemUI.getX() + 10f, greenGemUI.getY() + 2.5f, greenGemUI.getWidth() - 20f, greenGemUI.getHeight() - 5f, skin, assets.itemTextures.get(ItemTextures.Type.gem_green), assets.greenProgressBar);
 
         blueGemUI = new VisWindow("");
@@ -46,6 +48,7 @@ public class PlayerGemsUI extends Group {
         blueGemUI.setSize(width / 3f, height);
         blueGemUI.setStyle(gemUIStyle);
         blueGemUI.setColor(0f, 0f, 1f, INACTIVE_ALPHA_VALUE);
+        blueGemUI.setZIndex(1);
         blueProgressBar = new GemProgressBar(1f, false, blueGemUI.getX() + 10f, blueGemUI.getY() + 2.5f, blueGemUI.getWidth() - 20f, blueGemUI.getHeight() - 5f, skin, assets.itemTextures.get(ItemTextures.Type.gem_blue), assets.blueProgressBar);
 
         addActor(redGemUI);

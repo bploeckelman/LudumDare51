@@ -30,6 +30,7 @@ public class ItemTextures {
           gem_red(6, 1)
         , gem_green(8, 1)
         , gem_blue(7, 1)
+        , clock(14, 5)
         ;
         public final int x;
         public final int y;

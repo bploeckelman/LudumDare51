@@ -20,7 +20,7 @@ import lando.systems.ld51.gameobjects.*;
 import lando.systems.ld51.particles.Particles;
 import lando.systems.ld51.systems.AttackResolver;
 import lando.systems.ld51.ui.BossHealthUI;
-import lando.systems.ld51.ui.CooldownTimer;
+import lando.systems.ld51.ui.CooldownTimerUI;
 import lando.systems.ld51.ui.DebugWindow;
 import lando.systems.ld51.ui.PlayerGemsUI;
 import lando.systems.ld51.utils.FollowOrthographicCamera;
@@ -40,13 +40,13 @@ public class GameScreen extends BaseScreen {
     private DebugWindow debugWindow;
     private BossHealthUI bossHealthUI;
     public PlayerGemsUI playerGemsUI;
+    public CooldownTimerUI cooldownTimerUI;
 
     private final EnemySpawner enemySpawner;
 
     private final float BOSS_HEALTH_UI_HEIGHT = 30f;
     private final float PLAYER_GEMS_UI_HEIGHT = 30f;
     public float bossCooldownRemainingPercentage = 1f;
-    public CooldownTimer cooldownTimer;
 
     public GameScreen(){
         this.arena = new Arena(this);
@@ -73,13 +73,12 @@ public class GameScreen extends BaseScreen {
         bossHealthUI.setVisible(true);
         uiStage.addActor(bossHealthUI);
 
+        cooldownTimerUI = new CooldownTimerUI(0f, PLAYER_GEMS_UI_HEIGHT, windowCamera.viewportWidth, PLAYER_GEMS_UI_HEIGHT, skin, assets);
+        uiStage.addActor(cooldownTimerUI);
+
         playerGemsUI = new PlayerGemsUI("", 0f, 0f, windowCamera.viewportWidth, PLAYER_GEMS_UI_HEIGHT, skin, assets);
         uiStage.addActor(playerGemsUI);
 
-        cooldownTimer = new CooldownTimer(false);
-        cooldownTimer.setSize(50f, 50f);
-        cooldownTimer.setPosition(windowCamera.viewportWidth - 50f, windowCamera.viewportHeight - 50f);
-        uiStage.addActor(cooldownTimer);
     }
 
     @Override
@@ -166,7 +165,7 @@ public class GameScreen extends BaseScreen {
         playerGemsUI.redProgressBar.updateProgress(player.redGemCount, player.FULL_GEM_COUNT);
         playerGemsUI.blueProgressBar.updateProgress(player.blueGemCount, player.FULL_GEM_COUNT);
         playerGemsUI.greenProgressBar.updateProgress(player.greenGemCount, player.FULL_GEM_COUNT);
-        updateCircularTimer();
+        cooldownTimerUI.updateTimerValue(player, accum);
         uiStage.act();
     }
 
@@ -200,26 +199,9 @@ public class GameScreen extends BaseScreen {
         uiStage.draw();
     }
 
-    private void updateCircularTimer() {
-        bossCooldownRemainingPercentage = (accum % 10f) / 10f;
-        cooldownTimer.update(bossCooldownRemainingPercentage);
-        if (player.isWizard) {
-            cooldownTimer.setColor(Color.WHITE);
-        }
-        else {
-            switch (player.getCurrentPhase()) {
-                case RED:
-                    cooldownTimer.setColor(Color.RED);
-                    break;
-                case BLUE:
-                    cooldownTimer.setColor(Color.BLUE);
-                    break;
-                case GREEN:
-                    cooldownTimer.setColor(Color.FOREST);
-                    break;
-            }
-        }
-    }
+//    private void updateTimer() {
+
+//    }
 
     // ------------------------------------------------------------------------
     // Helper classes

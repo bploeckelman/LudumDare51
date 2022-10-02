@@ -132,6 +132,7 @@ public class GameScreen extends BaseScreen {
             Gem gem = gems.get(i);
             gem.update(delta);
             if (gem.collected){
+                gem.free();
                 gems.removeIndex(i);
             }
         }

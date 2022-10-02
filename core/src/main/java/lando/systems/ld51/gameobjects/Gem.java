@@ -1,48 +1,58 @@
 package lando.systems.ld51.gameobjects;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import lando.systems.ld51.assets.ItemTextures;
+import com.badlogic.gdx.utils.Array;
 import lando.systems.ld51.screens.GameScreen;
+import lando.systems.ld51.utils.VectorPool;
 
 public class Gem {
 
+    public static float SIZE = 20;
     public static float AttractRange = 150;
     public static float CollectDistance = 20;
 
     public enum Type {
-          RED(ItemTextures.Type.gem_red)
-        , GREEN(ItemTextures.Type.gem_green)
-        , BLUE(ItemTextures.Type.gem_blue)
+          RED   ("gems/gem-red/gem-red-idle/gem-red-idle")
+        , GREEN ("gems/gem-green/gem-green-idle/gem-green-idle")
+        , BLUE  ("gems/gem-blue/gem-blue-idle/gem-blue-idle")
         ;
-        final ItemTextures.Type textureType;
-        Type(ItemTextures.Type textureType) {
-            this.textureType = textureType;
+        final String frameRegionsName;
+        Type(String frameRegionsName) {
+            this.frameRegionsName = frameRegionsName;
         }
-    };
+    }
 
     public final Type type;
 
-    public Vector2 pos;
-    public GameScreen gameScreen;
+    private final GameScreen screen;
+
+    private final Animation<TextureAtlas.AtlasRegion> animation;
+    private TextureRegion keyframe;
+    private float stateTime;
+
     public boolean collected;
+    public Vector2 pos;
     public Vector2 velocity;
     public Vector2 initialVelocity;
-    public TextureRegion texture;
     public float spawnTimer;
 
     public Gem(GameScreen screen, Vector2 position, Type type) {
-        this.gameScreen = screen;
+        this.screen = screen;
         this.type = type;
         this.collected = false;
-        this.pos = new Vector2(position);
-        this.velocity = new Vector2();
-        this.initialVelocity = new Vector2(MathUtils.random(-50f, 50f), MathUtils.random(30f, 120f));
-        this.texture = screen.assets.itemTextures.get(type.textureType);
+        this.pos = VectorPool.vec2.obtain().set(position);
+        this.velocity = VectorPool.vec2.obtain().set(0, 0);
+        this.initialVelocity = VectorPool.vec2.obtain().set(MathUtils.random(-50f, 50f), MathUtils.random(30f, 120f));
+        Array<TextureAtlas.AtlasRegion> frames = screen.assets.atlas.findRegions(type.frameRegionsName);
+        this.animation = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
+        this.keyframe = animation.getKeyFrame(0f);
+        this.stateTime = 0f;
         this.spawnTimer = MathUtils.random(2f, 4f);
     }
 
@@ -58,27 +68,36 @@ public class Gem {
             this.pos.add(initialVelocity.x * dt, initialVelocity.y * dt);
         }
 
-
         if (spawnTimer <= 0) {
             velocity.set(0, 0);
             float attract2 = AttractRange * AttractRange;
-            float dist2ToPlayer = this.pos.dst2(gameScreen.player.position);
-            if (gameScreen.player.canPickup(this)) {
+            float dist2ToPlayer = this.pos.dst2(screen.player.position);
+            if (screen.player.canPickup(this)) {
                 if (dist2ToPlayer < CollectDistance * CollectDistance) {
                     // Pick up
-                    gameScreen.player.pickupGem(this);
+                    screen.player.pickupGem(this);
                     collected = true;
                 }
                 if (dist2ToPlayer < attract2) {
-                    velocity.set(gameScreen.player.position).sub(pos).nor().scl((attract2 - dist2ToPlayer) / attract2 * 300f);
+                    velocity.set(screen.player.position).sub(pos).nor().scl((attract2 - dist2ToPlayer) / attract2 * 300f);
                 }
             }
             this.pos.add(velocity.x * dt, velocity.y * dt);
         }
+
+        stateTime += dt;
+        keyframe = animation.getKeyFrame(stateTime);
     }
 
     public void render(SpriteBatch batch) {
-        batch.draw(texture, pos.x - 10, pos.y - 10, 20, 20);
+        batch.draw(keyframe, pos.x - SIZE / 2f, pos.y - SIZE / 2f, SIZE, SIZE);
         batch.setColor(Color.WHITE);
     }
+
+    public void free() {
+        VectorPool.vec2.free(pos);
+        VectorPool.vec2.free(velocity);
+        VectorPool.vec2.free(initialVelocity);
+    }
+
 }

@@ -26,6 +26,7 @@ public class Lwjgl3Launcher {
 		//// You may also need to configure GPU drivers to fully disable Vsync; this can cause screen tearing.
 		configuration.setWindowedMode(Config.Screen.window_width, Config.Screen.window_height);
 		configuration.setWindowIcon("libgdx128.png", "libgdx64.png", "libgdx32.png", "libgdx16.png");
+		configuration.setResizable(false);
 		return configuration;
 	}
 }

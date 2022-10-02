@@ -28,7 +28,7 @@ public class Player extends ObjectLocation {
     public static float SPEED_NORMAL = 300f;
     public static float SPEED_WIZARD = 450f;
     public static float SPEED = SPEED_NORMAL;
-    public static int FULL_GEM_COUNT = 10;
+    public static int FULL_GEM_COUNT = 100;
 
     private final GameScreen screen;
 
@@ -264,6 +264,7 @@ public class Player extends ObjectLocation {
 
         // TODO: anything that needs to happen on the phase change
         // Particle effects etc
+        screen.screenShaker.addDamage(.5f);
         currentPhase = nextPhase;
         switch (currentPhase){
             case RED:

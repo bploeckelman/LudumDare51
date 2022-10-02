@@ -24,6 +24,7 @@ import lando.systems.ld51.ui.CooldownTimerUI;
 import lando.systems.ld51.ui.DebugWindow;
 import lando.systems.ld51.ui.PlayerGemsUI;
 import lando.systems.ld51.utils.FollowOrthographicCamera;
+import lando.systems.ld51.utils.screenshake.ScreenShakeCameraController;
 
 public class GameScreen extends BaseScreen {
 
@@ -41,6 +42,8 @@ public class GameScreen extends BaseScreen {
     private BossHealthUI bossHealthUI;
     public PlayerGemsUI playerGemsUI;
     public CooldownTimerUI cooldownTimerUI;
+
+    public ScreenShakeCameraController screenShaker;
 
     private final EnemySpawner enemySpawner;
 
@@ -87,11 +90,13 @@ public class GameScreen extends BaseScreen {
         worldCamera.setToOrtho(false, Config.Screen.window_width, Config.Screen.window_height);
         worldCamera.update();
         game.audio.playSound(AudioManager.Sounds.warriorMusic1);
+        this.screenShaker = new ScreenShakeCameraController(worldCamera);
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
+        screenShaker.update(delta);
         accum += delta;
 
         player.setPhase((int)(accum / 10f));
@@ -175,8 +180,7 @@ public class GameScreen extends BaseScreen {
 
         ScreenUtils.clear(Color.BLACK);
 
-        OrthographicCamera camera = worldCamera;
-        batch.setProjectionMatrix(camera.combined);
+        batch.setProjectionMatrix(screenShaker.getCombinedMatrix());
         batch.begin();
         {
             arena.render(batch);

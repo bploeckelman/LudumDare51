@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import lando.systems.ld51.audio.AudioManager;
 import lando.systems.ld51.screens.GameScreen;
 import lando.systems.ld51.utils.VectorPool;
 
@@ -46,6 +47,8 @@ public class Gem {
         this.keyframe = animation.getKeyFrame(0f);
         this.stateTime = MathUtils.random(0f, 1f); // randomize starting state time for visual variety
         this.spawnTimer = MathUtils.random(1f, 2f);
+
+        screen.game.audio.playSound(AudioManager.Sounds.gemDrop);
     }
 
     public void update(float dt) {

@@ -19,6 +19,8 @@ import lando.systems.ld51.utils.Calc;
 import lombok.RequiredArgsConstructor;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
+import static lando.systems.ld51.Main.game;
+
 public class Player extends ObjectLocation {
 
     public enum Phase {
@@ -307,10 +309,12 @@ public class Player extends ObjectLocation {
     }
 
     public void pickupGem(Gem gem) {
+        screen.game.audio.playSound(AudioManager.Sounds.collect, 0.125F);
         switch (gem.type){
             case RED:
                 redGemCount++;
                 screen.playerGemsUI.redProgressBar.flashIt();
+
                 break;
             case GREEN:
                 greenGemCount++;
@@ -349,7 +353,7 @@ public class Player extends ObjectLocation {
                 screen.audio.playSound(AudioManager.Sounds.valueOf("rogueMusic" + musicPhase), 1.0f);
                 break;
             case BLUE:
-                screen.audio.playSound(AudioManager.Sounds.valueOf("clericMusic"+musicPhase), 1.0f);
+                screen.audio.playSound(AudioManager.Sounds.valueOf("clericMusic"+musicPhase), 0.6f);
                 if (musicPhase == 3) {
                     musicPhase = 1;
                 } else {
@@ -395,6 +399,7 @@ public class Player extends ObjectLocation {
             Projectile projectile = new Projectile(screen.assets, EffectAnims.Type.meteor, x, y, angle, speed);
             projectile.size = size;
             screen.projectiles.add(projectile);
+            game.audio.playSound(AudioManager.Sounds.fireball, 0.25F);
         } else {
             float range = attackRange.radius;
             float[] vertices = new float[]{
@@ -418,7 +423,9 @@ public class Player extends ObjectLocation {
             };
             attackHitShape = new Polygon(vertices);
             attackHitShape.setOrigin(position.x, position.y);
+            game.audio.playSound(AudioManager.Sounds.swipe, 0.25F);
         }
+
     }
 
     public Phase getCurrentPhase() {

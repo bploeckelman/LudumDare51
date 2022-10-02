@@ -163,7 +163,15 @@ public class Enemy implements Steerable<Vector2> {
         if (isHurt) return;
         isHurt = true;
 
-        game.audio.playSound(AudioManager.Sounds.impact, 0.125F);
+
+        if(screen.player.isWizard) {
+            game.audio.playSound(AudioManager.Sounds.scorch, 0.25F);
+
+        }
+        else {
+            game.audio.playSound(AudioManager.Sounds.impact, 0.125F);
+        }
+
         health -= amount;
 
         // bounce back
@@ -184,6 +192,9 @@ public class Enemy implements Steerable<Vector2> {
         for (int i = 0; i < gemsToSpawn; i++) {
             screen.gems.add(new Gem(screen, position, type.gemColor));
         }
+
+        game.audio.playSound(AudioManager.Sounds.die, 0.5F);
+
         VectorPool.vec2.free(position);
         VectorPool.vec2.free(prevPosition);
         VectorPool.vec2.free(linearVelocity);

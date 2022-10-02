@@ -98,6 +98,24 @@ public class Assets implements Disposable {
     public Sound impact4;
     public Sound impactLight;
     public Sound impactWet;
+
+
+    public Sound die1;
+    public Sound gemDrop1;
+    public Sound gemDrop2;
+    public Sound collect1;
+    public Sound collect2;
+    public Sound collect3;
+    public Sound fireball1;
+    public Sound fireball2;
+    public Sound fireball3;
+    public Sound fireball4;
+    public Sound fireball5;
+    public Sound scorch1;
+    public Sound scorch2;
+    public Sound scorch3;
+    public Sound scorch4;
+//    public Sound collect1;
 ////    public Sound ;
 //    public Sound ;
 
@@ -183,8 +201,21 @@ public class Assets implements Disposable {
             mgr.load("audio/sound/swipe3.ogg", Sound.class);
             mgr.load("audio/sound/swipe4.ogg", Sound.class);
             mgr.load("audio/sound/swipe5.ogg", Sound.class);
-//            mgr.load("audio/sound/.ogg", Sound.class);
-//            mgr.load("audio/sound/.ogg", Sound.class);
+            mgr.load("audio/sound/die1.ogg", Sound.class);
+            mgr.load("audio/sound/gemDrop1.ogg", Sound.class);
+            mgr.load("audio/sound/gemDrop2.ogg", Sound.class);
+            mgr.load("audio/sound/collect1.ogg", Sound.class);
+            mgr.load("audio/sound/collect2.ogg", Sound.class);
+            mgr.load("audio/sound/collect3.ogg", Sound.class);
+            mgr.load("audio/sound/fireball1.ogg", Sound.class);
+            mgr.load("audio/sound/fireball2.ogg", Sound.class);
+            mgr.load("audio/sound/fireball3.ogg", Sound.class);
+            mgr.load("audio/sound/fireball4.ogg", Sound.class);
+            mgr.load("audio/sound/fireball5.ogg", Sound.class);
+            mgr.load("audio/sound/scorch1.ogg", Sound.class);
+            mgr.load("audio/sound/scorch2.ogg", Sound.class);
+            mgr.load("audio/sound/scorch3.ogg", Sound.class);
+            mgr.load("audio/sound/scorch4.ogg", Sound.class);
 //            mgr.load("audio/sound/.ogg", Sound.class);
 //            mgr.load("audio/sound/.ogg", Sound.class);
 
@@ -341,8 +372,21 @@ public class Assets implements Disposable {
          impact4 = mgr.get("audio/sound/impact4.ogg", Sound.class);
          impactWet = mgr.get("audio/sound/impactWet.ogg", Sound.class);
          impactLight = mgr.get("audio/sound/impactLight1.ogg", Sound.class);
-//         = mgr.get("audio/sound/.ogg", Sound.class);
-//         = mgr.get("audio/sound/.ogg", Sound.class);
+         collect1 = mgr.get("audio/sound/collect1.ogg", Sound.class);
+         collect2 = mgr.get("audio/sound/collect2.ogg", Sound.class);
+         collect3 = mgr.get("audio/sound/collect3.ogg", Sound.class);
+         die1 = mgr.get("audio/sound/die1.ogg", Sound.class);
+         gemDrop1 = mgr.get("audio/sound/gemDrop1.ogg", Sound.class);
+         gemDrop2 = mgr.get("audio/sound/gemDrop2.ogg", Sound.class);
+         fireball1 = mgr.get("audio/sound/fireball1.ogg", Sound.class);
+         fireball2 = mgr.get("audio/sound/fireball2.ogg", Sound.class);
+         fireball3 = mgr.get("audio/sound/fireball3.ogg", Sound.class);
+         fireball4 = mgr.get("audio/sound/fireball4.ogg", Sound.class);
+         fireball5 = mgr.get("audio/sound/fireball5.ogg", Sound.class);
+         scorch1 = mgr.get("audio/sound/scorch1.ogg", Sound.class);
+         scorch2 = mgr.get("audio/sound/scorch2.ogg", Sound.class);
+         scorch3 = mgr.get("audio/sound/scorch3.ogg", Sound.class);
+         scorch4 = mgr.get("audio/sound/scorch4.ogg", Sound.class);
 //         = mgr.get("audio/sound/.ogg", Sound.class);
 //         = mgr.get("audio/sound/.ogg", Sound.class);
 

@@ -37,6 +37,12 @@ public class AudioManager implements Disposable {
         , wizardMusic1
         , swipe
         , impact
+        , die
+        , collect
+        , gemDrop
+        , fireball
+        , scorch
+//        ,
 //        , impactLight
 //        , impactWet
 
@@ -91,6 +97,27 @@ public class AudioManager implements Disposable {
         putSound(Sounds.impact, assets.impact4);
         putSound(Sounds.impact, assets.impactLight);
         putSound(Sounds.impact, assets.impactWet);
+
+
+        putSound(Sounds.collect, assets.collect1);
+        putSound(Sounds.collect, assets.collect2);
+        putSound(Sounds.collect, assets.collect3);
+
+        putSound(Sounds.die, assets.die1);
+
+        putSound(Sounds.fireball, assets.fireball1);
+        putSound(Sounds.fireball, assets.fireball2);
+        putSound(Sounds.fireball, assets.fireball3);
+        putSound(Sounds.fireball, assets.fireball4);
+        putSound(Sounds.fireball, assets.fireball5);
+
+        putSound(Sounds.scorch, assets.scorch1);
+        putSound(Sounds.scorch, assets.scorch2);
+        putSound(Sounds.scorch, assets.scorch3);
+        putSound(Sounds.scorch, assets.scorch4);
+//        putSound(Sounds.fireball, assets.fireball5);
+
+
 
 
 

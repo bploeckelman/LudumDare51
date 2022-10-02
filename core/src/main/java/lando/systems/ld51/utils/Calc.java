@@ -89,6 +89,15 @@ public class Calc {
                 : value;
     }
 
+    public static boolean between(float value, float min, float max) {
+        if (min > max) {
+            float temp = max;
+            max = min;
+            min = temp;
+        }
+        return (value >= min && value <= max);
+    }
+
     public static float vectorToAngle(Vector2 vector) {
         return vectorToAngle(vector.x, vector.y);
     }

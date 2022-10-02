@@ -193,6 +193,21 @@ public class Player extends ObjectLocation {
                 isAttacking = false;
             }
         }
+
+        // use facing to decide whether to flip keyframe
+        float angle = facing.angleDeg();
+        if (Calc.between(angle, 0, 90) || Calc.between(angle, 270, 360)) {
+            // facing right
+            if (keyframe.isFlipX()) {
+                keyframe.flip(true, false);
+            }
+        } else if (Calc.between(angle, 90, 270)) {
+            // facing left
+            if (!keyframe.isFlipX()) {
+                keyframe.flip(true, false);
+            }
+        }
+
         screen.playerGemsUI.updatePlayerGemsUIColor(this);
     }
 

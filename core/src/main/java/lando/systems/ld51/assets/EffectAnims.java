@@ -55,6 +55,14 @@ public class EffectAnims {
         , flame_purple(6,3,  7,3)
         , x_red(2,1,  3,1)
         , x_white(4,1,  5,1)
+        , meteor(0,4)
+        , fireball_red(0,5)
+        , double_fireball_red(0,6)
+        , fireball_blue(0,7)
+        , double_fireball_blue(0,8)
+        , orb_red(0,0,  1,0)
+        , orb_blue(0,1, 1,1)
+        , swirl(3,3)
         ;
         final Array<Point> coords;
         Type(int... coords) {

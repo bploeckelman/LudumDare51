@@ -76,6 +76,7 @@ public class CreatureAnims {
           warrior      (5, 0,  5,  4f, Gem.Type.RED)
         , cleric       (4, 0,  3,  1f, Gem.Type.BLUE)
         , rogue        (7, 0,  2,  1f, Gem.Type.GREEN)
+        , king_red     (0, 10, 10, 10, Gem.Type.RED) // TODO - gem type all?
         , wizard_blue  (0, 0,  2,  1f, Gem.Type.RED)
         , rat_small    (0, 5,  1,  0.2f, Gem.Type.GREEN)
         , rat_big      (1, 5,  3,  3f, Gem.Type.BLUE)

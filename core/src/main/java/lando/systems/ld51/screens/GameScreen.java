@@ -7,11 +7,13 @@ import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.ai.steer.proximities.RadiusProximity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import lando.systems.ld51.Config;
+import lando.systems.ld51.Main;
 import lando.systems.ld51.assets.CreatureAnims;
 import lando.systems.ld51.audio.AudioManager;
 import lando.systems.ld51.gameobjects.*;
@@ -33,6 +35,7 @@ public class GameScreen extends BaseScreen {
     public float accum;
 
     public final Particles particles;
+    public final Array<Projectile> projectiles;
 
     private DebugWindow debugWindow;
     private BossHealthUI bossHealthUI;
@@ -52,7 +55,8 @@ public class GameScreen extends BaseScreen {
         this.gems = new Array<>();
         this.enemies = new Array<>();
         this.accum = 0;
-        this.particles = new Particles(assets);
+        this.particles = Main.game.particles;
+        this.projectiles = new Array<>();
         this.enemySpawner = new EnemySpawner();
     }
 
@@ -69,7 +73,6 @@ public class GameScreen extends BaseScreen {
         bossHealthUI.setVisible(true);
         uiStage.addActor(bossHealthUI);
 
-
         playerGemsUI = new PlayerGemsUI("", 0f, 0f, windowCamera.viewportWidth, PLAYER_GEMS_UI_HEIGHT, skin, assets);
         uiStage.addActor(playerGemsUI);
 
@@ -77,8 +80,6 @@ public class GameScreen extends BaseScreen {
         cooldownTimer.setSize(50f, 50f);
         cooldownTimer.setPosition(windowCamera.viewportWidth - 50f, windowCamera.viewportHeight - 50f);
         uiStage.addActor(cooldownTimer);
-
-
     }
 
     @Override
@@ -96,7 +97,18 @@ public class GameScreen extends BaseScreen {
 
         player.setPhase((int)(accum / 10f));
         arena.update(delta);
-        particles.update(delta);
+
+        for (int i = projectiles.size - 1; i >= 0; i--) {
+            Projectile projectile = projectiles.get(i);
+            projectile.update(delta);
+
+            // remove projectiles that leave the arena
+            Circle bounds = projectile.bounds;
+            if (bounds.x + bounds.radius < arena.bounds.x || bounds.x - bounds.radius > arena.bounds.x + arena.bounds.width
+             || bounds.y + bounds.radius < arena.bounds.y || bounds.y - bounds.radius > arena.bounds.y + arena.bounds.height) {
+                projectiles.removeIndex(i);
+            }
+        }
 
 //        if (MathUtils.random(1f) > .97f){ // THIS IS PLACEHOLDER
 //            int randType = MathUtils.random(2);
@@ -114,7 +126,7 @@ public class GameScreen extends BaseScreen {
 
         player.update(delta);
         boss.update(delta);
-        AttackResolver.resolve(player, enemies);
+        AttackResolver.resolve(player, enemies, projectiles);
 
         for (int i = gems.size -1; i >= 0; i--) {
             Gem gem = gems.get(i);
@@ -174,9 +186,12 @@ public class GameScreen extends BaseScreen {
             }
             boss.render(batch);
             particles.draw(batch, Particles.Layer.middle);
-            player.render(batch);
             for (Gem gem : gems){
                 gem.render(batch);
+            }
+            player.render(batch);
+            for (Projectile projectile : projectiles) {
+                projectile.render(batch);
             }
             particles.draw(batch, Particles.Layer.foreground);
         }

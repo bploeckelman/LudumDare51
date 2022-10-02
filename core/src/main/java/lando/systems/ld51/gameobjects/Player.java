@@ -15,14 +15,19 @@ import lando.systems.ld51.assets.CreatureAnims;
 import lando.systems.ld51.assets.EffectAnims;
 import lando.systems.ld51.audio.AudioManager;
 import lando.systems.ld51.screens.GameScreen;
+import lando.systems.ld51.utils.Calc;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class Player extends ObjectLocation {
 
     public enum Phase {RED, GREEN, BLUE};
 
-    public static float SIZE = 75f;
-    public static float SPEED = 300f;
+    public static float SIZE_NORMAL = 75f;
+    public static float SIZE_WIZARD = 125f;
+    public static float SIZE = SIZE_NORMAL;
+    public static float SPEED_NORMAL = 300f;
+    public static float SPEED_WIZARD = 450f;
+    public static float SPEED = SPEED_NORMAL;
     public static int FULL_GEM_COUNT = 100;
 
     private final GameScreen gameScreen;
@@ -54,6 +59,8 @@ public class Player extends ObjectLocation {
     public boolean isWizard;
     public int wizardPhaseCount;
     public float attackInterval;
+    public float attackIntervalNormal = 0.25f;
+    public float attackIntervalWizard = 0.1f;
     public float attackTimer;
 
 
@@ -82,7 +89,7 @@ public class Player extends ObjectLocation {
         this.greenGemCount = 0;
         this.blueGemCount = 0;
         this.invulnerabilityTimer = 0;
-        this.attackInterval = .25f;
+        this.attackInterval = attackIntervalNormal;
         this.attackTimer = attackInterval;
         this.wizardPhaseCount = 0;
     }
@@ -91,10 +98,11 @@ public class Player extends ObjectLocation {
         mousePos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
         gameScreen.worldCamera.unproject(mousePos);
         facing.set(mousePos.x, mousePos.y).sub(position).nor();
-        setOrientation(facing.angleRad()); // TODO - double check that gdx-ai steering expects orientation in radians
+        setOrientation(facing.angleRad());
 
         invulnerabilityTimer -= dt;
 
+        attackInterval = (isWizard) ? attackIntervalWizard : attackIntervalNormal;
         attackTimer -= dt;
         if (attackTimer <= 0 && (Gdx.input.justTouched() || Gdx.input.isKeyJustPressed(Input.Keys.SPACE))) {
             attackTimer = attackInterval;
@@ -150,12 +158,14 @@ public class Player extends ObjectLocation {
         attackRange.setPosition(position);
         if (isAttacking) {
             // update hit shape
-            attackHitShape.translate(position.x - prevPosX, position.y - prevPosY);
-            attackHitShape.setRotation(facing.angleDeg());
+            if (attackHitShape != null) {
+                attackHitShape.translate(position.x - prevPosX, position.y - prevPosY);
+                attackHitShape.setRotation(facing.angleDeg());
+            }
 
             // update attack animation
-            attackKeyframe = attackAnimation.getKeyFrame(attackStateTime);
             attackStateTime += dt;
+            attackKeyframe = attackAnimation.getKeyFrame(attackStateTime);
 
             // complete attack if appropriate
             if (attackStateTime >= attackAnimation.getAnimationDuration()) {
@@ -170,7 +180,8 @@ public class Player extends ObjectLocation {
     public void render(SpriteBatch batch) {
         batch.draw(keyframe, position.x - (SIZE/2f), position.y - (SIZE/2f), SIZE, SIZE);
 
-        if (isAttacking) {
+        // draw melee attack
+        if (isAttacking && !isWizard) {
             float attackSize = SIZE * 2.5f;
             batch.draw(attackKeyframe,
                     position.x - (attackSize / 2f),
@@ -187,7 +198,7 @@ public class Player extends ObjectLocation {
             ShapeDrawer shapes = gameScreen.assets.shapes;
             shapes.setColor(Color.MAGENTA);
             shapes.circle(attackRange.x, attackRange.y, attackRange.radius, 3f);
-            if (isAttacking) {
+            if (isAttacking && attackHitShape != null) {
                 shapes.setColor(Color.CORAL);
                 shapes.polygon(attackHitShape);
             }
@@ -268,6 +279,8 @@ public class Player extends ObjectLocation {
                 gameScreen.audio.playSound(AudioManager.Sounds.clericMusic1, 1.0f);
                 break;
         }
+
+        // handle wizard transition
         if (!isWizard) {
             gameScreen.particles.lightning(gameScreen.boss.position, position);
             if (redGemCount >= FULL_GEM_COUNT && greenGemCount >= FULL_GEM_COUNT && blueGemCount >= FULL_GEM_COUNT){
@@ -281,6 +294,13 @@ public class Player extends ObjectLocation {
                 isWizard = false;
             }
         }
+
+        // make sure our wizardly attributes are current
+        SIZE = (isWizard) ? SIZE_WIZARD : SIZE_NORMAL;
+        SPEED = (isWizard) ? SPEED_WIZARD : SPEED_NORMAL;
+        if (isWizard) {
+            animation = gameScreen.assets.creatureAnims.get(CreatureAnims.Type.king_red);
+        }
     }
 
     public boolean isAttacking() {
@@ -290,32 +310,44 @@ public class Player extends ObjectLocation {
     public void attack() {
         isAttacking = true;
         attackStateTime = 0f;
-        float range = attackRange.radius;
-        float[] vertices = new float[] {
-                position.x,
-                position.y,
 
-                position.x,
-                position.y - range / 3f,
+        if (isWizard) {
+            float size = 64f;
+            float x = position.x + facing.x * size * (1f / 2f);
+            float y = position.y + facing.y * size * (1f / 2f);
+            float angle = facing.angleRad();
+            float speed = Calc.max(SPEED + 60f, 250f);
+            Projectile projectile = new Projectile(gameScreen.assets, EffectAnims.Type.meteor, x, y, angle, speed);
+            projectile.size = size;
+            gameScreen.projectiles.add(projectile);
+        } else {
+            float range = attackRange.radius;
+            float[] vertices = new float[]{
+                    position.x,
+                    position.y,
 
-                position.x + range * (2f / 3f),
-                position.y - range * (2f / 3f),
+                    position.x,
+                    position.y - range / 3f,
 
-                position.x + range * (2f / 3f),
-                position.y + range * (2f / 3f),
+                    position.x + range * (2f / 3f),
+                    position.y - range * (2f / 3f),
 
-                position.x,
-                position.y + range / 3f
-        };
-        attackHitShape = new Polygon(vertices);
-        attackHitShape.setOrigin(position.x, position.y);
+                    position.x + range * (2f / 3f),
+                    position.y + range * (2f / 3f),
+
+                    position.x,
+                    position.y + range / 3f
+            };
+            attackHitShape = new Polygon(vertices);
+            attackHitShape.setOrigin(position.x, position.y);
+        }
     }
 
     public Phase getCurrentPhase() {
         return currentPhase;
     }
 
-    public boolean getIsWizard() {
+    public boolean isWizard() {
         return isWizard;
     }
 }

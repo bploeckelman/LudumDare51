@@ -25,6 +25,7 @@ import de.eskalon.commons.screen.transition.impl.SlidingDirection;
 import de.eskalon.commons.utils.BasicInputMultiplexer;
 import lando.systems.ld51.assets.Assets;
 import lando.systems.ld51.audio.AudioManager;
+import lando.systems.ld51.particles.Particles;
 import lando.systems.ld51.screens.BaseScreen;
 import lando.systems.ld51.screens.GameScreen;
 import lando.systems.ld51.screens.LaunchScreen;
@@ -39,6 +40,7 @@ public class Main extends ManagedGame<BaseScreen, ScreenTransition> {
 	public Assets assets;
 	public TweenManager tween;
 	public AudioManager audio;
+	public Particles particles;
 	public NestableFrameBuffer frameBuffer;
 	public TextureRegion frameBufferRegion;
 	public OrthographicCamera windowCamera;
@@ -63,6 +65,8 @@ public class Main extends ManagedGame<BaseScreen, ScreenTransition> {
 			Tween.registerAccessor(Vector3.class, new Vector3Accessor());
 			Tween.registerAccessor(OrthographicCamera.class, new CameraAccessor());
 		};
+
+		particles = new Particles(assets);
 
 		Pixmap.Format format = Pixmap.Format.RGBA8888;
 		int width = Config.Screen.framebuffer_width;
@@ -128,8 +132,7 @@ public class Main extends ManagedGame<BaseScreen, ScreenTransition> {
 
 		// update global systems
 		{
-			// ...
-
+			particles.update(delta);
 		}
 	}
 
@@ -144,6 +147,7 @@ public class Main extends ManagedGame<BaseScreen, ScreenTransition> {
 		VisUI.dispose(false);
 		screenManager.getScreens().forEach(BaseScreen::dispose);
 		frameBuffer.dispose();
+		particles.dispose();
 		if (assets.initialized) {
 			assets.dispose();
 		}

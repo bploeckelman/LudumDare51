@@ -90,7 +90,11 @@ public class Calc {
     }
 
     public static float vectorToAngle(Vector2 vector) {
-        return (float) Math.atan2(-vector.x, vector.y);
+        return vectorToAngle(vector.x, vector.y);
+    }
+
+    public static float vectorToAngle(float x, float y) {
+        return (float) Math.atan2(-x, y);
     }
 
     public static Vector2 angleToVector(Vector2 outVector, float angle) {

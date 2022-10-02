@@ -34,7 +34,7 @@ public class Arena {
                 accentColor.set(0f, 0, .3f, 1f);
                 break;
         }
-        if (screen.player.getIsWizard()){
+        if (screen.player.isWizard()){
             accentColor.set(.8f, .8f, .8f, 1f);
         }
         for (int x = 0; x < bounds.width/tileSize; x++){

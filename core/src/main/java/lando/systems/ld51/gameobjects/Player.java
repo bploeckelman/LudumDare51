@@ -30,7 +30,7 @@ public class Player extends ObjectLocation {
     public static float SPEED = SPEED_NORMAL;
     public static int FULL_GEM_COUNT = 100;
 
-    private final GameScreen gameScreen;
+    private final GameScreen screen;
 
     private TextureRegion keyframe;
     private Animation<TextureRegion> animation;
@@ -64,8 +64,8 @@ public class Player extends ObjectLocation {
     public float attackTimer;
 
 
-    public Player(GameScreen gameScreen) {
-        this.gameScreen = gameScreen;
+    public Player(GameScreen screen) {
+        this.screen = screen;
         this.position = new Vector2(Config.Screen.window_width/2f, Config.Screen.window_height/2f);
         this.velocity = new Vector2();
         this.facing = new Vector2();
@@ -74,11 +74,11 @@ public class Player extends ObjectLocation {
         this.tempPos = new Vector2();
         this.tempVec2 = new Vector2();
         this.tempVec = new Vector2();
-        this.animation = gameScreen.assets.creatureAnims.get(CreatureAnims.Type.warrior);
+        this.animation = screen.assets.creatureAnims.get(CreatureAnims.Type.warrior);
         this.keyframe = animation.getKeyFrame(0f);
         this.stateTime = 0f;
         this.attackRange = new Circle(position, 2f * SIZE); // NOTE - used for broad phase collision check
-        this.attackAnimation = gameScreen.assets.effectAnims.get(EffectAnims.Type.swipe);
+        this.attackAnimation = screen.assets.effectAnims.get(EffectAnims.Type.swipe);
         this.attackKeyframe = attackAnimation.getKeyFrame(0f);
         this.attackStateTime = 0f;
         this.isAttacking = false;
@@ -96,7 +96,7 @@ public class Player extends ObjectLocation {
 
     public void update(float dt) {
         mousePos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-        gameScreen.worldCamera.unproject(mousePos);
+        screen.worldCamera.unproject(mousePos);
         facing.set(mousePos.x, mousePos.y).sub(position).nor();
         setOrientation(facing.angleRad());
 
@@ -129,7 +129,7 @@ public class Player extends ObjectLocation {
             tempPos.set(position).add(movementVector.x * SPEED * dt, movementVector.y * SPEED * dt);
 
             // collision check of arena
-            Arena arena = gameScreen.arena;
+            Arena arena = screen.arena;
             if ((tempPos.x - SIZE/2f) < arena.bounds.x){
                 tempVec2.x -= ((tempPos.x -SIZE/2f) - arena.bounds.x);
             }
@@ -144,7 +144,7 @@ public class Player extends ObjectLocation {
             }
 
             // Boss check
-            Boss boss = gameScreen.boss;
+            Boss boss = screen.boss;
             float distToBoss = tempPos.dst(boss.position);
             if (distToBoss < SIZE/2 + boss.protectedRadius) {
                 float overlapDist = SIZE/2 + boss.protectedRadius - distToBoss;
@@ -174,7 +174,7 @@ public class Player extends ObjectLocation {
                 isAttacking = false;
             }
         }
-        gameScreen.playerGemsUI.updatePlayerGemsUIColor(this);
+        screen.playerGemsUI.updatePlayerGemsUIColor(this);
     }
 
     public void render(SpriteBatch batch) {
@@ -195,7 +195,7 @@ public class Player extends ObjectLocation {
         }
 
         if (Config.Debug.general) {
-            ShapeDrawer shapes = gameScreen.assets.shapes;
+            ShapeDrawer shapes = screen.assets.shapes;
             shapes.setColor(Color.MAGENTA);
             shapes.circle(attackRange.x, attackRange.y, attackRange.radius, 3f);
             if (isAttacking && attackHitShape != null) {
@@ -267,22 +267,22 @@ public class Player extends ObjectLocation {
         currentPhase = nextPhase;
         switch (currentPhase){
             case RED:
-                this.animation = gameScreen.assets.creatureAnims.get(CreatureAnims.Type.warrior);
-                gameScreen.audio.playSound(AudioManager.Sounds.warriorMusic1, 1.0f);
+                this.animation = screen.assets.creatureAnims.get(CreatureAnims.Type.warrior);
+                screen.audio.playSound(AudioManager.Sounds.warriorMusic1, 1.0f);
                 break;
             case GREEN:
-                this.animation = gameScreen.assets.creatureAnims.get(CreatureAnims.Type.rogue);
-                gameScreen.audio.playSound(AudioManager.Sounds.rogueMusic1, 1.0f);
+                this.animation = screen.assets.creatureAnims.get(CreatureAnims.Type.rogue);
+                screen.audio.playSound(AudioManager.Sounds.rogueMusic1, 1.0f);
                 break;
             case BLUE:
-                this.animation = gameScreen.assets.creatureAnims.get(CreatureAnims.Type.cleric);
-                gameScreen.audio.playSound(AudioManager.Sounds.clericMusic1, 1.0f);
+                this.animation = screen.assets.creatureAnims.get(CreatureAnims.Type.cleric);
+                screen.audio.playSound(AudioManager.Sounds.clericMusic1, 1.0f);
                 break;
         }
 
         // handle wizard transition
         if (!isWizard) {
-            gameScreen.particles.lightning(gameScreen.boss.position, position);
+            screen.particles.lightning(screen.boss.position, position);
             if (redGemCount >= FULL_GEM_COUNT && greenGemCount >= FULL_GEM_COUNT && blueGemCount >= FULL_GEM_COUNT){
                 isWizard = true;
                 wizardPhaseCount = 3;
@@ -299,7 +299,7 @@ public class Player extends ObjectLocation {
         SIZE = (isWizard) ? SIZE_WIZARD : SIZE_NORMAL;
         SPEED = (isWizard) ? SPEED_WIZARD : SPEED_NORMAL;
         if (isWizard) {
-            animation = gameScreen.assets.creatureAnims.get(CreatureAnims.Type.king_red);
+            animation = screen.assets.creatureAnims.get(CreatureAnims.Type.king_red);
         }
     }
 
@@ -317,9 +317,9 @@ public class Player extends ObjectLocation {
             float y = position.y + facing.y * size * (1f / 2f);
             float angle = facing.angleRad();
             float speed = Calc.max(SPEED + 60f, 250f);
-            Projectile projectile = new Projectile(gameScreen.assets, EffectAnims.Type.meteor, x, y, angle, speed);
+            Projectile projectile = new Projectile(screen.assets, EffectAnims.Type.meteor, x, y, angle, speed);
             projectile.size = size;
-            gameScreen.projectiles.add(projectile);
+            screen.projectiles.add(projectile);
         } else {
             float range = attackRange.radius;
             float[] vertices = new float[]{

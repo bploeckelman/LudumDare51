@@ -22,26 +22,6 @@ public class GemProgressBar extends VisProgressBar {
         this.gemType = gemType;
         VisProgressBar.ProgressBarStyle horizontalProgressBarStyle = skin.get("default-horizontal", VisProgressBar.ProgressBarStyle.class);
         gemProgressBarStyle = new VisProgressBar.ProgressBarStyle(horizontalProgressBarStyle);
-        switch(gemType) {
-            case RED:
-                gemProgressBarStyle.knob = new TextureRegionDrawable(assets.gemRedIdle.getKeyFrame(0f));
-                gemProgressBarStyle.knobBefore = new TextureRegionDrawable(assets.redProgressBar);
-                break;
-            case BLUE:
-                gemProgressBarStyle.knob = new TextureRegionDrawable(assets.gemBlueIdle.getKeyFrame(0f));
-                gemProgressBarStyle.knobBefore = new TextureRegionDrawable(assets.blueProgressBar);
-                break;
-            case GREEN:
-                gemProgressBarStyle.knob = new TextureRegionDrawable(assets.gemGreenIdle.getKeyFrame(0f));
-                gemProgressBarStyle.knobBefore = new TextureRegionDrawable(assets.greenProgressBar);
-                break;
-            default:
-                gemProgressBarStyle.knob = new TextureRegionDrawable(assets.gemRedIdle.getKeyFrame(0f));
-                gemProgressBarStyle.knobBefore = new TextureRegionDrawable(assets.whiteProgressBar);
-                break;
-        }
-        gemProgressBarStyle.knob.setMinWidth(25f);
-        gemProgressBarStyle.knob.setMinHeight(25f);
 
         gemProgressBarStyle.background = new TextureRegionDrawable(Utils.getColoredTextureRegion(new Color(1f, 1f, 1f, 0f)));
         setStyle(gemProgressBarStyle);
@@ -56,11 +36,12 @@ public class GemProgressBar extends VisProgressBar {
         knobAnimDuration = .5f;
     }
 
-    public void update(float delta, float current, float max) {
+    public void update(float delta, float current, float max, boolean isWizard) {
         setValue(current / max * 100f);
-        if (current / max >= 1f) {
+        if (current >= max || isWizard) {
             spinAnimCounter += delta;
-            knobAnimDuration = 0f;
+            knobAnimDuration = 0.5f;
+            isFlashing = false;
             switch(gemType) {
                 case RED:
                     gemProgressBarStyle.knob = new TextureRegionDrawable(assets.gemRedSpin.getKeyFrame(spinAnimCounter));
@@ -78,12 +59,13 @@ public class GemProgressBar extends VisProgressBar {
                     gemProgressBarStyle.knob.setMinHeight(40f);
                     break;
                 default:
-                    gemProgressBarStyle.knob = new TextureRegionDrawable(assets.gemRedSpin.getKeyFrame(0));
+                    gemProgressBarStyle.knob = new TextureRegionDrawable(assets.gemRedSpin.getKeyFrame(spinAnimCounter));
                     gemProgressBarStyle.knob.setMinWidth(40f);
                     gemProgressBarStyle.knob.setMinHeight(40f);
                     break;
-            }        }
-        if (isFlashing) {
+            }
+        }
+        else if (isFlashing) {
             knobAnimDuration-=delta;
             switch(gemType) {
                 case RED:
@@ -102,6 +84,27 @@ public class GemProgressBar extends VisProgressBar {
             gemProgressBarStyle.knob.setMinWidth(25f);
             gemProgressBarStyle.knob.setMinHeight(25f);
             setStyle(gemProgressBarStyle);
+        } else {
+            switch(gemType) {
+                case RED:
+                    gemProgressBarStyle.knob = new TextureRegionDrawable(assets.gemRedIdle.getKeyFrame(0f));
+                    gemProgressBarStyle.knobBefore = new TextureRegionDrawable(assets.redProgressBar);
+                    break;
+                case BLUE:
+                    gemProgressBarStyle.knob = new TextureRegionDrawable(assets.gemBlueIdle.getKeyFrame(0f));
+                    gemProgressBarStyle.knobBefore = new TextureRegionDrawable(assets.blueProgressBar);
+                    break;
+                case GREEN:
+                    gemProgressBarStyle.knob = new TextureRegionDrawable(assets.gemGreenIdle.getKeyFrame(0f));
+                    gemProgressBarStyle.knobBefore = new TextureRegionDrawable(assets.greenProgressBar);
+                    break;
+                default:
+                    gemProgressBarStyle.knob = new TextureRegionDrawable(assets.gemRedIdle.getKeyFrame(0f));
+                    gemProgressBarStyle.knobBefore = new TextureRegionDrawable(assets.whiteProgressBar);
+                    break;
+            }
+            gemProgressBarStyle.knob.setMinWidth(25f);
+            gemProgressBarStyle.knob.setMinHeight(25f);
         }
         if (knobAnimDuration < 0) {
             knobAnimDuration = .5f;

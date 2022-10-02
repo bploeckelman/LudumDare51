@@ -6,7 +6,6 @@ import com.badlogic.gdx.ai.steer.behaviors.CollisionAvoidance;
 import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.ai.steer.proximities.RadiusProximity;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -167,9 +166,9 @@ public class GameScreen extends BaseScreen {
         ((FollowOrthographicCamera)worldCamera).update(player.position, arena.bounds, delta);
 
         debugWindow.update();
-        playerGemsUI.redProgressBar.update(delta, player.redGemCount, player.FULL_GEM_COUNT);
-        playerGemsUI.blueProgressBar.update(delta, player.blueGemCount, player.FULL_GEM_COUNT);
-        playerGemsUI.greenProgressBar.update(delta, player.greenGemCount, player.FULL_GEM_COUNT);
+        playerGemsUI.redProgressBar.update(delta, player.redGemCount, player.FULL_GEM_COUNT, player.isWizard);
+        playerGemsUI.blueProgressBar.update(delta, player.blueGemCount, player.FULL_GEM_COUNT, player.isWizard);
+        playerGemsUI.greenProgressBar.update(delta, player.greenGemCount, player.FULL_GEM_COUNT, player.isWizard);
         cooldownTimerUI.updateTimerValue(player, accum);
         uiStage.act();
     }

@@ -66,6 +66,7 @@ public class Assets implements Disposable {
     public Array<Animation<TextureRegion>> numberParticles;
     public ObjectMap<Gem.Type, ObjectMap<Gem.State, Animation<AtlasRegion>>> gemAnimationByTypeByState;
     public ObjectMap<Player.Phase, ObjectMap<Player.State, Animation<AtlasRegion>>> playerAnimationByPhaseByState;
+    public ObjectMap<Player.WeaponType, Player.WeaponAnims> weaponAnimationsByType;
 
     public SimplexNoise noise;
 
@@ -239,6 +240,19 @@ public class Assets implements Disposable {
                 Animation<AtlasRegion> animation = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
                 animationByState.put(state, animation);
             }
+        }
+        weaponAnimationsByType = new ObjectMap<>();
+        for (Player.WeaponType type : Player.WeaponType.values()) {
+            String typeName = type.name().toLowerCase();
+            String weaponRegions = Stringf.format("weapons/%1$s/%1$s", typeName);
+            String glowRegions = Stringf.format("weapons/%1$s-glow/%1$s-glow", typeName);
+            Array<AtlasRegion> weaponFrames = atlas.findRegions(weaponRegions);
+            Array<AtlasRegion> glowFrames = atlas.findRegions(glowRegions);
+            float frameDuration = 0.05f;
+            Animation<AtlasRegion> weaponAnim = new Animation<>(frameDuration, weaponFrames, Animation.PlayMode.NORMAL);
+            Animation<AtlasRegion> glowAnim = new Animation<>(frameDuration, glowFrames, Animation.PlayMode.NORMAL);
+            Player.WeaponAnims anims = new Player.WeaponAnims(weaponAnim, glowAnim);
+            weaponAnimationsByType.put(type, anims);
         }
 
         // initialize patch values

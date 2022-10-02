@@ -16,22 +16,32 @@ import lando.systems.ld51.assets.EffectAnims;
 import lando.systems.ld51.audio.AudioManager;
 import lando.systems.ld51.screens.GameScreen;
 import lando.systems.ld51.utils.Calc;
+import lombok.RequiredArgsConstructor;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class Player extends ObjectLocation {
 
     public enum Phase {
-          RED    ("warrior")
-        , GREEN  ("thief")
-        , BLUE   ("cleric")
-        , WIZARD ("wizard")
+          RED    ("warrior", WeaponType.AXE)
+        , GREEN  ("thief",   WeaponType.DAGGER)
+        , BLUE   ("cleric",  WeaponType.CLUB)
+        , WIZARD ("wizard", null) // danger
         ;
         public final String charClassImageName;
-        Phase(String charClassImageName) {
+        public final WeaponType weaponType;
+        Phase(String charClassImageName, WeaponType weaponType) {
             this.charClassImageName = charClassImageName;
+            this.weaponType = weaponType;
         }
     }
     public enum State {SWING} // TODO - idle / run?
+    public enum WeaponType { AXE, CLUB, DAGGER }
+
+    @RequiredArgsConstructor
+    public static class WeaponAnims {
+        public final Animation<AtlasRegion> weapon;
+        public final Animation<AtlasRegion> glow;
+    }
 
     public static float SIZE_NORMAL = 75f;
     public static float SIZE_WIZARD = 125f;
@@ -50,9 +60,9 @@ public class Player extends ObjectLocation {
     public Circle attackRange;
     public Polygon attackHitShape;
 
-    // TODO - wire up player weapon anims (and swipe anims) in here
-    private Animation<TextureRegion> attackAnimation;
-    private TextureRegion attackKeyframe;
+    private WeaponAnims weaponAnims;
+    private TextureRegion weaponKeyframe;
+    private TextureRegion weaponGlowKeyframe;
     private float attackStateTime;
     private boolean isAttacking;
 
@@ -95,8 +105,9 @@ public class Player extends ObjectLocation {
         this.keyframe = animation.getKeyFrame(0f);
         this.stateTime = 0f;
         this.attackRange = new Circle(position, 2f * SIZE); // NOTE - used for broad phase collision check
-        this.attackAnimation = screen.assets.effectAnims.get(EffectAnims.Type.swipe);
-        this.attackKeyframe = attackAnimation.getKeyFrame(0f);
+        this.weaponAnims = screen.assets.weaponAnimationsByType.get(phase.weaponType);
+        this.weaponKeyframe = weaponAnims.weapon.getKeyFrame(0f);
+        this.weaponGlowKeyframe = weaponAnims.glow.getKeyFrame(0f);
         this.attackStateTime = 0f;
         this.isAttacking = false;
         // player gem ui switch update
@@ -132,12 +143,14 @@ public class Player extends ObjectLocation {
         if (Gdx.input.isKeyPressed(Input.Keys.A)) movementVector.x -= 1;
         movementVector.nor();
 
-
         stateTime += dt;
         // TODO - won't need this edge case if we start using Phase.WIZARD as an actual transitionable phase
         Phase animPhase = isWizard ? Phase.WIZARD : phase;
         animation = screen.assets.playerAnimationByPhaseByState.get(animPhase).get(state);
         keyframe = animation.getKeyFrame(stateTime);
+
+        // NOTE - wizard doesn't have weapon anims so this will go null when we go wizard
+        weaponAnims = screen.assets.weaponAnimationsByType.get(phase.weaponType);
 
         // save previous position so the attack hit shape can be moved if the player moves
         float prevPosX = position.x;
@@ -182,15 +195,19 @@ public class Player extends ObjectLocation {
                 attackHitShape.setRotation(facing.angleDeg());
             }
 
-            // update attack animation
-            attackStateTime += dt;
-            attackKeyframe = attackAnimation.getKeyFrame(attackStateTime);
+            // TODO - a bunch of this shit is could break when we go wizard mode because it has no weaponanims
+            if (weaponAnims != null) {
+                // update attack animation
+                attackStateTime += dt;
+                weaponKeyframe = weaponAnims.weapon.getKeyFrame(attackStateTime);
+                weaponGlowKeyframe = weaponAnims.glow.getKeyFrame(attackStateTime);
 
-            // complete attack if appropriate
-            if (attackStateTime >= attackAnimation.getAnimationDuration()) {
-                attackStateTime = 0f;
-                attackHitShape = null;
-                isAttacking = false;
+                // complete attack if appropriate
+                if (attackStateTime >= weaponAnims.weapon.getAnimationDuration()) {
+                    attackStateTime = 0f;
+                    attackHitShape = null;
+                    isAttacking = false;
+                }
             }
         }
 
@@ -212,22 +229,33 @@ public class Player extends ObjectLocation {
     }
 
     public void render(SpriteBatch batch) {
-        batch.draw(keyframe, position.x - (SIZE/2f), position.y - (SIZE/2f), SIZE, SIZE);
-
         // draw melee attack
-        if (isAttacking && !isWizard) {
-            float attackSize = SIZE * 2.5f;
-            batch.draw(attackKeyframe,
-                    position.x - (attackSize / 2f),
+        if (isAttacking && !isWizard && weaponKeyframe != null && weaponGlowKeyframe != null) {
+            float attackSize = SIZE;
+            batch.draw(weaponKeyframe,
+                    position.x + (attackSize / 2f),
                     position.y - (attackSize / 2f),
-                    attackSize / 2f,
-                    attackSize / 2f,
+                    -attackSize / 2f,
+                    weaponGlowKeyframe.getRegionHeight() / 2f,
+                    attackSize, attackSize,
+                    1f, 1f,
+                    facing.angleDeg()
+            );
+            batch.draw(weaponGlowKeyframe,
+                    position.x + (attackSize / 2f),
+                    position.y - (attackSize / 2f),
+                    -attackSize / 2f,
+                    weaponGlowKeyframe.getRegionHeight() / 2f,
                     attackSize, attackSize,
                     1f, 1f,
                     facing.angleDeg()
             );
         }
 
+        // draw character
+        batch.draw(keyframe, position.x - (SIZE/2f), position.y - (SIZE/2f), SIZE, SIZE);
+
+        // draw debug shapes
         if (Config.Debug.general) {
             ShapeDrawer shapes = screen.assets.shapes;
             shapes.setColor(Color.MAGENTA);

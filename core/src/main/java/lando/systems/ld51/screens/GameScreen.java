@@ -98,19 +98,19 @@ public class GameScreen extends BaseScreen {
         arena.update(delta);
         particles.update(delta);
 
-        if (MathUtils.random(1f) > .97f){ // THIS IS PLACEHOLDER
-            int randType = MathUtils.random(2);
-            Gem.Type type = Gem.Type.RED;
-            switch(randType){
-                case 0:
-                    type = Gem.Type.GREEN;
-                    break;
-                case 1:
-                    type = Gem.Type.BLUE;
-                    break;
-            }
-            gems.add(new Gem(this, new Vector2(MathUtils.random(Config.Screen.window_width), MathUtils.random(Config.Screen.window_height)), type));
-        }
+//        if (MathUtils.random(1f) > .97f){ // THIS IS PLACEHOLDER
+//            int randType = MathUtils.random(2);
+//            Gem.Type type = Gem.Type.RED;
+//            switch(randType){
+//                case 0:
+//                    type = Gem.Type.GREEN;
+//                    break;
+//                case 1:
+//                    type = Gem.Type.BLUE;
+//                    break;
+//            }
+//            gems.add(new Gem(this, new Vector2(MathUtils.random(Config.Screen.window_width), MathUtils.random(Config.Screen.window_height)), type));
+//        }
 
         player.update(delta);
         boss.update(delta);

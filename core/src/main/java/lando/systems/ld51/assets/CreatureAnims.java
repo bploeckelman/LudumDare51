@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;
+import lando.systems.ld51.gameobjects.Gem;
 
 public class CreatureAnims {
 
@@ -72,22 +73,24 @@ public class CreatureAnims {
     }
 
     public enum Type {
-          warrior      (5, 0,  5,  4f)
-        , cleric       (4, 0,  3,  1f)
-        , rogue        (7, 0,  2,  1f)
-        , wizard_blue  (0, 0,  2,  1f)
-        , rat_small    (0, 5,  1,  0.2f)
-        , rat_big      (1, 5,  3,  3f)
+          warrior      (5, 0,  5,  4f, Gem.Type.RED)
+        , cleric       (4, 0,  3,  1f, Gem.Type.BLUE)
+        , rogue        (7, 0,  2,  1f, Gem.Type.GREEN)
+        , wizard_blue  (0, 0,  2,  1f, Gem.Type.RED)
+        , rat_small    (0, 5,  1,  0.2f, Gem.Type.GREEN)
+        , rat_big      (1, 5,  3,  3f, Gem.Type.BLUE)
         ;
         public final int x;
         public final int y;
         public final float health;
         public final float avoidanceScale;
-        Type(int x, int y, float health, float avoidanceScale) {
+        public final Gem.Type gemColor;
+        Type(int x, int y, float health, float avoidanceScale, Gem.Type gemColor) {
             this.x = x;
             this.y = y;
             this.health = health;
             this.avoidanceScale = avoidanceScale;
+            this.gemColor = gemColor;
         }
         public static Type random() {
             int numTypes = values().length;

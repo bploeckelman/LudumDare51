@@ -104,7 +104,7 @@ public class Player extends ObjectLocation {
 
         attackInterval = (isWizard) ? attackIntervalWizard : attackIntervalNormal;
         attackTimer -= dt;
-        if (attackTimer <= 0 && (Gdx.input.justTouched() || Gdx.input.isKeyJustPressed(Input.Keys.SPACE))) {
+        if (attackTimer <= 0 && (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.SPACE))) {
             attackTimer = attackInterval;
             attack();
         }

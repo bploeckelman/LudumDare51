@@ -4,6 +4,7 @@ precision mediump float;
 
 uniform sampler2D u_texture;
 uniform float u_time;
+uniform float u_shield;
 
 varying vec4 v_color;
 varying vec2 v_texCoord;
@@ -39,17 +40,21 @@ void main() {
 //    alpha *= noise1.b * 1.5;
 //    alpha *= noise2.r * 1.5;
 //    alpha *= noise2.b * 1.5;
-    vec3 color1 = vec3(.9, .5, .9);
-    vec3 color2 = vec3(.4, .4, .8);
-    vec3 color3 = vec3(.8, .8, .8);
+    vec3 color1 = vec3(.4, .4, .8);
+    vec3 color2 = vec3(.9, .3, .6);
+    vec3 color3 = vec3(.5, .8, .3);
+    vec3 color4 = vec3(.8, .8, .8);
 
-    vec3 color = mix(color1, color2, smoothstep(.4, .5, noise));
-    color = mix(color, color3 , smoothstep(.6, .75, noise));
+    vec3 color = mix(color1, color2, smoothstep(.5, .55, noise));
+    color = mix(color, color3 , smoothstep(.6, .65, noise));
+    color = mix(color, color4 , smoothstep(.68, .7, noise));
 
     alpha *= noise;
     vec4 shieldColor = vec4(color, alpha);
 
-    vec4 finalColor = mix(shieldColor, vec4(.8, .8, .8, .9), smoothstep(.97, .99, dist));
+    shieldColor *= u_shield;
+
+    vec4 finalColor = mix(shieldColor, vec4(vec3(.4 + (.4*u_shield)), .9), smoothstep(.97, .99, dist));
 
     finalColor = mix(finalColor, vec4(0), smoothstep(.99, 1., dist));
 

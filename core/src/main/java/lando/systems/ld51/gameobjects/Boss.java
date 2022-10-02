@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -36,6 +37,7 @@ public class Boss extends ObjectLocation {
     private Animation<AtlasRegion> animation;
     private TextureRegion keyframe;
     private float stateTime;
+    private float shieldState;
 
     public Boss(GameScreen screen) {
         this.screen = screen;
@@ -50,10 +52,17 @@ public class Boss extends ObjectLocation {
         this.animation = animationsByState.get(State.idle_a);
         this.keyframe = animation.getKeyFrame(0);
         this.stateTime = 0f;
+        this.shieldState = 1f;
     }
 
     public void update(float dt){
         accum += dt;
+        if (screen.player.isWizard){
+            shieldState -= dt;
+        } else {
+            shieldState += dt;
+        }
+        shieldState = MathUtils.clamp(shieldState, 0f, 1f);
 
         // TODO - handle state changes and switch animation as needed
 
@@ -68,6 +77,7 @@ public class Boss extends ObjectLocation {
 
         batch.setShader(screen.assets.shieldShader);
         screen.assets.shieldShader.setUniformf("u_time", accum);
+        screen.assets.shieldShader.setUniformf("u_shield", shieldState);
         batch.setColor(1f, 1f, 1f, .5f);
         batch.draw(screen.assets.noiseTex, position.x - protectedRadius, position.y - protectedRadius, protectedRadius*2f, protectedRadius*2f);
         batch.setColor(Color.WHITE);

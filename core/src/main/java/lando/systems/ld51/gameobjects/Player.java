@@ -28,7 +28,7 @@ public class Player extends ObjectLocation {
     public static float SPEED_NORMAL = 300f;
     public static float SPEED_WIZARD = 450f;
     public static float SPEED = SPEED_NORMAL;
-    public static int FULL_GEM_COUNT = 100;
+    public static int FULL_GEM_COUNT = 10;
 
     private final GameScreen screen;
 

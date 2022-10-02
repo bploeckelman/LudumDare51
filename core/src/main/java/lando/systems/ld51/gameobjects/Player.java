@@ -46,9 +46,9 @@ public class Player extends ObjectLocation {
     }
 
     public static float SIZE_NORMAL = 75f;
-    public static float SIZE_WIZARD = 125f;
+    public static float SIZE_WIZARD = 100f;
     public static float SIZE = SIZE_NORMAL;
-    public static float SPEED_NORMAL = 300f;
+    public static float SPEED_NORMAL = 340f;
     public static float SPEED_WIZARD = 450f;
     public static float SPEED = SPEED_NORMAL;
     public static int FULL_GEM_COUNT = 50;
@@ -347,13 +347,19 @@ public class Player extends ObjectLocation {
         // NOTE: the animation should be changed correctly in update based on whatever phase happens to be
         switch (this.phase){
             case RED:
-                screen.audio.playSound(AudioManager.Sounds.valueOf("warriorMusic" + musicPhase), 1.0f);
+                if(!isWizard) {
+                    screen.audio.playSound(AudioManager.Sounds.valueOf("warriorMusic" + musicPhase), 1.0f);
+                }
                 break;
             case GREEN:
-                screen.audio.playSound(AudioManager.Sounds.valueOf("rogueMusic" + musicPhase), 1.0f);
+                if(!isWizard) {
+                    screen.audio.playSound(AudioManager.Sounds.valueOf("rogueMusic" + musicPhase), 1.0f);
+                }
                 break;
             case BLUE:
-                screen.audio.playSound(AudioManager.Sounds.valueOf("clericMusic"+musicPhase), 0.6f);
+                if(!isWizard) {
+                    screen.audio.playSound(AudioManager.Sounds.valueOf("clericMusic" + musicPhase), 0.6f);
+                }
                 if (musicPhase == 3) {
                     musicPhase = 1;
                 } else {

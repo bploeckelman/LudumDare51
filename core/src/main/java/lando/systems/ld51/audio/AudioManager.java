@@ -42,6 +42,13 @@ public class AudioManager implements Disposable {
         , gemDrop
         , fireball
         , scorch
+        , transformIntoWizard
+        , gemsAreFull
+        , thud
+        , transformIntoWarrior
+        , transformIntoRogue
+        , transformIntoCleric
+        , lightning
 //        ,
 //        , impactLight
 //        , impactWet

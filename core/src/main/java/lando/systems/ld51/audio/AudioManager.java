@@ -35,6 +35,10 @@ public class AudioManager implements Disposable {
         , clericMusic2
         , clericMusic3
         , wizardMusic1
+        , swipe
+        , impact
+//        , impactLight
+//        , impactWet
 
     }
 
@@ -61,6 +65,7 @@ public class AudioManager implements Disposable {
 //        putSound(Sounds.chaching, assets.chachingSound);
 
         putSound(Sounds.introMusic, assets.introMusicSound);
+
         putSound(Sounds.warriorMusic1, assets.warriorMusic1);
         putSound(Sounds.warriorMusic2, assets.warriorMusic2);
         putSound(Sounds.warriorMusic3, assets.warriorMusic3);
@@ -74,7 +79,20 @@ public class AudioManager implements Disposable {
         putSound(Sounds.wizardMusic1, assets.wizardMusic1);
 
 
-//        putSound(Musics.introMusic, assets.introMusicSound);
+        putSound(Sounds.swipe, assets.swipe1);
+        putSound(Sounds.swipe, assets.swipe2);
+        putSound(Sounds.swipe, assets.swipe3);
+        putSound(Sounds.swipe, assets.swipe4);
+        putSound(Sounds.swipe, assets.swipe5);
+
+        putSound(Sounds.impact, assets.impact1);
+        putSound(Sounds.impact, assets.impact2);
+        putSound(Sounds.impact, assets.impact3);
+        putSound(Sounds.impact, assets.impact4);
+        putSound(Sounds.impact, assets.impactLight);
+        putSound(Sounds.impact, assets.impactWet);
+
+
 
         musics.put(Musics.introMusic, assets.introMusicMusic);
 //        musics.put(Musics.warriorMusic1, assets.warriorMusic1);

@@ -86,6 +86,20 @@ public class Assets implements Disposable {
     public Sound clericMusic3;
     public Sound wizardMusic1;
 
+    public Sound swipe1;
+    public Sound swipe2;
+    public Sound swipe3;
+    public Sound swipe4;
+    public Sound swipe5;
+    public Sound impact1;
+    public Sound impact2;
+    public Sound impact3;
+    public Sound impact4;
+    public Sound impactLight;
+    public Sound impactWet;
+////    public Sound ;
+//    public Sound ;
+
     public enum Patch {
         debug, panel, metal, glass,
         glass_green, glass_yellow, glass_dim, glass_active;
@@ -155,7 +169,23 @@ public class Assets implements Disposable {
             mgr.load("audio/sound/clericMusicA.ogg", Sound.class);
             mgr.load("audio/sound/clericMusicB.ogg", Sound.class);
             mgr.load("audio/sound/clericMusicC.ogg", Sound.class);
-//            mgr.load("audio/sound/introMusic.ogg", Sound.class);
+
+
+            mgr.load("audio/sound/impact1.ogg", Sound.class);
+            mgr.load("audio/sound/impact2.ogg", Sound.class);
+            mgr.load("audio/sound/impact3.ogg", Sound.class);
+            mgr.load("audio/sound/impact4.ogg", Sound.class);
+            mgr.load("audio/sound/impactLight1.ogg", Sound.class);
+            mgr.load("audio/sound/impactWet.ogg", Sound.class);
+            mgr.load("audio/sound/swipe1.ogg", Sound.class);
+            mgr.load("audio/sound/swipe2.ogg", Sound.class);
+            mgr.load("audio/sound/swipe3.ogg", Sound.class);
+            mgr.load("audio/sound/swipe4.ogg", Sound.class);
+            mgr.load("audio/sound/swipe5.ogg", Sound.class);
+//            mgr.load("audio/sound/.ogg", Sound.class);
+//            mgr.load("audio/sound/.ogg", Sound.class);
+//            mgr.load("audio/sound/.ogg", Sound.class);
+//            mgr.load("audio/sound/.ogg", Sound.class);
 
         }
 
@@ -296,6 +326,24 @@ public class Assets implements Disposable {
         clericMusic1 = mgr.get("audio/sound/clericMusicC.ogg", Sound.class);
         clericMusic2 = mgr.get("audio/sound/clericMusicB.ogg", Sound.class);
         clericMusic3 = mgr.get("audio/sound/clericMusicA.ogg", Sound.class);
+
+        // Sound effects
+         swipe1 = mgr.get("audio/sound/swipe1.ogg", Sound.class);
+         swipe2 = mgr.get("audio/sound/swipe2.ogg", Sound.class);
+         swipe3 = mgr.get("audio/sound/swipe3.ogg", Sound.class);
+         swipe4 = mgr.get("audio/sound/swipe4.ogg", Sound.class);
+         swipe5 = mgr.get("audio/sound/swipe5.ogg", Sound.class);
+         impact1 = mgr.get("audio/sound/impact1.ogg", Sound.class);
+         impact2 = mgr.get("audio/sound/impact2.ogg", Sound.class);
+         impact3 = mgr.get("audio/sound/impact3.ogg", Sound.class);
+         impact4 = mgr.get("audio/sound/impact4.ogg", Sound.class);
+         impactWet = mgr.get("audio/sound/impactWet.ogg", Sound.class);
+         impactLight = mgr.get("audio/sound/impactLight1.ogg", Sound.class);
+//         = mgr.get("audio/sound/.ogg", Sound.class);
+//         = mgr.get("audio/sound/.ogg", Sound.class);
+//         = mgr.get("audio/sound/.ogg", Sound.class);
+//         = mgr.get("audio/sound/.ogg", Sound.class);
+
 
         initialized = true;
         return 1;

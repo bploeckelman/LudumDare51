@@ -14,10 +14,13 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import lando.systems.ld51.Config;
 import lando.systems.ld51.assets.CreatureAnims;
+import lando.systems.ld51.audio.AudioManager;
 import lando.systems.ld51.screens.GameScreen;
 import lando.systems.ld51.utils.Calc;
 import lando.systems.ld51.utils.VectorPool;
 import space.earlygrey.shapedrawer.ShapeDrawer;
+
+import static lando.systems.ld51.Main.game;
 
 public class Enemy implements Steerable<Vector2> {
 
@@ -160,6 +163,7 @@ public class Enemy implements Steerable<Vector2> {
         if (isHurt) return;
         isHurt = true;
 
+        game.audio.playSound(AudioManager.Sounds.impact, 0.125F);
         health -= amount;
 
         // bounce back

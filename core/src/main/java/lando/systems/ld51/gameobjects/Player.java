@@ -20,7 +20,7 @@ public class Player {
 
     public enum Phase {RED, GREEN, BLUE};
 
-    public static float SIZE = 30f;
+    public static float SIZE = 50f;
     public static float SPEED = 100f;
     public static int FULL_GEM_COUNT = 100;
 
@@ -162,14 +162,13 @@ public class Player {
         batch.draw(keyframe, position.x - (SIZE/2f), position.y - (SIZE/2f), SIZE, SIZE);
 
         if (isAttacking) {
-            float keyframeWidth = attackKeyframe.getRegionWidth();
-            float keyframeHeight = attackKeyframe.getRegionHeight();
+            float attackSize = SIZE * 2.5f;
             batch.draw(attackKeyframe,
-                    position.x - (SIZE / 2f),
-                    position.y - (SIZE / 2f),
-                    keyframeWidth / 2f,
-                    keyframeHeight / 2f,
-                    keyframeWidth, keyframeHeight,
+                    position.x - (attackSize / 2f),
+                    position.y - (attackSize / 2f),
+                    attackSize / 2f,
+                    attackSize / 2f,
+                    attackSize, attackSize,
                     1f, 1f,
                     facing.angleDeg()
             );
@@ -273,11 +272,20 @@ public class Player {
         attackStateTime = 0f;
         float range = attackRange.radius;
         float[] vertices = new float[] {
-                position.x, position.y,
-                position.x + range,
-                position.y - range / 2f,
-                position.x + range,
-                position.y + range / 2f
+                position.x,
+                position.y,
+
+                position.x,
+                position.y - range / 3f,
+
+                position.x + range * (2f / 3f),
+                position.y - range * (2f / 3f),
+
+                position.x + range * (2f / 3f),
+                position.y + range * (2f / 3f),
+
+                position.x,
+                position.y + range / 3f
         };
         attackHitShape = new Polygon(vertices);
         attackHitShape.setOrigin(position.x, position.y);

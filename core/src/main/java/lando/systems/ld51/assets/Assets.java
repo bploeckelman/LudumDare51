@@ -46,6 +46,7 @@ public class Assets implements Disposable {
     public BitmapFont largeFont;
 
     public Texture pixel;
+    public Texture noiseTex;
     public TextureRegion pixelRegion;
 
     public Animation<TextureRegion> cat;
@@ -53,6 +54,8 @@ public class Assets implements Disposable {
     public Array<Animation<TextureRegion>> numberParticles;
 
     public SimplexNoise noise;
+
+    public ShaderProgram shieldShader;
 
     public Music introMusicMusic;
 
@@ -111,6 +114,7 @@ public class Assets implements Disposable {
 
         mgr = new AssetManager();
         {
+            mgr.load("images/noise.png", Texture.class);
             mgr.load("sprites/sprites.atlas", TextureAtlas.class);
             mgr.load("ui/uiskin.json", Skin.class);
 
@@ -147,9 +151,12 @@ public class Assets implements Disposable {
         if (initialized) return 1;
 
         noise = new SimplexNoise(16, .8f, 12);
+        shieldShader = loadShader("shaders/default.vert", "shaders/shield.frag");
 
         atlas = mgr.get("sprites/sprites.atlas");
         strings = mgr.get("i18n/strings", I18NBundle.class);
+        noiseTex = mgr.get("images/noise.png", Texture.class);
+        noiseTex.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
 
         inputPrompts = new InputPrompts(this);
         itemTextures = new ItemTextures(this);

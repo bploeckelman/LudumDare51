@@ -51,6 +51,7 @@ public class Player {
     public float invulnerabilityTimer;
     public Phase currentPhase;
     public boolean isWizard;
+    public int wizardPhaseCount;
     public float attackInterval;
     public float attackTimer;
 
@@ -86,6 +87,7 @@ public class Player {
         this.invulnerabilityTimer = 0;
         this.attackInterval = 1f;
         this.attackTimer = attackInterval;
+        this.wizardPhaseCount = 0;
     }
 
     public void update(float dt) {
@@ -259,7 +261,19 @@ public class Player {
                 gameScreen.audio.playSound(AudioManager.Sounds.clericMusic1, 1.0f);
                 break;
         }
-        gameScreen.particles.lightning(gameScreen.boss.position, position);
+        if (!isWizard) {
+            gameScreen.particles.lightning(gameScreen.boss.position, position);
+            if (redGemCount >= FULL_GEM_COUNT && greenGemCount >= FULL_GEM_COUNT && blueGemCount >= FULL_GEM_COUNT){
+                isWizard = true;
+                wizardPhaseCount = 3;
+                redGemCount -= 4;
+            }
+        } else {
+            wizardPhaseCount--;
+            if (wizardPhaseCount<= 0) {
+                isWizard = false;
+            }
+        }
         gameScreen.playerGemsUI.update(currentPhase);
     }
 

@@ -79,7 +79,6 @@ public class Player {
         this.invulnerabilityTimer = 0;
         this.currentPhase = Phase.RED;
         // player gem ui switch update
-        this.gameScreen.playerGemsUI.update(this.currentPhase);
         this.isWizard = false;
         this.redGemCount = 0;
         this.greenGemCount = 0;
@@ -158,6 +157,7 @@ public class Player {
                 isAttacking = false;
             }
         }
+        gameScreen.playerGemsUI.updatePlayerGemsUIColor(this);
     }
 
     public void render(SpriteBatch batch) {
@@ -274,7 +274,6 @@ public class Player {
                 isWizard = false;
             }
         }
-        gameScreen.playerGemsUI.update(currentPhase);
     }
 
     public boolean isAttacking() {

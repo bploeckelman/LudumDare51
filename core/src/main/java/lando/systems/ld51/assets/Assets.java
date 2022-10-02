@@ -48,6 +48,10 @@ public class Assets implements Disposable {
     public Texture pixel;
     public Texture noiseTex;
     public TextureRegion pixelRegion;
+    public TextureRegion redProgressBar;
+    public TextureRegion blueProgressBar;
+    public TextureRegion greenProgressBar;
+
 
     public Animation<TextureRegion> cat;
     public Animation<TextureRegion> dog;
@@ -124,11 +128,6 @@ public class Assets implements Disposable {
             mgr.load("fonts/outfit-medium-40px.fnt", BitmapFont.class);
             mgr.load("fonts/outfit-medium-80px.fnt", BitmapFont.class);
 
-
-
-
-
-
             mgr.load("audio/music/introMusic.ogg", Music.class);
 
 
@@ -163,6 +162,10 @@ public class Assets implements Disposable {
         pixelUIs = new PixelUIs(this);
         creatureAnims = new CreatureAnims(this);
         effectAnims = new EffectAnims(this);
+
+        blueProgressBar = atlas.findRegion("pixel-ui-pack/blue-progress-bar");
+        redProgressBar = atlas.findRegion("pixel-ui-pack/red-progress-bar");
+        greenProgressBar = atlas.findRegion("pixel-ui-pack/green-progress-bar");
 
         smallFont = mgr.get("fonts/outfit-medium-20px.fnt");
         font      = mgr.get("fonts/outfit-medium-40px.fnt");

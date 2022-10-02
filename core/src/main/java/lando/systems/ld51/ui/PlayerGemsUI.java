@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.kotcrab.vis.ui.widget.VisWindow;
 import lando.systems.ld51.assets.Assets;
 import lando.systems.ld51.assets.ItemTextures;
-import lando.systems.ld51.assets.PixelUIs;
 import lando.systems.ld51.gameobjects.Player;
 
 public class PlayerGemsUI extends Group {
@@ -32,7 +31,7 @@ public class PlayerGemsUI extends Group {
         redGemUI.setStyle(gemUIStyle);
         redGemUI.setColor(1f, 0f, 0f, INACTIVE_ALPHA_VALUE);
 
-        redProgressBar = new GemProgressBar(.1f, false, redGemUI.getX() + 5f, redGemUI.getY() + 2.5f, redGemUI.getWidth() - 10f, redGemUI.getHeight() - 5f, skin, assets.itemTextures.get(ItemTextures.Type.gem_red), assets.pixelUIs.get(PixelUIs.Type.narrow_red_pill_center));
+        redProgressBar = new GemProgressBar(1f, false, redGemUI.getX() + 10f, redGemUI.getY() + 2.5f, redGemUI.getWidth() - 20f, redGemUI.getHeight() - 5f, skin, assets.itemTextures.get(ItemTextures.Type.gem_red), assets.redProgressBar);
 //        redGemUI.addActor(redProgressBar);
 
         greenGemUI = new VisWindow("");
@@ -40,14 +39,14 @@ public class PlayerGemsUI extends Group {
         greenGemUI.setSize(width / 3f, height);
         greenGemUI.setStyle(gemUIStyle);
         greenGemUI.setColor(Color.FOREST);
-        greenProgressBar = new GemProgressBar(.1f, false, greenGemUI.getX() + 5f, greenGemUI.getY() + 2.5f, greenGemUI.getWidth() - 10f, greenGemUI.getHeight() - 5f, skin, assets.itemTextures.get(ItemTextures.Type.gem_green), assets.pixelUIs.get(PixelUIs.Type.narrow_green_pill_center));
+        greenProgressBar = new GemProgressBar(1f, false, greenGemUI.getX() + 10f, greenGemUI.getY() + 2.5f, greenGemUI.getWidth() - 20f, greenGemUI.getHeight() - 5f, skin, assets.itemTextures.get(ItemTextures.Type.gem_green), assets.greenProgressBar);
 
         blueGemUI = new VisWindow("");
         blueGemUI.setPosition(x + 2f / 3f * width, y);
         blueGemUI.setSize(width / 3f, height);
         blueGemUI.setStyle(gemUIStyle);
         blueGemUI.setColor(0f, 0f, 1f, INACTIVE_ALPHA_VALUE);
-        blueProgressBar = new GemProgressBar(.1f, false, blueGemUI.getX() + 5f, blueGemUI.getY() + 2.5f, blueGemUI.getWidth() - 10f, blueGemUI.getHeight() - 5f, skin, assets.itemTextures.get(ItemTextures.Type.gem_blue), assets.pixelUIs.get(PixelUIs.Type.narrow_blue_pill_center));
+        blueProgressBar = new GemProgressBar(1f, false, blueGemUI.getX() + 10f, blueGemUI.getY() + 2.5f, blueGemUI.getWidth() - 20f, blueGemUI.getHeight() - 5f, skin, assets.itemTextures.get(ItemTextures.Type.gem_blue), assets.blueProgressBar);
 
         addActor(redGemUI);
         addActor(blueGemUI);
@@ -58,19 +57,30 @@ public class PlayerGemsUI extends Group {
         addActor(greenProgressBar);
     }
 
-    public void update(Player.Phase phase) {
-        if (phase == Player.Phase.BLUE) {
-            blueGemUI.setColor(0f, 0f, 1f, ACTIVE_ALPHA_VALUE);
-            redGemUI.setColor(0f, 0f, 0f, INACTIVE_ALPHA_VALUE);
-            greenGemUI.setColor(0f, 0f, 0f, INACTIVE_ALPHA_VALUE);
-        } else if (phase == Player.Phase.GREEN) {
-            blueGemUI.setColor(0f, 0f, 0f, INACTIVE_ALPHA_VALUE);
-            redGemUI.setColor(0f, 0f, 0f, INACTIVE_ALPHA_VALUE);
-            greenGemUI.setColor(Color.FOREST);
-        } else if (phase == Player.Phase.RED) {
-            blueGemUI.setColor(0f, 0f, 0f, INACTIVE_ALPHA_VALUE);
-            redGemUI.setColor(1f, 0f, 0f, ACTIVE_ALPHA_VALUE);
-            greenGemUI.setColor(0f, 0f, 0f, INACTIVE_ALPHA_VALUE);
+    public void updatePlayerGemsUIColor(Player player) {
+        if (player.isWizard) {
+            blueGemUI.setColor(Color.WHITE);
+            redGemUI.setColor(Color.WHITE);
+            greenGemUI.setColor(Color.WHITE);
+        }
+        else {
+            switch (player.getCurrentPhase()) {
+                case RED:
+                    blueGemUI.setColor(0f, 0f, 0f, INACTIVE_ALPHA_VALUE);
+                    redGemUI.setColor(1f, 0f, 0f, ACTIVE_ALPHA_VALUE);
+                    greenGemUI.setColor(0f, 0f, 0f, INACTIVE_ALPHA_VALUE);
+                    break;
+                case GREEN:
+                    blueGemUI.setColor(0f, 0f, 0f, INACTIVE_ALPHA_VALUE);
+                    redGemUI.setColor(0f, 0f, 0f, INACTIVE_ALPHA_VALUE);
+                    greenGemUI.setColor(Color.FOREST);
+                    break;
+                case BLUE:
+                    blueGemUI.setColor(0f, 0f, 1f, ACTIVE_ALPHA_VALUE);
+                    redGemUI.setColor(0f, 0f, 0f, INACTIVE_ALPHA_VALUE);
+                    greenGemUI.setColor(0f, 0f, 0f, INACTIVE_ALPHA_VALUE);
+                    break;
+            }
         }
     }
 }

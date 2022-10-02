@@ -147,7 +147,7 @@ public class GameScreen extends BaseScreen {
 
         // Camera follow things
         // TODO - maybe just make the worldCamera a FollowOrthoCam so we don't need to cast here
-        ((FollowOrthographicCamera)worldCamera).update(player.position, delta);
+        ((FollowOrthographicCamera)worldCamera).update(player.position, arena.bounds, delta);
 
         debugWindow.update();
         playerGemsUI.redProgressBar.updateProgress(player.redGemCount, player.FULL_GEM_COUNT);

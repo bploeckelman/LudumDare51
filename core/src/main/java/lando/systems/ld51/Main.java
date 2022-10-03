@@ -99,7 +99,7 @@ public class Main extends ManagedGame<BaseScreen, ScreenTransition> {
 		if (Gdx.app.getType() == Application.ApplicationType.WebGL) {
 			screenManager.pushScreen("launch", "blend");
 		} else {
-			screenManager.pushScreen("game", "blend");
+			screenManager.pushScreen("title", "blend");
 		}
 	}
 

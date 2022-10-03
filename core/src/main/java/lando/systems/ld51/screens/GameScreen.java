@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import lando.systems.ld51.Config;
 import lando.systems.ld51.Main;
 import lando.systems.ld51.assets.CreatureAnims;
+import lando.systems.ld51.assets.EffectAnims;
 import lando.systems.ld51.audio.AudioManager;
 import lando.systems.ld51.gameobjects.*;
 import lando.systems.ld51.particles.Particles;
@@ -30,6 +31,9 @@ import lando.systems.ld51.utils.screenshake.ScreenShakeCameraController;
 import java.util.Comparator;
 
 public class GameScreen extends BaseScreen {
+
+    public static float BOSS_DEATH_TIME = 5f;
+    public static float BOSS_DEATH_DELAY_THRESHOLD = 4f;
 
     public static float NORMAL_ZOOM = 1.2f;
     public static float WIZARD_ZOOM = 1.9f;
@@ -51,6 +55,7 @@ public class GameScreen extends BaseScreen {
     public CooldownTimerUI cooldownTimerUI;
 
     public BossArrow bossArrow;
+    private float bossDeathTimer;
 
     public ScreenShakeCameraController screenShaker;
 
@@ -111,6 +116,7 @@ public class GameScreen extends BaseScreen {
         screenShaker = new ScreenShakeCameraController(worldCamera);
         game.audio.playMusic(AudioManager.Musics.warriorMusic1);
 
+        bossDeathTimer = BOSS_DEATH_TIME;
         // start the phase change timer
         Main.game.mainGameTimer = 0f;
     }
@@ -130,8 +136,37 @@ public class GameScreen extends BaseScreen {
 
         if (!boss.isAlive()) {
             // Game Over dude...
-            // TODO: some exposition
-            Main.game.getScreenManager().pushScreen("endScreen", "blend");
+            projectiles.clear();
+            enemies.clear();
+            bossDeathTimer -= delta;
+
+            EffectAnims.Type effectType = EffectAnims.Type.explode_fast_blue;
+            switch(MathUtils.random(4)){
+                case 1:
+                    effectType = EffectAnims.Type.explode_puff;
+                    break;
+                case 2:
+                    effectType = EffectAnims.Type.explode_small;
+                    break;
+                case 3:
+                    effectType = EffectAnims.Type.explode_fast_orange;
+                    break;
+                case 4:
+                    effectType = EffectAnims.Type.explode_spark;
+            }
+            float degrees = MathUtils.random(360);
+            float radius = MathUtils.random(Boss.SIZE/2f);
+            particles.explode(effectType, boss.position.x + MathUtils.sinDeg(degrees) * radius, boss.position.y + MathUtils.cosDeg(degrees) * radius, MathUtils.random(80f, 150f));
+            screenShaker.addDamage(.8f);
+            if (bossDeathTimer<BOSS_DEATH_DELAY_THRESHOLD) {
+                ((FollowOrthographicCamera) worldCamera).update(boss.position, arena.bounds, delta);
+                ((FollowOrthographicCamera) worldCamera).targetZoom = .8f;
+            }
+
+            if (bossDeathTimer < 0) {
+                Main.game.getScreenManager().pushScreen("endScreen", "blend");
+            }
+            screenShaker.update(delta);
             return;
         }
         screenShaker.update(delta);

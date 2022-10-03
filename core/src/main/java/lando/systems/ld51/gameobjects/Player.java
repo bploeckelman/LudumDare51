@@ -157,10 +157,10 @@ public class Player extends ObjectLocation {
         }
 
         movementVector.set(0,0);
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) movementVector.y = 1;
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) movementVector.y -= 1;
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) movementVector.x = 1;
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) movementVector.x -= 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP))    movementVector.y = 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN))  movementVector.y -= 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) movementVector.x = 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT))  movementVector.x -= 1;
         movementVector.nor();
 
         stateTime += dt;

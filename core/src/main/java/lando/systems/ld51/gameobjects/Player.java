@@ -376,33 +376,29 @@ public class Player extends ObjectLocation {
     public void setPhase(int phase){
         Phase nextPhase = null;
         switch(phase % 3) {
-            case 0: nextPhase = Phase.RED;
-            break;
-            case 1: nextPhase = Phase.GREEN;
-            break;
-            case 2: nextPhase = Phase.BLUE;
+            case 0: nextPhase = Phase.RED; break;
+            case 1: nextPhase = Phase.GREEN; break;
+            case 2: nextPhase = Phase.BLUE; break;
         }
         if (this.phase == nextPhase) {
             return;
         }
 
-        // TODO: anything that needs to happen on the phase change
-        // Particle effects etc
-        screen.screenShaker.addDamage(.8f);
-        Time.pause_for(0.3f);
-        this.phase = nextPhase;
-
+        // TODO: anything that needs to happen on the phase change, particle effects etc
         screen.audio.playSound(AudioManager.Sounds.lightning, 1.0f);
-        // NOTE: the animation should be changed correctly in update based on whatever phase happens to be
+        screen.screenShaker.addDamage(.8f);
+        Time.pause_for(0.2f);
+
+        this.phase = nextPhase;
         switch (this.phase){
             case RED:
                 screen.audio.playMusic(AudioManager.Musics.valueOf("warriorMusic" + musicPhase));
                 break;
             case GREEN:
-                    screen.audio.playMusic(AudioManager.Musics.valueOf("rogueMusic" + musicPhase));
+                screen.audio.playMusic(AudioManager.Musics.valueOf("rogueMusic" + musicPhase));
                 break;
             case BLUE:
-                    screen.audio.playMusic(AudioManager.Musics.valueOf("clericMusic" + musicPhase));
+                screen.audio.playMusic(AudioManager.Musics.valueOf("clericMusic" + musicPhase));
                 if (musicPhase == 3) {
                     musicPhase = 1;
                 } else {

@@ -31,7 +31,6 @@ public class GameScreen extends BaseScreen {
     public Arena arena;
     public Array<Gem> gems;
     public Array<Enemy> enemies;
-    public float accum;
 
     public final Particles particles;
     public final Array<Spawner> spawners;
@@ -55,7 +54,6 @@ public class GameScreen extends BaseScreen {
         this.boss = new Boss(this);
         this.gems = new Array<>();
         this.enemies = new Array<>();
-        this.accum = 0;
         this.particles = Main.game.particles;
         this.spawners = new Array<>();
         this.projectiles = new Array<>();
@@ -85,7 +83,6 @@ public class GameScreen extends BaseScreen {
 
         playerGemsUI = new PlayerGemsUI("", 0f, 0f, windowCamera.viewportWidth, PLAYER_GEMS_UI_HEIGHT, skin, assets);
         uiStage.addActor(playerGemsUI);
-
     }
 
     @Override
@@ -93,8 +90,11 @@ public class GameScreen extends BaseScreen {
         worldCamera = new FollowOrthographicCamera();
         worldCamera.setToOrtho(false, Config.Screen.window_width, Config.Screen.window_height);
         worldCamera.update();
+        screenShaker = new ScreenShakeCameraController(worldCamera);
         game.audio.playMusic(AudioManager.Musics.warriorMusic1);
-        this.screenShaker = new ScreenShakeCameraController(worldCamera);
+
+        // start the phase change timer
+        Main.game.mainGameTimer = 0f;
     }
 
     @Override
@@ -107,9 +107,8 @@ public class GameScreen extends BaseScreen {
             return;
         }
         screenShaker.update(delta);
-        accum += delta;
 
-        player.setPhase((int)(accum / 10f));
+        player.setPhase((int)(Main.game.mainGameTimer / 10f));
         arena.update(delta);
 
         for (int i = projectiles.size - 1; i >= 0; i--) {
@@ -184,7 +183,7 @@ public class GameScreen extends BaseScreen {
         playerGemsUI.redProgressBar.update(delta, player.redGemCount, player.FULL_GEM_COUNT, player.isWizard);
         playerGemsUI.blueProgressBar.update(delta, player.blueGemCount, player.FULL_GEM_COUNT, player.isWizard);
         playerGemsUI.greenProgressBar.update(delta, player.greenGemCount, player.FULL_GEM_COUNT, player.isWizard);
-        cooldownTimerUI.updateTimerValue(player, accum);
+        cooldownTimerUI.updateTimerValue(player, Main.game.mainGameTimer);
         bossHealthUI.update(delta);
         uiStage.act();
     }

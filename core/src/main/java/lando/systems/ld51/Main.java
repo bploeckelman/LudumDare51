@@ -42,6 +42,8 @@ public class Main extends ManagedGame<BaseScreen, ScreenTransition> {
 	public TextureRegion frameBufferRegion;
 	public OrthographicCamera windowCamera;
 
+	public float mainGameTimer = 0f;
+
 	@Override
 	public void create() {
 		Main.game = this;
@@ -112,6 +114,7 @@ public class Main extends ManagedGame<BaseScreen, ScreenTransition> {
 			Time.update();
 			GdxAI.getTimepiece().update(Time.delta);
 			tween.update(Time.delta);
+			mainGameTimer += Time.delta;
 		}
 
 		// handle a pause

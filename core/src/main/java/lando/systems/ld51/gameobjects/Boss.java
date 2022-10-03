@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import lando.systems.ld51.Main;
 import lando.systems.ld51.assets.EffectAnims;
 import lando.systems.ld51.screens.GameScreen;
 
@@ -87,9 +88,9 @@ public class Boss extends ObjectLocation {
         stateTime += dt;
 
         if (!screen.player.isWizard()){
-            if (screen.accum % 10f > 9.15f || screen.accum %10 < .25f){
+            if (Main.game.mainGameTimer % 10f > 9.15f || Main.game.mainGameTimer %10 < .25f){
                 animation = animationsByState.get(State.attack_spell);
-                stateTime = (screen.accum + .85f) % 1;
+                stateTime = (Main.game.mainGameTimer + .85f) % 1;
                 currentState = State.attack_spell;
             } else {
                 animation = animationsByState.get(State.idle_a);
@@ -100,7 +101,7 @@ public class Boss extends ObjectLocation {
             finalAttackTimer -= dt;
             // Fighting time
             if (health > MAX_HEALTH * .75f){
-                if ((int)(screen.accum % 5f) == 3){
+                if ((int)(Main.game.mainGameTimer % 5f) == 3){
                     if (attackTimer < 0){
                         attackTimer = .3f;
                         tempVec.set(screen.player.position).sub(position);
@@ -112,7 +113,7 @@ public class Boss extends ObjectLocation {
                 }
 
             } else if (health > MAX_HEALTH * .5f) {
-                if ((int)(screen.accum % 10f) == 5){
+                if ((int)(Main.game.mainGameTimer % 10f) == 5){
                     if (attackTimer < 0){
                         attackTimer = 2.3f;
                         fireballArc(screen.player.position, 315f, 50, true, EffectAnims.Type.fireball_green, 100);
@@ -122,7 +123,7 @@ public class Boss extends ObjectLocation {
                     currentState = State.idle_a;
                 }
             } else if (health > MAX_HEALTH * .25f) {
-                if ((int)(screen.accum % 10f) == 5){
+                if ((int)(Main.game.mainGameTimer % 10f) == 5){
                     if (attackTimer < 0){
                         cycleCount++;
                         attackTimer = .78f;
@@ -142,7 +143,7 @@ public class Boss extends ObjectLocation {
                     tempVec.set(screen.player.position).sub(position);
                     shootFireball(tempVec.angleDeg(), EffectAnims.Type.fireball_red, 100, 100);
                 }
-                if ((int)(screen.accum % 5f) == 3){
+                if ((int)(Main.game.mainGameTimer % 5f) == 3){
                     if (attackTimer < 0){
                         attackTimer = 2.3f;
                         if (MathUtils.randomBoolean()) {

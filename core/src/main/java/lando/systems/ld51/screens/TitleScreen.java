@@ -40,14 +40,18 @@ public class TitleScreen extends BaseScreen {
     public MutableFloat triggerAlpha;
     public Color gradient;
     public Color light;
+    public Color triggerColor;
 
     public boolean drawUI;
     public boolean drawGradient;
+
+    public float accum;
 
     @Override
     public void create() {
         drawUI = false;
         drawGradient = false;
+        triggerColor = new Color(Color.WHITE);
         wizardPos = new Vector2(0, -500);
         charPos = new Vector2(200, 0);
         beamFade = new Color(1.1f, 1.1f, 0f, 1f);
@@ -68,13 +72,13 @@ public class TitleScreen extends BaseScreen {
                 }))
                 .push(Tween.to(gradient, ColorAccessor.R, 2.f)
                         .target(0f))
-                .push(Tween.to(light, ColorAccessor.B, 1f)
+                .push(Tween.to(light, ColorAccessor.B, .5f)
                         .target(0f).ease(Linear.INOUT))
                 .push(Tween.to(chromeAlpha, 1, .5f)
                         .target(1f))
                 .push(Tween.to(triggerAlpha, 1, .5f)
                         .target(1f))
-                .delay(1f)
+                .pushPause(1f)
                 .push(Tween.call((type, source) -> {
                     drawUI = true;
                     InputMultiplexer mux = new InputMultiplexer(uiStage);
@@ -88,7 +92,8 @@ public class TitleScreen extends BaseScreen {
     @Override
     public void update(float delta) {
         super.update(delta);
-
+        accum += delta;
+        triggerColor.fromHsv(accum*30f, 1f, 1f);
 
     }
 
@@ -140,7 +145,7 @@ public class TitleScreen extends BaseScreen {
             batch.setColor(1, 1, 1, chromeAlpha.floatValue());
             batch.draw(assets.titleChromeEdge, 0, 0, windowCamera.viewportWidth, windowCamera.viewportHeight);
             batch.draw(assets.titleChromeGradient, 0, 0, windowCamera.viewportWidth, windowCamera.viewportHeight);
-            batch.setColor(1, 1, 1, triggerAlpha.floatValue());
+            batch.setColor(triggerColor.r, triggerColor.g, triggerColor.b, triggerAlpha.floatValue());
             batch.draw(assets.titleTrigger, 0, 0, windowCamera.viewportWidth, windowCamera.viewportHeight);
 
             batch.setColor(Color.WHITE);

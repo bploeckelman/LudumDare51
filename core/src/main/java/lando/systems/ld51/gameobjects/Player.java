@@ -338,7 +338,7 @@ public class Player extends ObjectLocation {
         blueGemCount -= blueToLose;
 
         screen.audio.playSound(AudioManager.Sounds.playerImpact, .75F);
-        screen.audio.playSound(AudioManager.Sounds.playerHit, 4.0F);
+        screen.audio.playSound(AudioManager.Sounds.playerHit, 6.0F);
         screen.audio.playSound(AudioManager.Sounds.playerDropGems, 0.1F);
         screen.particles.dropGems(redToLose, greenToLose,  blueToLose, position.x, position.y);
 
@@ -446,6 +446,7 @@ public class Player extends ObjectLocation {
                     screen.audio.playMusic(AudioManager.Musics.wizardMusic1);
                 }
                 wizardMusicIsPlaying = true;
+
 
             }
         } else {

@@ -51,7 +51,7 @@ public class Player extends ObjectLocation {
     public static float SPEED_NORMAL = 340f;
     public static float SPEED_WIZARD = 450f;
     public static float SPEED = SPEED_NORMAL;
-    public static int FULL_GEM_COUNT = 10;
+    public static int FULL_GEM_COUNT = 50;
 
     private final GameScreen screen;
 
@@ -323,6 +323,14 @@ public class Player extends ObjectLocation {
         int redToLose = redGemCount / 4;
         int greenToLose = greenGemCount / 4;
         int blueToLose = blueGemCount / 4;
+
+        redGemCount -= redToLose;
+        greenGemCount -= greenToLose;
+        blueGemCount -= blueToLose;
+
+        screen.audio.playSound(AudioManager.Sounds.gemDrop);
+        screen.particles.dropCoins(redToLose, greenToLose,  blueToLose, position.x, position.y);
+
         int totalLost = redToLose + blueToLose + greenToLose;
         if (totalLost == 0){
             // Kill them?

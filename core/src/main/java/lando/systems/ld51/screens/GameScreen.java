@@ -48,7 +48,6 @@ public class GameScreen extends BaseScreen {
 
     private final float BOSS_HEALTH_UI_HEIGHT = 30f;
     private final float PLAYER_GEMS_UI_HEIGHT = 30f;
-    public float bossCooldownRemainingPercentage = 1f;
 
     public GameScreen(){
         this.arena = new Arena(this);
@@ -60,6 +59,7 @@ public class GameScreen extends BaseScreen {
         this.particles = Main.game.particles;
         this.projectiles = new Array<>();
         this.enemySpawner = new EnemySpawner();
+        bossHealthUI.setBoss(boss);
     }
 
     @Override
@@ -71,9 +71,11 @@ public class GameScreen extends BaseScreen {
         uiStage.addActor(debugWindow);
 
         //boss health ui
-        bossHealthUI = new BossHealthUI("", true, 0f, windowCamera.viewportHeight - BOSS_HEALTH_UI_HEIGHT, windowCamera.viewportWidth, BOSS_HEALTH_UI_HEIGHT, skin, boss);
+        bossHealthUI = new BossHealthUI("", true, 0f, windowCamera.viewportHeight - BOSS_HEALTH_UI_HEIGHT, windowCamera.viewportWidth, BOSS_HEALTH_UI_HEIGHT, skin);
         bossHealthUI.setVisible(true);
         uiStage.addActor(bossHealthUI);
+
+        uiStage.addActor(bossHealthUI.bossHealthBar);
 
         cooldownTimerUI = new CooldownTimerUI(0f, PLAYER_GEMS_UI_HEIGHT, windowCamera.viewportWidth, PLAYER_GEMS_UI_HEIGHT, skin, assets);
         uiStage.addActor(cooldownTimerUI);
@@ -176,6 +178,7 @@ public class GameScreen extends BaseScreen {
         playerGemsUI.blueProgressBar.update(delta, player.blueGemCount, player.FULL_GEM_COUNT, player.isWizard);
         playerGemsUI.greenProgressBar.update(delta, player.greenGemCount, player.FULL_GEM_COUNT, player.isWizard);
         cooldownTimerUI.updateTimerValue(player, accum);
+        bossHealthUI.update(delta);
         uiStage.act();
     }
 
@@ -218,7 +221,7 @@ public class GameScreen extends BaseScreen {
 
     class EnemySpawner {
         private float timer = 0f;
-        private float duration = 3f;
+        private float duration = 2f;
         Enemy update(float delta) {
             Enemy enemy = null;
             timer += delta;

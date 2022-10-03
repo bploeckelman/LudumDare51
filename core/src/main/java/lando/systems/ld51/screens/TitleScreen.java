@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import lando.systems.ld51.assets.Assets;
 import lando.systems.ld51.audio.AudioManager;
@@ -27,8 +29,8 @@ public class TitleScreen extends BaseScreen {
     public void create() {
         gdx = assets.atlas.findRegion("libgdx");
         state = 0f;
-        game.audio.playSound(AudioManager.Sounds.introMusic, 0.8f);
-        InputMultiplexer mux = new InputMultiplexer(uiStage);
+        game.audio.loopSound(AudioManager.Sounds.introMusic, 0.8f);
+        InputMultiplexer mux = new InputMultiplexer(this, uiStage);
         Gdx.input.setInputProcessor(mux);
     }
 
@@ -82,11 +84,11 @@ public class TitleScreen extends BaseScreen {
         Gdx.app.log("startbuttonwidth&height", "width: " + startGameButton.getWidth() + " & height: " + startGameButton.getHeight());
         startGameButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
         startGameButton.setPosition(windowCamera.viewportWidth / 2f - startGameButton.getWidth() / 2f, windowCamera.viewportHeight / 3f);
-        startGameButton.addListener(new ChangeListener(){
+        startGameButton.addListener(new ClickListener(){
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                    game.audio.stopAllSounds();
-                    game.getScreenManager().pushScreen("game", "blend");
+            public void clicked(InputEvent event, float x, float y) {
+                game.audio.stopAllSounds();
+                game.getScreenManager().pushScreen("game", "blend");
             }
         });
 

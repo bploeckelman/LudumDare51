@@ -1,14 +1,22 @@
 package lando.systems.ld51.ui;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.kotcrab.vis.ui.widget.VisProgressBar;
 import com.kotcrab.vis.ui.widget.VisWindow;
 import lando.systems.ld51.assets.Assets;
 import lando.systems.ld51.gameobjects.Boss;
+import lando.systems.ld51.utils.Utils;
 
 public class BossHealthUI extends VisWindow {
 
-    public BossHealthUI(String title, boolean showWindowBorder, float x, float y, float width, float height, Skin skin, Boss boss) {
+    private Boss boss;
+    private VisProgressBar.ProgressBarStyle bossProgressBarStyle;
+    public VisProgressBar bossHealthBar;
+
+    public BossHealthUI(String title, boolean showWindowBorder, float x, float y, float width, float height, Skin skin) {
         super(title, showWindowBorder);
         VisWindow.WindowStyle defaultStyle = skin.get("default", VisWindow.WindowStyle.class);
         VisWindow.WindowStyle upperUIStyle = new VisWindow.WindowStyle(defaultStyle);
@@ -17,8 +25,49 @@ public class BossHealthUI extends VisWindow {
         setPosition(x, y);
         setSize(width, height);
 
-        VisProgressBar bossHealthBar = new VisProgressBar(0f, 100f, 1f, false);
+        VisProgressBar.ProgressBarStyle horizontalProgressBarStyle = skin.get("default-horizontal", VisProgressBar.ProgressBarStyle.class);
+        bossProgressBarStyle = new VisProgressBar.ProgressBarStyle(horizontalProgressBarStyle);
+        bossProgressBarStyle.knobAfter =  new TextureRegionDrawable(Utils.getColoredTextureRegion(Color.YELLOW));
+        bossProgressBarStyle.knobBefore =  new TextureRegionDrawable(Utils.getColoredTextureRegion(Color.GREEN));
+        bossHealthBar = new VisProgressBar(75f, 100f, 1f, false);
+        bossHealthBar.setValue(100f);
+        bossHealthBar.setStyle(bossProgressBarStyle);
+        bossHealthBar.setSize(width - 20f, height -5f);
+        bossHealthBar.setPosition(x + 10f, y + 2.5f);
+    }
 
+    public void setBoss(Boss boss) {
+        this.boss = boss;
+    }
+
+    public void update(float delta) {
+        if (boss == null) {
+            return;
+        }
+        float bossHealthPercentage = boss.health / boss.MAX_HEALTH * 100f;
+        Gdx.app.log("boss health", String.valueOf(boss.health));
+        bossHealthBar.setValue(bossHealthPercentage);
+        if (bossHealthPercentage >= 75f) {
+            bossProgressBarStyle.knobAfter =  new TextureRegionDrawable(Utils.getColoredTextureRegion(Color.YELLOW));
+            bossProgressBarStyle.knobBefore =  new TextureRegionDrawable(Utils.getColoredTextureRegion(Color.GREEN));
+            bossHealthBar.setRange(75f, 100f);
+            bossHealthBar.setStyle(bossProgressBarStyle);
+        } else if (bossHealthPercentage >= 50f) {
+            bossProgressBarStyle.knobAfter =  new TextureRegionDrawable(Utils.getColoredTextureRegion(Color.ORANGE));
+            bossProgressBarStyle.knobBefore =  new TextureRegionDrawable(Utils.getColoredTextureRegion(Color.YELLOW));
+            bossHealthBar.setRange(50f, 75f);
+            bossHealthBar.setStyle(bossProgressBarStyle);
+        } else if (bossHealthPercentage >= 25f) {
+            bossProgressBarStyle.knobAfter =  new TextureRegionDrawable(Utils.getColoredTextureRegion(Color.RED));
+            bossProgressBarStyle.knobBefore =  new TextureRegionDrawable(Utils.getColoredTextureRegion(Color.ORANGE));
+            bossHealthBar.setRange(25f, 50f);
+            bossHealthBar.setStyle(bossProgressBarStyle);
+        } else {
+            bossProgressBarStyle.knobAfter =  new TextureRegionDrawable(Utils.getColoredTextureRegion(Color.BLACK));
+            bossProgressBarStyle.knobBefore =  new TextureRegionDrawable(Utils.getColoredTextureRegion(Color.RED));
+            bossHealthBar.setRange(0f, 25f);
+            bossHealthBar.setStyle(bossProgressBarStyle);
+        }
     }
 
 }

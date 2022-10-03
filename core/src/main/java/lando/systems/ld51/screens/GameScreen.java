@@ -88,7 +88,7 @@ public class GameScreen extends BaseScreen {
         worldCamera = new FollowOrthographicCamera();
         worldCamera.setToOrtho(false, Config.Screen.window_width, Config.Screen.window_height);
         worldCamera.update();
-        game.audio.playSound(AudioManager.Sounds.warriorMusic1);
+        game.audio.playMusic(AudioManager.Musics.warriorMusic1);
         this.screenShaker = new ScreenShakeCameraController(worldCamera);
     }
 

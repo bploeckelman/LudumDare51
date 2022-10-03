@@ -58,7 +58,17 @@ public class AudioManager implements Disposable {
     public enum Musics {
         none
         ,introMusic
+        ,wizardMusic1
         ,warriorMusic1
+        ,warriorMusic2
+        ,warriorMusic3
+        ,rogueMusic1
+        ,rogueMusic2
+        ,rogueMusic3
+        ,clericMusic1
+        ,clericMusic2
+        ,clericMusic3
+
     }
 
     public ObjectMap<Sounds, SoundContainer> sounds = new ObjectMap<>();
@@ -77,19 +87,19 @@ public class AudioManager implements Disposable {
 
 //        putSound(Sounds.chaching, assets.chachingSound);
 
-        putSound(Sounds.introMusic, assets.introMusicSound);
-
-        putSound(Sounds.warriorMusic1, assets.warriorMusic1);
-        putSound(Sounds.warriorMusic2, assets.warriorMusic2);
-        putSound(Sounds.warriorMusic3, assets.warriorMusic3);
-        putSound(Sounds.rogueMusic1, assets.rogueMusic1);
-        putSound(Sounds.rogueMusic2, assets.rogueMusic2);
-        putSound(Sounds.rogueMusic3, assets.rogueMusic3);
-        putSound(Sounds.clericMusic1, assets.clericMusic1);
-        putSound(Sounds.clericMusic2, assets.clericMusic2);
-        putSound(Sounds.clericMusic3, assets.clericMusic3);
-
-        putSound(Sounds.wizardMusic1, assets.wizardMusic1);
+//        putSound(Sounds.introMusic, assets.introMusicSound);
+//
+//        putSound(Sounds.warriorMusic1, assets.warriorMusic1);
+//        putSound(Sounds.warriorMusic2, assets.warriorMusic2);
+//        putSound(Sounds.warriorMusic3, assets.warriorMusic3);
+//        putSound(Sounds.rogueMusic1, assets.rogueMusic1);
+//        putSound(Sounds.rogueMusic2, assets.rogueMusic2);
+//        putSound(Sounds.rogueMusic3, assets.rogueMusic3);
+//        putSound(Sounds.clericMusic1, assets.clericMusic1);
+//        putSound(Sounds.clericMusic2, assets.clericMusic2);
+//        putSound(Sounds.clericMusic3, assets.clericMusic3);
+//
+//        putSound(Sounds.wizardMusic1, assets.wizardMusic1);
 
 
         putSound(Sounds.swipe, assets.swipe1);
@@ -122,6 +132,7 @@ public class AudioManager implements Disposable {
         putSound(Sounds.scorch, assets.scorch2);
         putSound(Sounds.scorch, assets.scorch3);
         putSound(Sounds.scorch, assets.scorch4);
+        putSound(Sounds.lightning, assets.lightning1);
 //        putSound(Sounds.fireball, assets.fireball5);
 
 
@@ -129,7 +140,19 @@ public class AudioManager implements Disposable {
 
 
         musics.put(Musics.introMusic, assets.introMusicMusic);
-//        musics.put(Musics.warriorMusic1, assets.warriorMusic1);
+        musics.put(Musics.wizardMusic1, assets.wizardMusic1);
+
+        musics.put(Musics.warriorMusic1, assets.warriorMusic1);
+        musics.put(Musics.warriorMusic2, assets.warriorMusic2);
+        musics.put(Musics.warriorMusic3, assets.warriorMusic3);
+
+        musics.put(Musics.rogueMusic1, assets.rogueMusic1);
+        musics.put(Musics.rogueMusic2, assets.rogueMusic2);
+        musics.put(Musics.rogueMusic3, assets.rogueMusic3);
+
+        musics.put(Musics.clericMusic1, assets.clericMusic1);
+        musics.put(Musics.clericMusic2, assets.clericMusic2);
+        musics.put(Musics.clericMusic3, assets.clericMusic3);
 
 
         musicVolume = new MutableFloat(.5f); 

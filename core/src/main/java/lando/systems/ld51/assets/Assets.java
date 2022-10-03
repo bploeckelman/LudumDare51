@@ -75,18 +75,19 @@ public class Assets implements Disposable {
     public ShaderProgram shieldShader;
 
     public Music introMusicMusic;
+    public Music warriorMusic1Music;
 
-    public Sound introMusicSound;
-    public Sound warriorMusic1;
-    public Sound warriorMusic2;
-    public Sound warriorMusic3;
-    public Sound rogueMusic1;
-    public Sound rogueMusic2;
-    public Sound rogueMusic3;
-    public Sound clericMusic1;
-    public Sound clericMusic2;
-    public Sound clericMusic3;
-    public Sound wizardMusic1;
+    public Music introMusicSound;
+    public Music warriorMusic1;
+    public Music warriorMusic2;
+    public Music warriorMusic3;
+    public Music rogueMusic1;
+    public Music rogueMusic2;
+    public Music rogueMusic3;
+    public Music clericMusic1;
+    public Music clericMusic2;
+    public Music clericMusic3;
+    public Music wizardMusic1;
 
     public Sound swipe1;
     public Sound swipe2;
@@ -116,6 +117,7 @@ public class Assets implements Disposable {
     public Sound scorch2;
     public Sound scorch3;
     public Sound scorch4;
+    public Sound lightning1;
 //    public Sound collect1;
 ////    public Sound ;
 //    public Sound ;
@@ -175,20 +177,21 @@ public class Assets implements Disposable {
             mgr.load("fonts/outfit-medium-80px.fnt", BitmapFont.class);
 
             mgr.load("audio/music/introMusic.ogg", Music.class);
+            mgr.load("audio/music/warriorMusicA.ogg", Music.class);
 
 
-            mgr.load("audio/sound/introMusic.ogg", Sound.class);
-            mgr.load("audio/sound/wizardMusic1.ogg", Sound.class);
+            mgr.load("audio/sound/introMusic.ogg", Music.class);
+            mgr.load("audio/sound/wizardMusic1.ogg", Music.class);
 
-            mgr.load("audio/sound/warriorMusicA.ogg", Sound.class);
-            mgr.load("audio/sound/warriorMusicB.ogg", Sound.class);
-            mgr.load("audio/sound/warriorMusicC.ogg", Sound.class);
-            mgr.load("audio/sound/rogueMusicA.ogg", Sound.class);
-            mgr.load("audio/sound/rogueMusicB.ogg", Sound.class);
-            mgr.load("audio/sound/rogueMusicC.ogg", Sound.class);
-            mgr.load("audio/sound/clericMusicA.ogg", Sound.class);
-            mgr.load("audio/sound/clericMusicB.ogg", Sound.class);
-            mgr.load("audio/sound/clericMusicC.ogg", Sound.class);
+            mgr.load("audio/sound/warriorMusicA.ogg", Music.class);
+            mgr.load("audio/sound/warriorMusicB.ogg", Music.class);
+            mgr.load("audio/sound/warriorMusicC.ogg", Music.class);
+            mgr.load("audio/sound/rogueMusicA.ogg", Music.class);
+            mgr.load("audio/sound/rogueMusicB.ogg", Music.class);
+            mgr.load("audio/sound/rogueMusicC.ogg", Music.class);
+            mgr.load("audio/sound/clericMusicA.ogg", Music.class);
+            mgr.load("audio/sound/clericMusicB.ogg", Music.class);
+            mgr.load("audio/sound/clericMusicC.ogg", Music.class);
 
 
             mgr.load("audio/sound/impact1.ogg", Sound.class);
@@ -217,6 +220,7 @@ public class Assets implements Disposable {
             mgr.load("audio/sound/scorch2.ogg", Sound.class);
             mgr.load("audio/sound/scorch3.ogg", Sound.class);
             mgr.load("audio/sound/scorch4.ogg", Sound.class);
+            mgr.load("audio/sound/lightning1.ogg", Sound.class);
 //            mgr.load("audio/sound/.ogg", Sound.class);
 //            mgr.load("audio/sound/.ogg", Sound.class);
 
@@ -356,20 +360,20 @@ public class Assets implements Disposable {
 
 
         // Music clips as Sound objects
-        introMusicSound = mgr.get("audio/sound/introMusic.ogg", Sound.class);
-        wizardMusic1 = mgr.get("audio/sound/wizardMusic1.ogg", Sound.class);
+        introMusicSound = mgr.get("audio/sound/introMusic.ogg", Music.class);
+        wizardMusic1 = mgr.get("audio/sound/wizardMusic1.ogg", Music.class);
 
-        warriorMusic1 = mgr.get("audio/sound/warriorMusicB.ogg", Sound.class);
-        warriorMusic2 = mgr.get("audio/sound/warriorMusicA.ogg", Sound.class);
-        warriorMusic3 = mgr.get("audio/sound/warriorMusicC.ogg", Sound.class);
+        warriorMusic1 = mgr.get("audio/sound/warriorMusicB.ogg", Music.class);
+        warriorMusic2 = mgr.get("audio/sound/warriorMusicA.ogg", Music.class);
+        warriorMusic3 = mgr.get("audio/sound/warriorMusicC.ogg", Music.class);
 
-        rogueMusic1 = mgr.get("audio/sound/rogueMusicA.ogg", Sound.class);
-        rogueMusic2 = mgr.get("audio/sound/rogueMusicC.ogg", Sound.class);
-        rogueMusic3 = mgr.get("audio/sound/rogueMusicB.ogg", Sound.class);
+        rogueMusic1 = mgr.get("audio/sound/rogueMusicA.ogg", Music.class);
+        rogueMusic2 = mgr.get("audio/sound/rogueMusicC.ogg", Music.class);
+        rogueMusic3 = mgr.get("audio/sound/rogueMusicB.ogg", Music.class);
 
-        clericMusic1 = mgr.get("audio/sound/clericMusicC.ogg", Sound.class);
-        clericMusic2 = mgr.get("audio/sound/clericMusicB.ogg", Sound.class);
-        clericMusic3 = mgr.get("audio/sound/clericMusicA.ogg", Sound.class);
+        clericMusic1 = mgr.get("audio/sound/clericMusicC.ogg", Music.class);
+        clericMusic2 = mgr.get("audio/sound/clericMusicB.ogg", Music.class);
+        clericMusic3 = mgr.get("audio/sound/clericMusicA.ogg", Music.class);
 
         // Sound effects
          swipe1 = mgr.get("audio/sound/swipe1.ogg", Sound.class);
@@ -398,6 +402,8 @@ public class Assets implements Disposable {
          scorch2 = mgr.get("audio/sound/scorch2.ogg", Sound.class);
          scorch3 = mgr.get("audio/sound/scorch3.ogg", Sound.class);
          scorch4 = mgr.get("audio/sound/scorch4.ogg", Sound.class);
+         lightning1 = mgr.get("audio/sound/lightning1.ogg", Sound.class);
+//         warriorMusic1Music = mgr.get("audio/music/warriorMusicA.ogg", Music.class);
 //         = mgr.get("audio/sound/.ogg", Sound.class);
 //         = mgr.get("audio/sound/.ogg", Sound.class);
 

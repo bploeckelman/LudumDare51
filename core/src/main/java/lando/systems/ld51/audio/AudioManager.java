@@ -51,6 +51,9 @@ public class AudioManager implements Disposable {
         , transformIntoRogue
         , transformIntoCleric
         , lightning
+        , playerHit
+        , playerImpact
+        , playerDropGems
 //        ,
 //        , impactLight
 //        , impactWet
@@ -138,6 +141,21 @@ public class AudioManager implements Disposable {
         putSound(Sounds.warriorGemsFull, assets.warriorGemsFull);
         putSound(Sounds.rogueGemsFull, assets.rogueGemsFull);
         putSound(Sounds.clericGemsFull, assets.clericGemsFull);
+        putSound(Sounds.playerHit, assets.playerHit1);
+        putSound(Sounds.playerHit, assets.playerHit2);
+        putSound(Sounds.playerHit, assets.playerHit3);
+        putSound(Sounds.playerHit, assets.playerHit4);
+        putSound(Sounds.playerHit, assets.playerHit5);
+        putSound(Sounds.playerHit, assets.playerHit6);
+        putSound(Sounds.playerHit, assets.playerHit7);
+        putSound(Sounds.playerImpact, assets.playerImpact1);
+        putSound(Sounds.playerImpact, assets.playerImpact2);
+        putSound(Sounds.playerImpact, assets.playerImpact3);
+        putSound(Sounds.playerImpact, assets.playerImpact4);
+        putSound(Sounds.playerDropGems, assets.playerDropGems1);
+        putSound(Sounds.playerDropGems, assets.playerDropGems2);
+        putSound(Sounds.playerDropGems, assets.playerDropGems3);
+        putSound(Sounds.playerDropGems, assets.playerDropGems4);
 //        putSound(Sounds.fireball, assets.fireball5);
 
 

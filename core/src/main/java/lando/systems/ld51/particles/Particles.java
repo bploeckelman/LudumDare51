@@ -160,11 +160,11 @@ public class Particles implements Disposable {
             activeParticles.get(Layer.foreground).add(Particle.initializer(particlePool.obtain())
                     .keyframe(keyframe)
                             .startPos(tempStart.x + tempVec2.x * (5*i), tempStart.y + tempVec2.y * (5*i))
-                            .startSize(size, 10)
+                            .startSize(size, 15)
                             .startColor(1f, 1f, 0, 1f)
                             .endColor(.3f, .3f, .3f, .3f)
                             .startRotation(angle + MathUtils.random(-30, 30))
-                            .timeToLive(.5f * i / (dist/5f))
+                            .timeToLive(.8f * i / (dist/5f))
                     .init()
             );
         }

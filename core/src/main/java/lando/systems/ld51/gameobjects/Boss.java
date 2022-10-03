@@ -156,7 +156,7 @@ public class Boss extends ObjectLocation {
                     }
                 } else {
                     animation = animationsByState.get(State.idle_b);
-                    currentState = State.idle_a;
+                    currentState = State.idle_b;
                 }
             }
         }

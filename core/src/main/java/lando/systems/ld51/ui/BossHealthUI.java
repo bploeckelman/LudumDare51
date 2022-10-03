@@ -25,11 +25,14 @@ public class BossHealthUI extends VisWindow {
         super(title, showWindowBorder);
         this.assets = assets;
         this.windowCamera = windowCamera;
+
+        float topMargin = 10f;
+
         VisWindow.WindowStyle defaultStyle = skin.get("default", VisWindow.WindowStyle.class);
         VisWindow.WindowStyle upperUIStyle = new VisWindow.WindowStyle(defaultStyle);
         upperUIStyle.background = Assets.Patch.glass.drawable;
         setStyle(upperUIStyle);
-        setPosition(x, y);
+        setPosition(x, y - topMargin);
         setSize(width, height);
 
         VisProgressBar.ProgressBarStyle horizontalProgressBarStyle = skin.get("default-horizontal", VisProgressBar.ProgressBarStyle.class);
@@ -40,7 +43,7 @@ public class BossHealthUI extends VisWindow {
         bossHealthBar.setValue(100f);
         bossHealthBar.setStyle(bossProgressBarStyle);
         bossHealthBar.setSize(width - 10f, height -5f);
-        bossHealthBar.setPosition(x + 5f, y + 2.5f);
+        bossHealthBar.setPosition(x + 5f, y + 2.5f - topMargin);
 
         bossImageLeft = new Image(new TextureRegionDrawable(assets.bossPortraitRight));
         bossImageLeft.setPosition(0f, windowCamera.viewportHeight - bossImageLeft.getHeight());

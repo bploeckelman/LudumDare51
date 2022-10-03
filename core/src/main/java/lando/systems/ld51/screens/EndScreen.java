@@ -7,22 +7,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
-
 import lando.systems.ld51.Config;
-import lando.systems.ld51.gameobjects.Player;
-import lando.systems.ld51.ui.TutorialUI;
-
 import lando.systems.ld51.audio.AudioManager;
 import lando.systems.ld51.gameobjects.Player;
-import org.lwjgl.Sys;
-
-import lando.systems.ld51.Config;
-import lando.systems.ld51.gameobjects.Player;
-import lando.systems.ld51.ui.TutorialUI;
+import lando.systems.ld51.ui.StatsUI;
 
 public class EndScreen extends BaseScreen {
 
@@ -41,8 +31,7 @@ public class EndScreen extends BaseScreen {
     private Texture backgroundTexture;
     private Color whiteWithAlpha;
     private boolean isEndOver = false;
-    private boolean isTutorialShown = false;
-    private TutorialUI tutorialUI;
+    private StatsUI statsUI;
 
     private boolean outroNarrationIsGoing = false;
 
@@ -69,13 +58,6 @@ public class EndScreen extends BaseScreen {
         subtitles = "";
         playerTexture1 = game.assets.playerAnimationByPhaseByState.get(Player.Phase.RED).get(Player.State.WALK).getKeyFrame(0);
 
-
-        ChangeListener listener = new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                game.getScreenManager().pushScreen("credits", "blend");
-            }
-        };
 
     }
 
@@ -179,7 +161,9 @@ public class EndScreen extends BaseScreen {
 
                 }
                 // start new Audio
-                if (isEndOver) {
+                if (!exitingScreen && Gdx.input.justTouched() && isEndOver){
+                    exitingScreen = true;
+                    game.getScreenManager().pushScreen("credit", "blend");
                 }
 
 

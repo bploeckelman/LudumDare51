@@ -100,13 +100,9 @@ public class StoryScreen extends BaseScreen {
                     break;
             }
             // start new Audio
-            if (isStoryOver) {
+            if (isStoryOver && !isTutorialShown) {
+                isTutorialShown = true;
                 tutorialUI.showTutorial();
-            }
-
-            if (!exitingScreen && isStoryOver && isTutorialShown) {
-                exitingScreen = true;
-                game.getScreenManager().pushScreen("game", "blend");
             }
         }
         uiStage.act(delta);

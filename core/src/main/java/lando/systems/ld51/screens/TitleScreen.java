@@ -88,10 +88,13 @@ public class TitleScreen extends BaseScreen {
         titleScreenButtonStyle.down = Assets.Patch.glass_dim.drawable;
         titleScreenButtonStyle.over = Assets.Patch.glass_dim.drawable;
 
+        float left = windowCamera.viewportWidth * (5f / 8f);
+        float top = windowCamera.viewportHeight * (1f / 2f);
+
         startGameButton = new TextButton("Start Game", titleScreenButtonStyle);
         Gdx.app.log("startbuttonwidth&height", "width: " + startGameButton.getWidth() + " & height: " + startGameButton.getHeight());
         startGameButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        startGameButton.setPosition(windowCamera.viewportWidth / 2f - startGameButton.getWidth() / 2f, windowCamera.viewportHeight / 3f);
+        startGameButton.setPosition(left, top);
         startGameButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -102,7 +105,7 @@ public class TitleScreen extends BaseScreen {
 
         settingsButton = new TextButton("Settings", titleScreenButtonStyle);
         settingsButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        settingsButton.setPosition(windowCamera.viewportWidth / 2f - settingsButton.getWidth() / 2f, startGameButton.getY() - startGameButton.getHeight() - BUTTON_PADDING);
+        settingsButton.setPosition(left, startGameButton.getY() - startGameButton.getHeight() - BUTTON_PADDING);
         settingsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -113,7 +116,7 @@ public class TitleScreen extends BaseScreen {
 
         creditButton = new TextButton("Credits", titleScreenButtonStyle);
         creditButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
-        creditButton.setPosition(windowCamera.viewportWidth / 2f - creditButton.getWidth() / 2f, settingsButton.getY() - settingsButton.getHeight() - BUTTON_PADDING);
+        creditButton.setPosition(left, settingsButton.getY() - settingsButton.getHeight() - BUTTON_PADDING);
         creditButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {

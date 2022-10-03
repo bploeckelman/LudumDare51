@@ -81,8 +81,7 @@ public class Main extends ManagedGame<BaseScreen, ScreenTransition> {
 		windowCamera.setToOrtho(false, Config.Screen.window_width, Config.Screen.window_height);
 		windowCamera.update();
 
-		BasicInputMultiplexer inputMux = getInputMultiplexer();//new BasicInputMultiplexer();
-//		Gdx.input.setInputProcessor(inputMux);
+		BasicInputMultiplexer inputMux = getInputMultiplexer();
 
 		screenManager.initialize(inputMux, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 		screenManager.addScreen("launch", new LaunchScreen());
@@ -93,6 +92,7 @@ public class Main extends ManagedGame<BaseScreen, ScreenTransition> {
 		screenManager.addScreen("credit", new CreditScreen());
 		screenManager.addScreenTransition("blend", new BlendingTransition(assets.batch, 0.25f));
 		screenManager.addScreenTransition("push", new PushTransition(assets.batch, SlidingDirection.UP, 0.25f));
+		// TODO - add other transition effects and use them
 
 		Gdx.input.setInputProcessor(game.getInputMultiplexer());
 

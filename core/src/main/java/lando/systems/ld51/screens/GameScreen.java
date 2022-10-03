@@ -180,6 +180,11 @@ public class GameScreen extends BaseScreen {
         cooldownTimerUI.updateTimerValue(player, Main.game.mainGameTimer);
         bossHealthUI.update(delta);
         uiStage.act();
+
+        debugWindow.setVisible(false);
+        if (Config.Debug.general) {
+            debugWindow.setVisible(true);
+        }
     }
 
     @Override

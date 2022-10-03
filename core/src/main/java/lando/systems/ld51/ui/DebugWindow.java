@@ -22,7 +22,7 @@ public class DebugWindow extends VisWindow {
         //debugWindow = new VisWindow("", true);
         setFillParent(false);
         setSize(160f, 40f);
-        setPosition(10f, windowCamera.viewportHeight - getHeight() - 10f);
+        setPosition(10f, windowCamera.viewportHeight - getHeight() - 40f);
         setColor(1f, 1f, 1f, 0.4f);
         setKeepWithinStage(false);
 

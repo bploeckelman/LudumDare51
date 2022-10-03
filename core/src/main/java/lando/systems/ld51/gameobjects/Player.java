@@ -37,7 +37,7 @@ public class Player extends ObjectLocation {
             this.weaponType = weaponType;
         }
     }
-    public enum State {SWING} // TODO - idle / run?
+    public enum State { WALK, SWING }
     public enum WeaponType { AXE, CLUB, DAGGER }
 
     @RequiredArgsConstructor
@@ -102,7 +102,7 @@ public class Player extends ObjectLocation {
     public Player(GameScreen screen) {
         this.screen = screen;
         this.phase = Phase.RED;
-        this.state = State.SWING;
+        this.state = State.WALK;
         this.position = new Vector2(Config.Screen.window_width/2f, Config.Screen.window_height/2f);
         this.velocity = new Vector2();
         this.facing = new Vector2();

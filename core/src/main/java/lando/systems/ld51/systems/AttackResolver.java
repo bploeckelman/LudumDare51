@@ -34,7 +34,7 @@ public class AttackResolver {
                 float amount = projectile.damageAmount;
                 float dx = projectile.direction.x;
                 float dy = projectile.direction.y;
-                boss.getHit(amount, dx, dy);
+                boss.getHit(amount, projectile.position.x, projectile.position.y, dx, dy);
 
                 projectile.kill();
                 projectiles.removeIndex(i);

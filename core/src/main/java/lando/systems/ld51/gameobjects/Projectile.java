@@ -24,7 +24,7 @@ public class Projectile extends ObjectLocation {
     public boolean alive;
 
     public float size;
-    public float damageAmount = 10f;
+    public float damageAmount = 1f;
 
     public final Circle bounds;
     public final Vector2 direction;

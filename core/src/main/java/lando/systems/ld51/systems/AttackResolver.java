@@ -10,6 +10,8 @@ import lando.systems.ld51.gameobjects.Projectile;
 
 public class AttackResolver {
 
+    private static float BASE_WEAPON_DAMAGE = 1f;
+    private static float SAME_TYPE_MULTIPLIER = 3f;
     private static final Vector2 attackDir = new Vector2();
 
     public static void resolve(Player player, Array<Enemy> enemies, Boss boss, Array<Projectile> projectiles) {
@@ -18,7 +20,7 @@ public class AttackResolver {
             Projectile projectile = projectiles.get(i);
             for (Enemy enemy : enemies) {
                 if (projectile.playerShot && projectile.alive && projectile.bounds.overlaps(enemy.hurtCircle)) {
-                    float amount = projectile.damageAmount;
+                    float amount = projectile.damageAmount * SAME_TYPE_MULTIPLIER;
                     float dx = projectile.direction.x;
                     float dy = projectile.direction.y;
                     enemy.hurt(amount, dx, dy);
@@ -75,7 +77,19 @@ public class AttackResolver {
                         float dy = enemy.getPosition().y - player.position.y;
                         attackDir.set(dx, dy).nor();
                         // TODO - amount should scale based on player class and type of enemy
-                        enemy.hurt(1f, attackDir.x, attackDir.y);
+                        float multiplier = 1f;
+                        switch (enemy.type.gemColor) {
+                            case RED:
+                                if (player.getCurrentPhase() == Player.Phase.RED) multiplier = SAME_TYPE_MULTIPLIER;
+                                break;
+                            case GREEN:
+                                if (player.getCurrentPhase() == Player.Phase.GREEN) multiplier = SAME_TYPE_MULTIPLIER;
+                                break;
+                            case BLUE:
+                                if (player.getCurrentPhase() == Player.Phase.BLUE) multiplier = SAME_TYPE_MULTIPLIER;
+                                break;
+                        }
+                        enemy.hurt(BASE_WEAPON_DAMAGE * multiplier, attackDir.x, attackDir.y);
                     }
                 }
             }

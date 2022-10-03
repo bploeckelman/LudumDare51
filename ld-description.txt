@@ -2,11 +2,13 @@
 - ** [Desktop/Java](https://lando.systems/games/ld51-chromo-trigger/ld51-chromo-trigger.jar) **
 - ** [Source](https://github.com/bploeckelman/LudumDare51) **
 
+![chromotrigger.gif](///raw/503/z/5168b.gif)
+
 It’s time to take up arms to conquer demons - the realm’s, and your own!
 
 In this  click-and-slash fantasy action adventure, you’ll collect colorful gems to power up each of three different classes, but there’s a twist - your class changes every 10 seconds!
 
-Collect enough gems with each class and unlock your true power!
+Collect enough gems :gem: with each class and unlock your true power!
 
 # Controls:
 ---

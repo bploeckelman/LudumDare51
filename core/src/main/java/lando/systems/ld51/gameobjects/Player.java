@@ -46,8 +46,8 @@ public class Player extends ObjectLocation {
         public final Animation<AtlasRegion> glow;
     }
 
-    public static float SIZE_NORMAL = 75f;
-    public static float SIZE_WIZARD = 100f;
+    public static float SIZE_NORMAL = 100f;
+    public static float SIZE_WIZARD = 200;
     public static float SIZE = SIZE_NORMAL;
     public static float SPEED_NORMAL = 340f;
     public static float SPEED_WIZARD = 450f;
@@ -206,12 +206,13 @@ public class Player extends ObjectLocation {
 
         // TODO - need to rework animations based on walking or attacking
         // only animate while moving
-        if (!position.epsilonEquals(prevPosX, prevPosY)) {
+        if (isWizard || !position.epsilonEquals(prevPosX, prevPosY)) {
             stateTime += dt;
             // TODO - won't need this edge case if we start using Phase.WIZARD as an actual transitionable phase
             Phase animPhase = isWizard ? Phase.WIZARD : phase;
-            animation = screen.assets.playerAnimationByPhaseByState.get(animPhase).get(state);
-            flashAnimation = screen.assets.playerFlashAnimationByPhaseByState.get(animPhase).get(state);
+            State animState = isWizard && isAttacking ? State.SWING : State.WALK;
+            animation = screen.assets.playerAnimationByPhaseByState.get(animPhase).get(animState);
+            flashAnimation = screen.assets.playerFlashAnimationByPhaseByState.get(animPhase).get(animState);
             keyframe = animation.getKeyFrame(stateTime);
             flashKeyframe = flashAnimation.getKeyFrame(stateTime);
         }

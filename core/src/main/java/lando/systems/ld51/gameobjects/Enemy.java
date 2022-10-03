@@ -151,7 +151,7 @@ public class Enemy implements Steerable<Vector2> {
                 batch.setColor(Color.GREEN);
                 break;
             case BLUE:
-                batch.setColor(.3f, .3f, 1f, 1f);
+                batch.setColor(Color.ROYAL);
                 break;
         }
         batch.draw(screen.assets.circleTex, position.x - 4, position.y +size/2f, 8, 8);

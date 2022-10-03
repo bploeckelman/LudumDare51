@@ -43,7 +43,9 @@ public class AudioManager implements Disposable {
         , fireball
         , scorch
         , transformIntoWizard
-        , gemsAreFull
+        , warriorGemsFull
+        , rogueGemsFull
+        , clericGemsFull
         , thud
         , transformIntoWarrior
         , transformIntoRogue
@@ -133,6 +135,9 @@ public class AudioManager implements Disposable {
         putSound(Sounds.scorch, assets.scorch3);
         putSound(Sounds.scorch, assets.scorch4);
         putSound(Sounds.lightning, assets.lightning1);
+        putSound(Sounds.warriorGemsFull, assets.warriorGemsFull);
+        putSound(Sounds.rogueGemsFull, assets.rogueGemsFull);
+        putSound(Sounds.clericGemsFull, assets.clericGemsFull);
 //        putSound(Sounds.fireball, assets.fireball5);
 
 

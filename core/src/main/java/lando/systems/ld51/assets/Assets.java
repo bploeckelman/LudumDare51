@@ -120,6 +120,9 @@ public class Assets implements Disposable {
     public Sound scorch3;
     public Sound scorch4;
     public Sound lightning1;
+    public Sound warriorGemsFull;
+    public Sound rogueGemsFull;
+    public Sound clericGemsFull;
 //    public Sound collect1;
 ////    public Sound ;
 //    public Sound ;
@@ -223,6 +226,9 @@ public class Assets implements Disposable {
             mgr.load("audio/sound/scorch3.ogg", Sound.class);
             mgr.load("audio/sound/scorch4.ogg", Sound.class);
             mgr.load("audio/sound/lightning1.ogg", Sound.class);
+            mgr.load("audio/sound/warriorGemsFull.ogg", Sound.class);
+            mgr.load("audio/sound/rogueGemsFull.ogg", Sound.class);
+            mgr.load("audio/sound/clericGemsFull.ogg", Sound.class);
 //            mgr.load("audio/sound/.ogg", Sound.class);
 //            mgr.load("audio/sound/.ogg", Sound.class);
 
@@ -408,6 +414,9 @@ public class Assets implements Disposable {
          scorch3 = mgr.get("audio/sound/scorch3.ogg", Sound.class);
          scorch4 = mgr.get("audio/sound/scorch4.ogg", Sound.class);
          lightning1 = mgr.get("audio/sound/lightning1.ogg", Sound.class);
+         warriorGemsFull = mgr.get("audio/sound/warriorGemsFull.ogg", Sound.class);
+         rogueGemsFull = mgr.get("audio/sound/rogueGemsFull.ogg", Sound.class);
+         clericGemsFull = mgr.get("audio/sound/clericGemsFull.ogg", Sound.class);
 //         warriorMusic1Music = mgr.get("audio/music/warriorMusicA.ogg", Music.class);
 //         = mgr.get("audio/sound/.ogg", Sound.class);
 //         = mgr.get("audio/sound/.ogg", Sound.class);

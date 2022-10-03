@@ -52,7 +52,7 @@ public class Player extends ObjectLocation {
     public static float SPEED_NORMAL = 340f;
     public static float SPEED_WIZARD = 450f;
     public static float SPEED = SPEED_NORMAL;
-    public static int FULL_GEM_COUNT = 20;
+    public static int FULL_GEM_COUNT = 50;
 
     private final GameScreen screen;
 
@@ -95,6 +95,10 @@ public class Player extends ObjectLocation {
     public int musicPhase = 1;
     public boolean wizardMusicIsPlaying = false;
 
+    public float wizardTransitionTimer = 0f;
+
+
+
     public Player(GameScreen screen) {
         this.screen = screen;
         this.phase = Phase.RED;
@@ -128,6 +132,7 @@ public class Player extends ObjectLocation {
         this.hurtCircle = new Circle(position, SIZE / 4f);
         this.hurtDuration = 0.33f;
         this.hurtTimer = hurtDuration;
+
     }
 
     public void update(float dt) {
@@ -247,6 +252,9 @@ public class Player extends ObjectLocation {
 
         screen.playerGemsUI.updatePlayerGemsUIColor(this);
         hurtCircle.setPosition(position);
+
+        wizardTransitionTimer += dt;
+        System.out.println(wizardTransitionTimer);
     }
 
     public void render(SpriteBatch batch) {
@@ -359,18 +367,29 @@ public class Player extends ObjectLocation {
             case RED:
                 redGemCount++;
                 screen.playerGemsUI.redProgressBar.flashIt();
+                if(redGemCount == FULL_GEM_COUNT) {
+                    screen.audio.playSound((AudioManager.Sounds.warriorGemsFull));
+                }
 
                 break;
             case GREEN:
                 greenGemCount++;
                 screen.playerGemsUI.greenProgressBar.flashIt();
+                if(greenGemCount == FULL_GEM_COUNT) {
+                    screen.audio.playSound((AudioManager.Sounds.rogueGemsFull), 0.25F);
+                }
+
                 break;
             case BLUE:
                 blueGemCount++;
                 screen.playerGemsUI.blueProgressBar.flashIt();
+                if(blueGemCount == FULL_GEM_COUNT) {
+                    screen.audio.playSound((AudioManager.Sounds.clericGemsFull));
+                }
                 break;
         }
     }
+
 
     public void setPhase(int phase){
         Phase nextPhase = null;

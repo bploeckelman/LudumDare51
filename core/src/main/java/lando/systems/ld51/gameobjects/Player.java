@@ -414,7 +414,7 @@ public class Player extends ObjectLocation {
 
             if (redGemCount == 0 && greenGemCount == 0 && blueGemCount == 0) {
                 // TODO - kill player?
-                Gdx.app.log("Player Hurt", "Ouch, you lost all your gems dog! How you supposed to be a magic now?");
+//                Gdx.app.log("Player Hurt", "Ouch, you lost all your gems dog! How you supposed to be a magic now?");
             }
 
             screen.particles.dropGems(redToLose, greenToLose,  blueToLose, position.x, position.y);

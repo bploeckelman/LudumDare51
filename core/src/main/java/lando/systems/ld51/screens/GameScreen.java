@@ -129,11 +129,11 @@ public class GameScreen extends BaseScreen {
         super.update(delta);
 
         /// DEBUG SHIT
-        if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
-            Vector3 mouse = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            worldCamera.unproject(mouse);
-            explosions.add(new Explosion(this, mouse.x, mouse.y, 200, 100));
-        }
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
+//            Vector3 mouse = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+//            worldCamera.unproject(mouse);
+//            explosions.add(new Explosion(this, mouse.x, mouse.y, 200, 100));
+//        }
 
         /// END DEBUG SHIT
 

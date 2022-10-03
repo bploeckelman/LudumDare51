@@ -54,7 +54,8 @@ public abstract class BaseScreen extends ManagedScreen implements Disposable, In
 
     @Override
     public void hide() {
-        Gdx.input.setInputProcessor(null);
+        //sometimes hide gets called from other screen after screen is created, thus setting global inputprocessor to null.
+        //Gdx.input.setInputProcessor(null);
     }
 
     public void update(float delta) {

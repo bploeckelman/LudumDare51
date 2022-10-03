@@ -92,8 +92,10 @@ public class StoryScreen extends BaseScreen {
         playerBounds2.x += storyAccum * 2;
         playerBounds3.x += storyAccum * 2;
 
-
-        if (((Gdx.input.justTouched() && phaseAccum > .2f) || phaseAccum > 7F)&& !isStoryOver) {
+        if(clickPhase == 7 && phaseAccum > 4) {
+            subtitles = "It's kind of a whole thing";
+        }
+        if (((Gdx.input.justTouched() && phaseAccum > .2f) || phaseAccum > 7.25F)&& !isStoryOver) {
 
             storyAccum += delta * 10;
             System.out.println(phaseAccum);
@@ -102,7 +104,7 @@ public class StoryScreen extends BaseScreen {
             playerBounds2.x = (float) (storyAccum + 220);
             playerBounds3.x = (float) storyAccum + 400;
 
-            if (((Gdx.input.justTouched() && phaseAccum > .2f) || phaseAccum > 5.5F) && !isStoryOver) {
+            if (((Gdx.input.justTouched() && phaseAccum > .2f) || phaseAccum > 6F) && !isStoryOver) {
 
                 // todo cancel playing sounds
                 game.audio.stopAllSounds();
@@ -110,6 +112,7 @@ public class StoryScreen extends BaseScreen {
 
                 phaseAccum = 0;
                 clickPhase++;
+
 
 
                 switch (clickPhase) {
@@ -149,7 +152,12 @@ public class StoryScreen extends BaseScreen {
                         break;
                     case 7:
                         game.audio.playSound(AudioManager.Sounds.intro7, 2.5F);
-                        subtitles = "But we only have like, ten seconds to do it each time.\n\nIt's kind of a whole thing";
+
+                        subtitles = "But we only have like, ten seconds to do it each time.";
+                        if(phaseAccum > 3.0F) {
+                            subtitles = "It's kind of a whole thing";
+
+                        }
                         break;
                     case 8:
                         game.audio.playSound(AudioManager.Sounds.intro8, 2.5F);

@@ -80,11 +80,13 @@ public class TutorialUI extends Group {
         //tutorialWindow.setColor(Color.RED);
 
         Label settingLabel = new Label("Controls", skin, "larger");
-        tutorialWindow.add(settingLabel);
-        tutorialWindow.row();
-        Label controlLabel = new Label("Movement", skin, "large");
-        tutorialWindow.add(controlLabel).padBottom(10f);
-        tutorialWindow.row();
+        settingLabel.setColor(Color.ORANGE);
+        tutorialWindow.add(settingLabel).padBottom(20f).row();
+
+        Label controlLabel = new Label("Movement", skin, "default");
+        controlLabel.setColor(Color.LIGHT_GRAY);
+        tutorialWindow.add(controlLabel).padBottom(10f).row();
+
         Table movementControl = new Table();
         Table tableWasd = new Table();
         Table tableArrow = new Table();
@@ -111,34 +113,42 @@ public class TutorialUI extends Group {
         movementControl.add(tableArrow).padLeft(20f);
         movementControl.row();
         Label controlDescLabel1 = new Label("WASD", skin);
+        controlDescLabel1.setColor(Color.DARK_GRAY);
         movementControl.add(controlDescLabel1).padRight(20f);
         controlDescLabel1 = new Label("Arrow", skin);
         movementControl.add(controlDescLabel1).padLeft(20f);
-        movementControl.row();
-        controlDescLabel1 = new Label("Aim / Attack", skin, "large");
-        movementControl.add(controlDescLabel1).colspan(2).padBottom(10f);
+        controlDescLabel1.setColor(Color.DARK_GRAY);
+        movementControl.row().padBottom(20f);
+        controlDescLabel1 = new Label("Aim / Attack", skin, "default");
+        controlDescLabel1.setColor(Color.LIGHT_GRAY);
+        movementControl.add(controlDescLabel1).padTop(20f).colspan(2).padBottom(10f);
         movementControl.row();
         image = new Image(new TextureRegionDrawable(assets.inputPrompts.get(InputPrompts.Type.mouse_light_left)));
         movementControl.add(image).colspan(2);
         movementControl.row();
         controlDescLabel1 = new Label("Left Mouse", skin);
+        controlDescLabel1.setColor(Color.DARK_GRAY);
         movementControl.add(controlDescLabel1).colspan(2);
         tutorialWindow.add(movementControl);
         tutorialWindow.row();
-        Label objectiveLabel = new Label("Objective", skin, "larger");
-        tutorialWindow.add(objectiveLabel).padBottom(5f);
+        Label objectiveLabel = new Label("Objective", skin, "large");
+        objectiveLabel.setColor(Color.FOREST);
+        tutorialWindow.add(objectiveLabel).padTop(20f).padBottom(5f);
         tutorialWindow.row();
+
+        Label objectiveDescLabel;
         Table objectiveTable = new Table();
+        objectiveTable.padTop(10f);
         objectiveTable.align(Align.top | Align.left);
-        Label objectiveDescLabel = new Label("- Collect all 3 gems to become wizard.", skin);
-        objectiveTable.add(objectiveDescLabel).align(Align.top | Align.left).padBottom(5f);
-        objectiveTable.row();
-        objectiveDescLabel = new Label("- Don't get hit.", skin);
-        objectiveTable.add(objectiveDescLabel).align(Align.top | Align.left).padBottom(5f);
-        objectiveTable.row();
-        objectiveDescLabel = new Label("- Kill the other wizard .", skin);
-        objectiveTable.add(objectiveDescLabel).align(Align.top | Align.left).padBottom(5f);
-        objectiveTable.row();
+        objectiveDescLabel = new Label("- Kill the other wizard", skin);
+        objectiveDescLabel.setColor(Color.RED);
+        objectiveTable.add(objectiveDescLabel).align(Align.top | Align.left).padBottom(5f).row();
+        objectiveDescLabel = new Label("- Collect all 3 gems to become a wizard", skin);
+        objectiveDescLabel.setColor(Color.GREEN);
+        objectiveTable.add(objectiveDescLabel).align(Align.top | Align.left).padBottom(5f).row();
+        objectiveDescLabel = new Label("- Critical damage against same colors", skin);
+        objectiveDescLabel.setColor(Color.ROYAL);
+        objectiveTable.add(objectiveDescLabel).align(Align.top | Align.left).padBottom(5f).row();
         tutorialWindow.add(objectiveTable);
         tutorialWindow.row();
 
@@ -165,9 +175,10 @@ public class TutorialUI extends Group {
         tutorialButtonStyle.down = Assets.Patch.glass_dim.drawable;
         tutorialButtonStyle.over = Assets.Patch.glass_dim.drawable;
 
-        closeTutorialTextButton = new TextButton("Close Tutorial", tutorialButtonStyle);
+        closeTutorialTextButton = new TextButton("Start Game!", tutorialButtonStyle);
+        closeTutorialTextButton.setColor(Color.LIME);
         tutorialWindow.row();
-        tutorialWindow.add(closeTutorialTextButton).padBottom(10f).width(tutorialWindow.getWidth() - 100f).height(30f);
+        tutorialWindow.add(closeTutorialTextButton).padTop(5f).padBottom(5f).width(tutorialWindow.getWidth() - 100f).height(40f);
 
         float showDuration = 0.2f;
         float hideDuration = 0.1f;

@@ -79,6 +79,8 @@ public class Player extends ObjectLocation {
     private float hurtTimer;
     public boolean isHurt;
 
+    public Phase phase;
+    public State state;
     public Vector2 velocity;
     public Vector3 mousePos;
     public Vector2 facing;
@@ -89,12 +91,10 @@ public class Player extends ObjectLocation {
     public int redGemCount;
     public int greenGemCount;
     public int blueGemCount;
-    public Phase phase;
-    public State state;
+    public boolean lockGemsUntilWizard;
     public boolean isWizard;
     public int musicPhase = 1;
     public boolean wizardMusicIsPlaying = false;
-
     public float wizardTransitionTimer = 0f;
 
 
@@ -127,12 +127,12 @@ public class Player extends ObjectLocation {
         this.redGemCount = 0;
         this.greenGemCount = 0;
         this.blueGemCount = 0;
+        this.lockGemsUntilWizard = false;
         this.attackInterval = attackIntervalNormal;
         this.attackTimer = attackInterval;
         this.hurtCircle = new Circle(position, SIZE / 4f);
         this.hurtDuration = 0.33f;
         this.hurtTimer = hurtDuration;
-
     }
 
     public void update(float dt) {
@@ -315,7 +315,10 @@ public class Player extends ObjectLocation {
     public void hurt(float amount, float dirX, float dirY) {
         if (isHurt) return;
         isHurt = true;
-        Time.pause_for(0.15f);
+
+        Time.pause_for(0.1f);
+        screen.audio.playSound(AudioManager.Sounds.playerImpact, .75F);
+        screen.audio.playSound(AudioManager.Sounds.playerHit, 6.0F);
 
         // bounce back
         float bounceBackAmount = 20f;
@@ -327,25 +330,26 @@ public class Player extends ObjectLocation {
             attackHitShape.translate(position.x - prevPosX, position.y - prevPosY);
         }
 
-        // Lose gems when you get hit. minimum of some value
-        // TODO make this more robust with minimums and such
-        int redToLose = redGemCount / 4;
-        int greenToLose = greenGemCount / 4;
-        int blueToLose = blueGemCount / 4;
+        // lose gems
+        if (!lockGemsUntilWizard || isWizard) {
+            lockGemsUntilWizard = false;
 
-        redGemCount -= redToLose;
-        greenGemCount -= greenToLose;
-        blueGemCount -= blueToLose;
+            // TODO make this more robust with minimums and such
+            int redToLose = redGemCount / 4;
+            int greenToLose = greenGemCount / 4;
+            int blueToLose = blueGemCount / 4;
+            int totalLost = redToLose + blueToLose + greenToLose;
+            if (totalLost == 0) {
+                // Kill them?
+                Gdx.app.log("Player Hurt", "Ouch, you lost all your gems dog! How you supposed to be a magic now?");
+            }
 
-        screen.audio.playSound(AudioManager.Sounds.playerImpact, .75F);
-        screen.audio.playSound(AudioManager.Sounds.playerHit, 6.0F);
-        screen.audio.playSound(AudioManager.Sounds.playerDropGems, 0.1F);
-        screen.particles.dropGems(redToLose, greenToLose,  blueToLose, position.x, position.y);
+            redGemCount -= redToLose;
+            greenGemCount -= greenToLose;
+            blueGemCount -= blueToLose;
 
-        int totalLost = redToLose + blueToLose + greenToLose;
-        if (totalLost == 0){
-            // Kill them?
-            Gdx.app.log("Player Hurt", "Ouch, you lost all your gems dog! How you supposed to be a magic now?");
+            screen.particles.dropGems(redToLose, greenToLose,  blueToLose, position.x, position.y);
+            screen.audio.playSound(AudioManager.Sounds.playerDropGems, 0.1F);
         }
     }
 
@@ -363,7 +367,14 @@ public class Player extends ObjectLocation {
         return false;
     }
 
+    public boolean isFullOfGems() {
+        return (redGemCount   == FULL_GEM_COUNT
+             && greenGemCount == FULL_GEM_COUNT
+             && blueGemCount  == FULL_GEM_COUNT);
+    }
+
     public void pickupGem(Gem gem) {
+        boolean wasFullOfGems = isFullOfGems();
         screen.game.audio.playSound(AudioManager.Sounds.collect, 0.125F);
         switch (gem.type){
             case RED:
@@ -390,8 +401,11 @@ public class Player extends ObjectLocation {
                 }
                 break;
         }
+        boolean isFullOfGems = isFullOfGems();
+        if (!wasFullOfGems && isFullOfGems) {
+            lockGemsUntilWizard = true;
+        }
     }
-
 
     public void setPhase(int phase){
         Phase nextPhase = null;
@@ -407,7 +421,7 @@ public class Player extends ObjectLocation {
         // TODO: anything that needs to happen on the phase change, particle effects etc
         screen.audio.playSound(AudioManager.Sounds.lightning, 0.25f);
         screen.screenShaker.addDamage(.8f);
-        Time.pause_for(0.2f);
+        Time.pause_for(0.15f);
 
         this.phase = nextPhase;
         switch (this.phase){

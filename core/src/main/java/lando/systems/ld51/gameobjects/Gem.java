@@ -77,15 +77,16 @@ public class Gem {
             velocity.set(0, 0);
             float attract2 = AttractRange * AttractRange;
             float dist2ToPlayer = this.pos.dst2(screen.player.position);
-            if (screen.player.canPickup(this)) {
+            Player player = screen.player;
+            if (player.canPickup(this)) {
                 if (dist2ToPlayer < CollectDistance * CollectDistance) {
                     // Pick up and don't fade
-                    screen.player.pickupGem(this);
+                    player.pickupGem(this);
                     fadeoutTimer = FADEOUT_DURATION;
                     collected = true;
                 }
                 if (dist2ToPlayer < attract2) {
-                    velocity.set(screen.player.position).sub(pos).nor().scl((attract2 - dist2ToPlayer) / attract2 * 300f);
+                    velocity.set(player.position).sub(pos).nor().scl((attract2 - dist2ToPlayer) / attract2 * 300f);
                 }
             }
             this.pos.add(velocity.x * dt, velocity.y * dt);

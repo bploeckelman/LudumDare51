@@ -177,7 +177,7 @@ public class TitleScreen extends BaseScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.audio.stopAllSounds();
-                game.getScreenManager().pushScreen("game", "blend");
+                game.getScreenManager().pushScreen("story", "blend");
             }
         });
 

@@ -87,6 +87,7 @@ public class Main extends ManagedGame<BaseScreen, ScreenTransition> {
 		screenManager.initialize(inputMux, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false);
 		screenManager.addScreen("launch", new LaunchScreen());
 		screenManager.addScreen("title", new TitleScreen());
+		screenManager.addScreen("story", new StoryScreen());
 		screenManager.addScreen("game", new GameScreen());
 		screenManager.addScreen("endScreen", new EndScreen());
 		screenManager.addScreen("credit", new CreditScreen());

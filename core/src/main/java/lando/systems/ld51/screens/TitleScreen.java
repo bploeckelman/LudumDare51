@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import lando.systems.ld51.assets.Assets;
 import lando.systems.ld51.audio.AudioManager;
+import lando.systems.ld51.ui.SettingsUI;
 
 public class TitleScreen extends BaseScreen {
 
@@ -72,6 +73,10 @@ public class TitleScreen extends BaseScreen {
     @Override
     public void initializeUI() {
         super.initializeUI();
+
+        SettingsUI settingsUI = new SettingsUI(assets, skin, audio, windowCamera);
+        uiStage.addActor(settingsUI);
+
         TextButton.TextButtonStyle outfitMediumStyle = skin.get("text", TextButton.TextButtonStyle.class);
         TextButton.TextButtonStyle titleScreenButtonStyle = new TextButton.TextButtonStyle(outfitMediumStyle);
         titleScreenButtonStyle.font = assets.smallFont;
@@ -98,7 +103,7 @@ public class TitleScreen extends BaseScreen {
         settingsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                //showSettings();
+                settingsUI.showSettings();
             }
         });
 

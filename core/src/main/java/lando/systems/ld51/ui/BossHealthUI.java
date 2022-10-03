@@ -1,6 +1,5 @@
 package lando.systems.ld51.ui;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -45,7 +44,6 @@ public class BossHealthUI extends VisWindow {
             return;
         }
         float bossHealthPercentage = boss.health / boss.MAX_HEALTH * 100f;
-        Gdx.app.log("boss health", String.valueOf(boss.health));
         bossHealthBar.setValue(bossHealthPercentage);
         if (bossHealthPercentage >= 75f) {
             bossProgressBarStyle.knobAfter =  new TextureRegionDrawable(Utils.getColoredTextureRegion(Color.YELLOW));

@@ -58,6 +58,7 @@ public class EffectAnims {
         , meteor(0,4)
         , fireball_red(0,5)
         , double_fireball_red(0,6)
+        , fireball_green(1,5)
         , fireball_blue(0,7)
         , double_fireball_blue(0,8)
         , orb_red(0,0,  1,0)

@@ -58,14 +58,15 @@ public class EndScreen extends BaseScreen {
         subtitles = "";
         playerTexture1 = game.assets.playerAnimationByPhaseByState.get(Player.Phase.RED).get(Player.State.WALK).getKeyFrame(0);
 
-        statsUI = new StatsUI(skin, assets, windowCamera);
-        uiStage.addActor(statsUI);
-        statsUI.setVisible(false);
+
     }
 
     @Override
     public void show() {
         game.getInputMultiplexer().addProcessor(uiStage);
+        statsUI = new StatsUI(skin, assets, windowCamera);
+        uiStage.addActor(statsUI);
+        statsUI.setVisible(false);
     }
 
     @Override

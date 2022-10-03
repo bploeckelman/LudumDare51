@@ -1,7 +1,6 @@
 package lando.systems.ld51.screens;
 
 import aurelienribon.tweenengine.TweenManager;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -49,13 +48,10 @@ public abstract class BaseScreen extends ManagedScreen implements Disposable, In
         worldCamera = new OrthographicCamera();
         worldCamera.setToOrtho(false, Config.Screen.window_width, Config.Screen.window_height);
         worldCamera.update();
-        Gdx.input.setInputProcessor(this);
     }
 
     @Override
     public void hide() {
-        //sometimes hide gets called from other screen after screen is created, thus setting global inputprocessor to null.
-        //Gdx.input.setInputProcessor(null);
     }
 
     public void update(float delta) {

@@ -163,17 +163,6 @@ public class Player extends ObjectLocation {
         if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT))  movementVector.x -= 1;
         movementVector.nor();
 
-        stateTime += dt;
-        // TODO - won't need this edge case if we start using Phase.WIZARD as an actual transitionable phase
-        Phase animPhase = isWizard ? Phase.WIZARD : phase;
-        animation = screen.assets.playerAnimationByPhaseByState.get(animPhase).get(state);
-        flashAnimation = screen.assets.playerFlashAnimationByPhaseByState.get(animPhase).get(state);
-        keyframe = animation.getKeyFrame(stateTime);
-        flashKeyframe = flashAnimation.getKeyFrame(stateTime);
-
-        // NOTE - wizard doesn't have weapon anims so this will go null when we go wizard
-        weaponAnims = screen.assets.weaponAnimationsByType.get(phase.weaponType);
-
         // save previous position so the attack hit shape can be moved if the player moves
         float prevPosX = position.x;
         float prevPosY = position.y;
@@ -208,6 +197,21 @@ public class Player extends ObjectLocation {
 
             position.add(tempVec2.x * SPEED * dt, tempVec2.y * SPEED * dt);
         }
+
+        // TODO - need to rework animations based on walking or attacking
+        // only animate while moving
+        if (!position.epsilonEquals(prevPosX, prevPosY)) {
+            stateTime += dt;
+            // TODO - won't need this edge case if we start using Phase.WIZARD as an actual transitionable phase
+            Phase animPhase = isWizard ? Phase.WIZARD : phase;
+            animation = screen.assets.playerAnimationByPhaseByState.get(animPhase).get(state);
+            flashAnimation = screen.assets.playerFlashAnimationByPhaseByState.get(animPhase).get(state);
+            keyframe = animation.getKeyFrame(stateTime);
+            flashKeyframe = flashAnimation.getKeyFrame(stateTime);
+        }
+
+        // NOTE - wizard doesn't have weapon anims so this will go null when we go wizard
+        weaponAnims = screen.assets.weaponAnimationsByType.get(phase.weaponType);
 
         attackRange.setPosition(position);
         if (isAttacking) {

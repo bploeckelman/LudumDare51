@@ -60,6 +60,7 @@ public class EndScreen extends BaseScreen {
 
         statsUI = new StatsUI(skin, assets, windowCamera);
         uiStage.addActor(statsUI);
+        statsUI.setVisible(false);
     }
 
     @Override
@@ -92,7 +93,10 @@ public class EndScreen extends BaseScreen {
         playerBounds2.x += endAccum * 2;
         playerBounds3.x += endAccum * 2;
 
-
+        if (!exitingScreen && Gdx.input.justTouched() && isEndOver && statsUI.isVisible()){
+            exitingScreen = true;
+            game.getScreenManager().pushScreen("credit", "blend");
+        }
 
         if (((Gdx.input.justTouched() && phaseAccum > .2f) )&& !isEndOver) {
 
@@ -157,15 +161,13 @@ public class EndScreen extends BaseScreen {
 
                     default:
                         isEndOver = true;
+                        statsUI.setVisible(true);
                         break;
 
 
                 }
                 // start new Audio
-                if (!exitingScreen && Gdx.input.justTouched() && isEndOver){
-                    exitingScreen = true;
-                    game.getScreenManager().pushScreen("credit", "blend");
-                }
+
 
 
             }

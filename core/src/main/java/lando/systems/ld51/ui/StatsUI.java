@@ -34,7 +34,7 @@ public class StatsUI extends VisWindow {
         setStyle(glassWindowStyle);
 
 
-        statsPaneBoundsVisible = new Rectangle(windowCamera.viewportWidth / 6f, windowCamera.viewportHeight / 4f, windowCamera.viewportWidth * 2f / 3f, windowCamera.viewportHeight / 2f);
+        statsPaneBoundsVisible = new Rectangle(windowCamera.viewportWidth / 6f, windowCamera.viewportHeight / 4f, windowCamera.viewportWidth * 2f / 3f, windowCamera.viewportHeight / 2f - 30f);
 
 
         setSize(statsPaneBoundsVisible.width, statsPaneBoundsVisible.height);
@@ -50,9 +50,10 @@ public class StatsUI extends VisWindow {
         add(label);
         row();
         Table statsTable = new Table();
+        statsTable.setWidth(getWidth());
         label = new Label("Game duration: ", skin);
         statsTable.add(label).align(Align.left);
-        label = new Label((Stats.totalGameTime) + "sec", skin);
+        label = new Label((int)(Stats.totalGameTime) + "sec", skin);
         statsTable.add(label).align(Align.left);
         statsTable.row();
         label = new Label("Gem earned: ", skin);
@@ -67,10 +68,10 @@ public class StatsUI extends VisWindow {
         statsTable.row();
         label = new Label("Longest time undamaged: ", skin);
         statsTable.add(label).align(Align.left);
-        label = new Label((Stats.longestTimeBetweenHits) + "sec", skin);
+        label = new Label((int)(Stats.longestTimeBetweenHits) + "sec", skin);
         statsTable.add(label).align(Align.left);
         statsTable.row();
-        label = new Label("White Wizard Count: ", skin);
+        label = new Label("White Wizard Shift: ", skin);
         statsTable.add(label).align(Align.left);
         label = new Label((Stats.numTransitionToWhiteWizard) + "times", skin);
         statsTable.add(label).align(Align.left);

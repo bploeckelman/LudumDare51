@@ -98,7 +98,6 @@ public class StoryScreen extends BaseScreen {
         if (((Gdx.input.justTouched() && phaseAccum > .2f) || phaseAccum > 7.25F)&& !isStoryOver) {
 
             storyAccum += delta * 10;
-            System.out.println(phaseAccum);
 
             playerBounds1.x = (float) (storyAccum);
             playerBounds2.x = (float) (storyAccum + 220);

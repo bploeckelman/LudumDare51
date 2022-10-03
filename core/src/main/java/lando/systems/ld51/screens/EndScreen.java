@@ -102,7 +102,6 @@ public class EndScreen extends BaseScreen {
         if (((Gdx.input.justTouched() && phaseAccum > .2f) )&& !isEndOver) {
 
             endAccum += delta * 10;
-            System.out.println(phaseAccum);
 
             playerBounds1.x = (float) (endAccum);
             playerBounds2.x = (float) (endAccum + 220);

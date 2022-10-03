@@ -488,7 +488,6 @@ public class Player extends ObjectLocation {
 
         // anything that needs to happen on the phase change, particle effects etc
         screen.audio.playSound(AudioManager.Sounds.lightning, 0.25f);
-        screen.screenShaker.addDamage(.8f);
         Time.pause_for(0.15f);
 
         this.phase = nextPhase;
@@ -536,6 +535,7 @@ public class Player extends ObjectLocation {
 
         // handle wizard transition
         if (!isWizard) {
+            screen.screenShaker.addDamage(.8f);
             screen.particles.lightning(screen.boss.position, position);
             if (redGemCount >= FULL_GEM_COUNT && greenGemCount >= FULL_GEM_COUNT && blueGemCount >= FULL_GEM_COUNT){
                 isWizard = true;

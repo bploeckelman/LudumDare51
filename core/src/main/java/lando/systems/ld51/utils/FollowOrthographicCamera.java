@@ -17,6 +17,7 @@ public class FollowOrthographicCamera extends OrthographicCamera {
     public FollowOrthographicCamera() {
         direction = new Vector2();
         this.tempVec = new Vector2();
+        this.targetZoom = 1f;
     }
 
     public void update(Vector2 followPoint, Rectangle bounds, float dt) {

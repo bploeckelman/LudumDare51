@@ -320,7 +320,8 @@ public class Assets implements Disposable {
             mgr.load("audio/sound/intro6.ogg", Sound.class);
             mgr.load("audio/sound/intro7.ogg", Sound.class);
             mgr.load("audio/sound/intro8.ogg", Sound.class);
-            mgr.load("audio/sound/outro.ogg", Sound.class);
+
+            mgr.load("audio/sound/outroNarration.ogg", Sound.class);
 
             mgr.load("audio/sound/warriorWalkout1.ogg", Sound.class);
             mgr.load("audio/sound/warriorWalkout2.ogg", Sound.class);
@@ -583,7 +584,7 @@ public class Assets implements Disposable {
          intro6 = mgr.get("audio/sound/intro6.ogg", Sound.class);
          intro7 = mgr.get("audio/sound/intro7.ogg", Sound.class);
          intro8 = mgr.get("audio/sound/intro8.ogg", Sound.class);
-         outro = mgr.get("audio/sound/outro.ogg", Sound.class);
+         outro = mgr.get("audio/sound/outroNarration.ogg", Sound.class);
 
          warriorWalkout1 = mgr.get("audio/sound/warriorWalkout1.ogg", Sound.class);
          warriorWalkout2 = mgr.get("audio/sound/warriorWalkout2.ogg", Sound.class);

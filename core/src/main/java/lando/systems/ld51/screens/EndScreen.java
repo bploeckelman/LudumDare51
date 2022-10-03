@@ -44,6 +44,8 @@ public class EndScreen extends BaseScreen {
     private boolean isTutorialShown = false;
     private TutorialUI tutorialUI;
 
+    private boolean outroNarrationIsGoing = false;
+
     public EndScreen() {
         whiteWithAlpha = new Color(Color.WHITE);
         clickPhase = 0;
@@ -67,8 +69,7 @@ public class EndScreen extends BaseScreen {
         subtitles = "";
         playerTexture1 = game.assets.playerAnimationByPhaseByState.get(Player.Phase.RED).get(Player.State.WALK).getKeyFrame(0);
 
-        game.audio.playMusic(AudioManager.Musics.outroMusic);
-        game.audio.playSound(AudioManager.Sounds.outro, 1.0F);
+
         ChangeListener listener = new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -96,6 +97,12 @@ public class EndScreen extends BaseScreen {
         uiStage.setDebugAll(false);
         if (Config.Debug.general) {
             uiStage.setDebugAll(true);
+        }
+
+        if(!outroNarrationIsGoing) {
+            game.audio.playMusic(AudioManager.Musics.outroMusic);
+            game.audio.playSound(AudioManager.Sounds.outro, 1.0F);
+            outroNarrationIsGoing = true;
         }
 
         playerBounds1.x += endAccum * 2;

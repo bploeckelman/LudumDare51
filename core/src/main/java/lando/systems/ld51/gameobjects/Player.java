@@ -57,7 +57,7 @@ public class Player extends ObjectLocation {
     public static final float ATTACK_COOLDOWN_NORMAL = 0.2f;
     public static final float ATTACK_COOLDOWN_WIZARD = 0.15f;
 
-    public static int FULL_GEM_COUNT = 50;
+    public static int FULL_GEM_COUNT = 25;
     public static int DEFAULT_GEM_DROP_AMOUNT = 8;
 
     private final GameScreen screen;

@@ -1,5 +1,6 @@
 package lando.systems.ld51.ui;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -13,16 +14,17 @@ public class CooldownTimerUI extends VisWindow {
     public VisProgressBar timerProgressBar;
     public float bossCooldownRemainingPercentage;
     private VisProgressBar.ProgressBarStyle timerProgressBarStyle;
+    VisProgressBar.ProgressBarStyle defaultStyle;
     private Assets assets;
     public CooldownTimerUI(float x, float y, float width, float height, Skin skin, Assets assets) {
         super("");
         this.assets = assets;
         setPosition(x, y);
         setSize(width, height);
-        setColor(getColor().r, getColor().g, getColor().b, .5f);
+        setColor(Color.BLACK.r, Color.BLACK.g, Color.BLACK.b, .5f);
         setZIndex(1);
         timerProgressBar = new VisProgressBar(0f, 100f, 1f, false);
-        VisProgressBar.ProgressBarStyle defaultStyle = skin.get("default-horizontal", ProgressBar.ProgressBarStyle.class);
+        defaultStyle = skin.get("default-horizontal", ProgressBar.ProgressBarStyle.class);
         timerProgressBarStyle = new VisProgressBar.ProgressBarStyle(defaultStyle);
         timerProgressBarStyle.knob = new TextureRegionDrawable(assets.itemTextures.get(ItemTextures.Type.clock));
         timerProgressBar.setPosition(0f, 0f);
@@ -37,10 +39,18 @@ public class CooldownTimerUI extends VisWindow {
         bossCooldownRemainingPercentage = 100f-(accum % 10f) * 10f;
         timerProgressBar.setValue(bossCooldownRemainingPercentage);
         if (player.isWizard) {
+            timerProgressBar.setValue(100f);
             timerProgressBarStyle.knobBefore = new TextureRegionDrawable(assets.whiteProgressBar);
             timerProgressBar.setStyle(timerProgressBarStyle);
         }
+        if (player.isWizard || player.isFullOfGems()) {
+            timerProgressBarStyle.background = Assets.Patch.metal.drawable;
+            setColor(Color.WHITE);
+//            timerProgressBarStyle.knobBefore = new TextureRegionDrawable(assets.whiteProgressBar);
+        }
         else {
+            timerProgressBarStyle.background = defaultStyle.background;
+            setColor(Color.BLACK.r, Color.BLACK.g, Color.BLACK.b, .5f);
             switch (player.getCurrentPhase()) {
                 case RED:
                     timerProgressBarStyle.knobBefore = new TextureRegionDrawable(assets.redProgressBar);

@@ -61,7 +61,7 @@ public class BossHealthUI extends VisWindow {
             return;
         }
         float bossHealthPercentage = boss.health / boss.MAX_HEALTH * 100f;
-        bossHealthBar.setValue(bossHealthPercentage);
+            bossHealthBar.setValue(bossHealthPercentage);
         if (bossHealthPercentage >= 75f) {
             bossProgressBarStyle.knobAfter =  new TextureRegionDrawable(Utils.getColoredTextureRegion(Color.YELLOW));
             bossProgressBarStyle.knobBefore =  new TextureRegionDrawable(Utils.getColoredTextureRegion(Color.GREEN));

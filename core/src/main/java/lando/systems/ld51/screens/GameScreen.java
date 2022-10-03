@@ -24,6 +24,8 @@ import lando.systems.ld51.ui.PlayerGemsUI;
 import lando.systems.ld51.utils.FollowOrthographicCamera;
 import lando.systems.ld51.utils.screenshake.ScreenShakeCameraController;
 
+import java.util.Comparator;
+
 public class GameScreen extends BaseScreen {
 
     public Player player;
@@ -49,6 +51,7 @@ public class GameScreen extends BaseScreen {
 
     private final float BOSS_HEALTH_UI_HEIGHT = 30f;
     private final float PLAYER_GEMS_UI_HEIGHT = 30f;
+    private final Comparator<Enemy> sortPositionsByYDescending = (a, b) -> -Float.compare(a.getPosition().y, b.getPosition().y);
 
     public GameScreen(){
         this.arena = new Arena(this);
@@ -164,6 +167,7 @@ public class GameScreen extends BaseScreen {
                 enemies.removeIndex(i);
             }
         }
+        enemies.sort(sortPositionsByYDescending);
 
         // Camera follow things
         // TODO - maybe just make the worldCamera a FollowOrthoCam so we don't need to cast here

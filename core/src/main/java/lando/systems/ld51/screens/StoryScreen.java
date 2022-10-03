@@ -11,16 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
-
 import lando.systems.ld51.Config;
-import lando.systems.ld51.gameobjects.Player;
-import lando.systems.ld51.ui.TutorialUI;
-
 import lando.systems.ld51.audio.AudioManager;
-import lando.systems.ld51.gameobjects.Player;
-import org.lwjgl.Sys;
-
-import lando.systems.ld51.Config;
 import lando.systems.ld51.gameobjects.Player;
 import lando.systems.ld51.ui.TutorialUI;
 
@@ -171,13 +163,9 @@ public class StoryScreen extends BaseScreen {
 
                 }
                 // start new Audio
-                if (isStoryOver) {
+                if (isStoryOver && isTutorialShown == false) {
+                    isTutorialShown = true;
                     tutorialUI.showTutorial();
-                }
-
-                if (!exitingScreen && isStoryOver && isTutorialShown) {
-                    exitingScreen = true;
-                    game.getScreenManager().pushScreen("game", "blend");
                 }
             }
             uiStage.act(delta);

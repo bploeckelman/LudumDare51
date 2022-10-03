@@ -52,7 +52,8 @@ public class Player extends ObjectLocation {
     public static float SPEED_NORMAL = 340f;
     public static float SPEED_WIZARD = 450f;
     public static float SPEED = SPEED_NORMAL;
-    public static int FULL_GEM_COUNT = 25;
+    public static int FULL_GEM_COUNT = 50;
+    public static int DEFAULT_GEM_DROP_AMOUNT = 8;
 
     private final GameScreen screen;
 
@@ -75,6 +76,7 @@ public class Player extends ObjectLocation {
     public float attackIntervalWizard = 0.1f;
     public float attackTimer;
 
+    private float timeSinceLastHurt;
     private float hurtDuration;
     private float hurtTimer;
     public boolean isHurt;
@@ -92,6 +94,7 @@ public class Player extends ObjectLocation {
     public int greenGemCount;
     public int blueGemCount;
     public boolean lockGemsUntilWizard;
+    public int gemAmountToLose = DEFAULT_GEM_DROP_AMOUNT;
     public boolean isWizard;
     public int musicPhase = 1;
     public boolean wizardMusicIsPlaying = false;
@@ -133,6 +136,7 @@ public class Player extends ObjectLocation {
         this.hurtCircle = new Circle(position, SIZE / 4f);
         this.hurtDuration = 0.33f;
         this.hurtTimer = hurtDuration;
+        this.timeSinceLastHurt = 0;
     }
 
     public void update(float dt) {
@@ -141,11 +145,13 @@ public class Player extends ObjectLocation {
         facing.set(mousePos.x, mousePos.y).sub(position).nor();
         setOrientation(facing.angleRad());
 
+        timeSinceLastHurt += dt;
         if (isHurt) {
             hurtTimer -= dt;
             if (hurtTimer <= 0) {
                 hurtTimer = hurtDuration;
                 isHurt = false;
+                timeSinceLastHurt = 0f;
             }
         }
 
@@ -338,24 +344,39 @@ public class Player extends ObjectLocation {
         if (!lockGemsUntilWizard || isWizard) {
             lockGemsUntilWizard = false;
 
-            // TODO make this more robust with minimums and such
-            int redToLose = redGemCount / 4;
-            int greenToLose = greenGemCount / 4;
-            int blueToLose = blueGemCount / 4;
-            int totalLost = redToLose + blueToLose + greenToLose;
-            if (totalLost == 0) {
-                // Kill them?
-                Gdx.app.log("Player Hurt", "Ouch, you lost all your gems dog! How you supposed to be a magic now?");
+            // if multiple gem drops in one cycle, reduce number of dropped each time to a max of 1 for ea in cycle
+            // TODO - track 'longest time between hits' as stat
+            if (timeSinceLastHurt <= 10f) {
+                // hurt more than once in one cycle, reduce number of gems lost each time
+                gemAmountToLose = Calc.max(1, gemAmountToLose / 2);
+            } else {
+                gemAmountToLose = DEFAULT_GEM_DROP_AMOUNT;
             }
 
-            if(redGemCount > 0) {
+            int redToLose   = Calc.min(redGemCount, gemAmountToLose);
+            int greenToLose = Calc.min(greenGemCount, gemAmountToLose);
+            int blueToLose  = Calc.min(blueGemCount, gemAmountToLose);
+
+            // TODO - track as stat
+            int totalLost = redToLose + blueToLose + greenToLose;
+//            Gdx.app.log("", "last hurt " + timeSinceLastHurt + " : dropped = " + totalLost);
+            timeSinceLastHurt = 0f;
+
+            if (totalLost > 0) {
                 screen.audio.playSound(AudioManager.Sounds.playerDropGems, 0.35F);
             }
 
-
-            redGemCount -= redToLose;
+            redGemCount   -= redToLose;
             greenGemCount -= greenToLose;
-            blueGemCount -= blueToLose;
+            blueGemCount  -= blueToLose;
+            redGemCount   = Calc.max(redGemCount, 0);
+            greenGemCount = Calc.max(greenGemCount, 0);
+            blueGemCount  = Calc.max(blueGemCount, 0);
+
+            if (redGemCount == 0 && greenGemCount == 0 && blueGemCount == 0) {
+                // TODO - kill player?
+                Gdx.app.log("Player Hurt", "Ouch, you lost all your gems dog! How you supposed to be a magic now?");
+            }
 
 
 

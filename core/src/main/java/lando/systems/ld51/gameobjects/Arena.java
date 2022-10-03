@@ -2,6 +2,7 @@ package lando.systems.ld51.gameobjects;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Rectangle;
 import lando.systems.ld51.Main;
 import lando.systems.ld51.screens.GameScreen;
@@ -45,5 +46,32 @@ public class Arena {
             }
         }
         batch.setColor(Color.WHITE);
+
+        int phase = 0;
+        switch (screen.player.getCurrentPhase()){
+            case RED:
+                phase = 0;
+                break;
+            case GREEN:
+                phase = 1;
+                break;
+            case BLUE:
+                phase = 2;
+                break;
+            case WIZARD:
+                phase = 3;
+                break;
+        }
+        if (screen.player.isWizard()){
+            phase = 3;
+        }
+
+        ShaderProgram shader = screen.assets.backgroundShader;
+
+        batch.setShader(shader);
+        shader.setUniformf("u_time", Main.game.mainGameTimer % 10f);
+        shader.setUniformi("u_phase", phase);
+        batch.draw(screen.assets.noiseTex, 0, 0, bounds.width, bounds.height);
+        batch.setShader(null);
     }
 }

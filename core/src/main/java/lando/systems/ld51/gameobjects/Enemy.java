@@ -17,6 +17,7 @@ import lando.systems.ld51.assets.CreatureAnims;
 import lando.systems.ld51.assets.EffectAnims;
 import lando.systems.ld51.audio.AudioManager;
 import lando.systems.ld51.screens.GameScreen;
+import lando.systems.ld51.ui.Stats;
 import lando.systems.ld51.utils.Calc;
 import lando.systems.ld51.utils.VectorPool;
 import space.earlygrey.shapedrawer.ShapeDrawer;
@@ -216,7 +217,7 @@ public class Enemy implements Steerable<Vector2> {
         for (int i = 0; i < gemsToSpawn; i++) {
             screen.gems.add(new Gem(screen, position, type.gemColor));
         }
-
+        Stats.numEnemyKilled++;
         game.audio.playSound(AudioManager.Sounds.die, 0.5F);
 
         VectorPool.vec2.free(position);

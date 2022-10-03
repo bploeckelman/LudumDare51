@@ -37,25 +37,41 @@ public class StatsUI extends VisWindow {
         setStyle(glassWindowStyle);
 
 
-        statsPaneBoundsVisible = new Rectangle(windowCamera.viewportWidth * 4f / 5f, windowCamera.viewportHeight * 2f / 3f, windowCamera.viewportWidth* 1f /5f, windowCamera.viewportHeight * 1f / 3f);
+        statsPaneBoundsVisible = new Rectangle(windowCamera.viewportWidth - 550f, windowCamera.viewportHeight - 210f, 550f, 210f);
 
 
-        statsWindow = new VisWindow("", glassWindowStyle);
-        statsWindow.setSize(statsPaneBoundsVisible.width, statsPaneBoundsVisible.height);
-        statsWindow.setPosition(statsPaneBoundsVisible.x, statsPaneBoundsVisible.y);
-        statsWindow.setMovable(false);
-        statsWindow.align(Align.top | Align.center);
-        statsWindow.setModal(false);
-        statsWindow.setKeepWithinStage(false);
-        //statsWindow.setColor(statsWindow.getColor().r, statsWindow.getColor().g, statsWindow.getColor().b, 1f);
-        //statsWindow.setColor(Color.RED);
+        setSize(statsPaneBoundsVisible.width, statsPaneBoundsVisible.height);
+        setPosition(statsPaneBoundsVisible.x, statsPaneBoundsVisible.y);
+        setMovable(false);
+        align(Align.top | Align.center);
+        setModal(false);
+        setKeepWithinStage(false);
+        //setColor(getColor().r, getColor().g, getColor().b, 1f);
+        //setColor(Color.RED);
 
-        Label settingLabel = new Label("Controls", skin, "larger");
-        statsWindow.add(settingLabel);
-        statsWindow.row();
-
-        addActor(statsWindow);
-        addActor(closeStatsButton);
+        Label label = new Label("Stats", skin, "large");
+        add(label);
+        row();
+        Table statsTable = new Table();
+        label = new Label("Game duration: " + (Stats.totalGameTime) + "sec", skin);
+        statsTable.add(label).align(Align.left);
+        statsTable.row();
+        label = new Label("Gem earned: " + (Stats.gemTotalEarned), skin);
+        statsTable.add(label).align(Align.left);
+        statsTable.row();
+        label = new Label("Gem lost: " + (Stats.gemTotalLost) + "sec", skin);
+        statsTable.add(label).align(Align.left);
+        statsTable.row();
+        label = new Label("Longest time undamaged: " + (Stats.longestTimeBetweenHits) + "sec", skin);
+        statsTable.add(label).align(Align.left);
+        statsTable.row();
+        label = new Label("White Wizard Count: " + (Stats.numTransitionToWhiteWizard), skin);
+        statsTable.add(label).align(Align.left);
+        statsTable.row();
+        label = new Label("Enemy Killed: " + (Stats.numEnemyKilled), skin);
+        statsTable.add(label).align(Align.left);
+        statsTable.row();
+        add(statsTable);
     }
 
 }

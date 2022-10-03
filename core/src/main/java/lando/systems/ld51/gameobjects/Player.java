@@ -15,6 +15,7 @@ import lando.systems.ld51.Config;
 import lando.systems.ld51.assets.EffectAnims;
 import lando.systems.ld51.audio.AudioManager;
 import lando.systems.ld51.screens.GameScreen;
+import lando.systems.ld51.ui.Stats;
 import lando.systems.ld51.utils.Calc;
 import lando.systems.ld51.utils.Time;
 import lombok.RequiredArgsConstructor;
@@ -378,6 +379,9 @@ public class Player extends ObjectLocation {
 
             // if multiple gem drops in one cycle, reduce number of dropped each time to a max of 1 for ea in cycle
             // TODO - track 'longest time between hits' as stat
+            if (timeSinceLastHurt > Stats.longestTimeBetweenHits) {
+                Stats.longestTimeBetweenHits = timeSinceLastHurt;
+            }
             if (timeSinceLastHurt <= 10f) {
                 // hurt more than once in one cycle, reduce number of gems lost each time
                 gemAmountToLose = Calc.max(1, gemAmountToLose / 2);
@@ -391,6 +395,7 @@ public class Player extends ObjectLocation {
 
             // TODO - track as stat
             int totalLost = redToLose + blueToLose + greenToLose;
+            Stats.gemTotalLost += totalLost;
 //            Gdx.app.log("", "last hurt " + timeSinceLastHurt + " : dropped = " + totalLost);
             timeSinceLastHurt = 0f;
 
@@ -438,6 +443,7 @@ public class Player extends ObjectLocation {
     public void pickupGem(Gem gem) {
         boolean wasFullOfGems = isFullOfGems();
         screen.game.audio.playSound(AudioManager.Sounds.collect, 0.125F);
+        Stats.gemTotalEarned++;
         switch (gem.type){
             case RED:
                 redGemCount++;
@@ -533,6 +539,7 @@ public class Player extends ObjectLocation {
             screen.particles.lightning(screen.boss.position, position);
             if (redGemCount >= FULL_GEM_COUNT && greenGemCount >= FULL_GEM_COUNT && blueGemCount >= FULL_GEM_COUNT){
                 isWizard = true;
+                Stats.numTransitionToWhiteWizard++;
                 screen.explosions.add(new Explosion(screen, position.x, position.y, SIZE_WIZARD * 1.5f, 100));
                 screen.setZoom(GameScreen.WIZARD_ZOOM);
                 if(!wizardMusicIsPlaying) {

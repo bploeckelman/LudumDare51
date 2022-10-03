@@ -36,7 +36,7 @@ public class StoryScreen extends BaseScreen {
         super.update(delta);
         phaseAccum += delta;
 
-        if (Gdx.input.justTouched() && phaseAccum > .5f) {
+        if (Gdx.input.justTouched() && phaseAccum > .2f) {
             // todo cancel playing sounds
             phaseAccum = 0;
             clickPhase++;

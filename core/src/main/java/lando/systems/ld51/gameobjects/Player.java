@@ -348,12 +348,19 @@ public class Player extends ObjectLocation {
                 Gdx.app.log("Player Hurt", "Ouch, you lost all your gems dog! How you supposed to be a magic now?");
             }
 
+            if(redGemCount > 0) {
+                screen.audio.playSound(AudioManager.Sounds.playerDropGems, 0.35F);
+            }
+
+
             redGemCount -= redToLose;
             greenGemCount -= greenToLose;
             blueGemCount -= blueToLose;
 
+
+
             screen.particles.dropGems(redToLose, greenToLose,  blueToLose, position.x, position.y);
-            screen.audio.playSound(AudioManager.Sounds.playerDropGems, 0.1F);
+//            screen.audio.playSound(AudioManager.Sounds.playerDropGems, 0.35F);
         }
     }
 

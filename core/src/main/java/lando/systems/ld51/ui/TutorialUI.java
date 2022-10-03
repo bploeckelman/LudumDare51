@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -13,7 +14,6 @@ import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.widget.VisWindow;
 import lando.systems.ld51.assets.Assets;
 import lando.systems.ld51.assets.InputPrompts;
-import lando.systems.ld51.audio.AudioManager;
 
 public class TutorialUI extends Group {
 
@@ -30,19 +30,17 @@ public class TutorialUI extends Group {
     public MoveToAction showTutorialPaneAction;
     public MoveToAction showCloseTutorialButtonAction;
     public MoveToAction hideCloseTutorialButtonAction;
-    private AudioManager audio;
     private OrthographicCamera windowCamera;
 
-    public TutorialUI(Assets assets, Skin skin, AudioManager audio, OrthographicCamera windowCamera) {
+    public TutorialUI(Assets assets, Skin skin, OrthographicCamera windowCamera, ChangeListener listener) {
         super();
         this.assets = assets;
         this.skin = skin;
-        this.audio = audio;
         this.windowCamera = windowCamera;
-        initializeUI();
+        initializeUI(listener);
 
     }
-    public void initializeUI() {
+    public void initializeUI(ChangeListener listener) {
         Window.WindowStyle defaultWindowStyle = skin.get("default", Window.WindowStyle.class);
         Window.WindowStyle glassWindowStyle = new Window.WindowStyle(defaultWindowStyle);
         glassWindowStyle.background = Assets.Patch.metal.drawable;
@@ -50,7 +48,7 @@ public class TutorialUI extends Group {
         glassWindowStyle.titleFontColor = Color.BLACK;
 
 
-        tutorialPaneBoundsVisible = new Rectangle(windowCamera.viewportWidth/4, 0, windowCamera.viewportWidth/2, windowCamera.viewportHeight);
+        tutorialPaneBoundsVisible = new Rectangle(windowCamera.viewportWidth/6f, 0, windowCamera.viewportWidth* 2f /3f, windowCamera.viewportHeight);
         tutorialPaneBoundsHidden = new Rectangle(tutorialPaneBoundsVisible);
         tutorialPaneBoundsHidden.y -= tutorialPaneBoundsVisible.height;
 
@@ -69,6 +67,7 @@ public class TutorialUI extends Group {
         greyOutWindow.setColor(1f, 1f, 1f, .8f);
         greyOutWindow.setKeepWithinStage(false);
         greyOutWindow.setVisible(false);
+        greyOutWindow.setTouchable(Touchable.disabled);
 
         tutorialWindow = new VisWindow("", glassWindowStyle);
         tutorialWindow.setSize(tutorialPaneBoundsHidden.width, tutorialPaneBoundsHidden.height);
@@ -80,11 +79,67 @@ public class TutorialUI extends Group {
         //tutorialWindow.setColor(tutorialWindow.getColor().r, tutorialWindow.getColor().g, tutorialWindow.getColor().b, 1f);
         //tutorialWindow.setColor(Color.RED);
 
-        Label settingLabel = new Label("Tutorial", skin);
-        tutorialWindow.add(settingLabel).padBottom(40f).padTop(40f);
+        Label settingLabel = new Label("Controls", skin, "larger");
+        tutorialWindow.add(settingLabel);
         tutorialWindow.row();
-        Label musicVolumeLabel = new Label("Music Volume", skin);
-        tutorialWindow.add(musicVolumeLabel).padBottom(10f);
+        Label controlLabel = new Label("Movement", skin, "large");
+        tutorialWindow.add(controlLabel).padBottom(10f);
+        tutorialWindow.row();
+        Table movementControl = new Table();
+        Table tableWasd = new Table();
+        Table tableArrow = new Table();
+        Image image;
+        image = new Image(new TextureRegionDrawable(assets.inputPrompts.get(InputPrompts.Type.key_light_key_w)));
+        tableWasd.add(image).colspan(3);
+        tableWasd.row();
+        image = new Image(new TextureRegionDrawable(assets.inputPrompts.get(InputPrompts.Type.key_light_key_a)));
+        tableWasd.add(image);
+        image = new Image(new TextureRegionDrawable(assets.inputPrompts.get(InputPrompts.Type.key_light_key_s)));
+        tableWasd.add(image);
+        image = new Image(new TextureRegionDrawable(assets.inputPrompts.get(InputPrompts.Type.key_light_key_d)));
+        tableWasd.add(image);
+        movementControl.add(tableWasd).padRight(20f);
+        image = new Image(new TextureRegionDrawable(assets.inputPrompts.get(InputPrompts.Type.key_light_arrow_up)));
+        tableArrow.add(image).colspan(3);
+        tableArrow.row();
+        image = new Image(new TextureRegionDrawable(assets.inputPrompts.get(InputPrompts.Type.key_light_arrow_left)));
+        tableArrow.add(image);
+        image = new Image(new TextureRegionDrawable(assets.inputPrompts.get(InputPrompts.Type.key_light_arrow_down)));
+        tableArrow.add(image);
+        image = new Image(new TextureRegionDrawable(assets.inputPrompts.get(InputPrompts.Type.key_light_arrow_right)));
+        tableArrow.add(image);
+        movementControl.add(tableArrow).padLeft(20f);
+        movementControl.row();
+        Label controlDescLabel1 = new Label("WASD", skin);
+        movementControl.add(controlDescLabel1).padRight(20f);
+        controlDescLabel1 = new Label("Arrow", skin);
+        movementControl.add(controlDescLabel1).padLeft(20f);
+        movementControl.row();
+        controlDescLabel1 = new Label("Aim / Attack", skin, "large");
+        movementControl.add(controlDescLabel1).colspan(2).padBottom(10f);
+        movementControl.row();
+        image = new Image(new TextureRegionDrawable(assets.inputPrompts.get(InputPrompts.Type.mouse_light_left)));
+        movementControl.add(image).colspan(2);
+        movementControl.row();
+        controlDescLabel1 = new Label("Left Mouse", skin);
+        movementControl.add(controlDescLabel1).colspan(2);
+        tutorialWindow.add(movementControl);
+        tutorialWindow.row();
+        Label objectiveLabel = new Label("Objective", skin, "larger");
+        tutorialWindow.add(objectiveLabel).padBottom(5f);
+        tutorialWindow.row();
+        Table objectiveTable = new Table();
+        objectiveTable.align(Align.top | Align.left);
+        Label objectiveDescLabel = new Label("- Collect all 3 gems to become wizard.", skin);
+        objectiveTable.add(objectiveDescLabel).align(Align.top | Align.left).padBottom(5f);
+        objectiveTable.row();
+        objectiveDescLabel = new Label("- Don't get hit.", skin);
+        objectiveTable.add(objectiveDescLabel).align(Align.top | Align.left).padBottom(5f);
+        objectiveTable.row();
+        objectiveDescLabel = new Label("- Kill the other wizard .", skin);
+        objectiveTable.add(objectiveDescLabel).align(Align.top | Align.left).padBottom(5f);
+        objectiveTable.row();
+        tutorialWindow.add(objectiveTable);
         tutorialWindow.row();
 
 
@@ -112,7 +167,7 @@ public class TutorialUI extends Group {
 
         closeTutorialTextButton = new TextButton("Close Tutorial", tutorialButtonStyle);
         tutorialWindow.row();
-        tutorialWindow.add(closeTutorialTextButton).padBottom(10f).width(tutorialWindow.getWidth() - 100f);
+        tutorialWindow.add(closeTutorialTextButton).padBottom(10f).width(tutorialWindow.getWidth() - 100f).height(30f);
 
         float showDuration = 0.2f;
         float hideDuration = 0.1f;
@@ -131,12 +186,7 @@ public class TutorialUI extends Group {
             }
         });
 
-        closeTutorialTextButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                hideTutorial();
-            }
-        });
+        closeTutorialTextButton.addListener(listener);
 
         //addActor(closeTutorialButton);
 

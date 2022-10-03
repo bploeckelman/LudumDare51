@@ -28,7 +28,7 @@ public class BossHealthUI extends VisWindow {
         bossProgressBarStyle = new VisProgressBar.ProgressBarStyle(horizontalProgressBarStyle);
         bossProgressBarStyle.knobAfter =  new TextureRegionDrawable(Utils.getColoredTextureRegion(Color.YELLOW));
         bossProgressBarStyle.knobBefore =  new TextureRegionDrawable(Utils.getColoredTextureRegion(Color.GREEN));
-        bossHealthBar = new VisProgressBar(75f, 100f, 1f, false);
+        bossHealthBar = new VisProgressBar(75f, 100f, .1f, false);
         bossHealthBar.setValue(100f);
         bossHealthBar.setStyle(bossProgressBarStyle);
         bossHealthBar.setSize(width - 20f, height -5f);

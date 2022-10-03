@@ -6,9 +6,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
+import lando.systems.ld51.Config;
 import lando.systems.ld51.gameobjects.Player;
+import lando.systems.ld51.ui.TutorialUI;
 
 
 public class StoryScreen extends BaseScreen {
@@ -20,7 +24,9 @@ public class StoryScreen extends BaseScreen {
     private Rectangle playerBounds;
     private TextureRegion playerTexture;
     private Color whiteWithAlpha;
-    private boolean isStoryOver = true; //true because we don't have story yet
+    private boolean isStoryOver = false;
+    private boolean isTutorialShown = false;
+    private TutorialUI tutorialUI;
 
     public StoryScreen() {
         whiteWithAlpha = new Color(Color.WHITE);
@@ -29,14 +35,36 @@ public class StoryScreen extends BaseScreen {
         subtitles = "This is the first string";
         playerBounds = new Rectangle(100, 200, 100, 100);
         playerTexture = game.assets.playerAnimationByPhaseByState.get(Player.Phase.RED).get(Player.State.WALK).getKeyFrame(0);
+        ChangeListener listener = new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.getScreenManager().pushScreen("game", "blend");
+            }
+        };
+        tutorialUI = new TutorialUI(assets, skin, windowCamera, listener);
+        uiStage.addActor(tutorialUI);
+    }
+
+    @Override
+    public void show() {
+        game.getInputMultiplexer().addProcessor(uiStage);
+    }
+
+    @Override
+    public void hide() {
+        game.getInputMultiplexer().removeProcessor(uiStage);
     }
 
     @Override
     public void update(float delta) {
         super.update(delta);
         phaseAccum += delta;
+        uiStage.setDebugAll(false);
+        if (Config.Debug.general) {
+            uiStage.setDebugAll(true);
+        }
 
-        if (Gdx.input.justTouched() && phaseAccum > .2f) {
+        if (Gdx.input.justTouched() && phaseAccum > .2f && !isStoryOver) {
             // todo cancel playing sounds
             phaseAccum = 0;
             clickPhase++;
@@ -67,14 +95,21 @@ public class StoryScreen extends BaseScreen {
                 case 8:
                     subtitles = "phase 9";
                     break;
+                default:
+                    isStoryOver = true;
+                    break;
             }
             // start new Audio
+            if (isStoryOver) {
+                tutorialUI.showTutorial();
+            }
 
-            if (!exitingScreen && clickPhase > 8) {
+            if (!exitingScreen && isStoryOver && isTutorialShown) {
                 exitingScreen = true;
                 game.getScreenManager().pushScreen("game", "blend");
             }
         }
+        uiStage.act(delta);
     }
 
     @Override
@@ -100,5 +135,6 @@ public class StoryScreen extends BaseScreen {
             batch.setColor(Color.WHITE);
         }
         batch.end();
+        uiStage.draw();
     }
 }

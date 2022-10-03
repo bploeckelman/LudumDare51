@@ -95,7 +95,7 @@ public class SettingsUI extends Group {
         //settingsWindow.setColor(settingsWindow.getColor().r, settingsWindow.getColor().g, settingsWindow.getColor().b, 1f);
         //settingsWindow.setColor(Color.RED);
 
-        Label settingLabel = new Label("Settings", skin);
+        Label settingLabel = new Label("Settings", skin, "large");
         settingsWindow.add(settingLabel).padBottom(40f).padTop(40f);
         settingsWindow.row();
         Label musicVolumeLabel = new Label("Music Volume", skin);
@@ -153,8 +153,7 @@ public class SettingsUI extends Group {
         settingsButtonStyle.over = Assets.Patch.glass_dim.drawable;
 
         closeSettingsTextButton = new TextButton("Close Settings", settingsButtonStyle);
-        settingsWindow.row();
-        settingsWindow.add(closeSettingsTextButton).padBottom(10f).width(settingsWindow.getWidth() - 100f);
+        settingsWindow.add(closeSettingsTextButton).padTop(50f).padBottom(10f).width(settingsWindow.getWidth() - 100f);
 
         float showDuration = 0.2f;
         float hideDuration = 0.1f;

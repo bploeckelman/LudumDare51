@@ -8,6 +8,7 @@ import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.ai.steer.proximities.RadiusProximity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -318,13 +319,26 @@ public class GameScreen extends BaseScreen {
 
         Enemy spawn() {
             CreatureAnims.Type type = CreatureAnims.Type.random();
+
+            // slightly prefer spawning creatures of the gem type the player has the least of
+            boolean coinFlip = MathUtils.randomBoolean(0.75f);
+            if (coinFlip) {
+                Gem.Type leastGemType = player.getLeastGemsType();
+                switch (leastGemType) {
+                    case RED:   type = CreatureAnims.CreatureGroups.reds.getRandomType(); break;
+                    case GREEN: type = CreatureAnims.CreatureGroups.greens.getRandomType(); break;
+                    case BLUE:  type = CreatureAnims.CreatureGroups.blues.getRandomType(); break;
+                }
+            }
+
             Spawner spawner = findClosestOffscreenSpawner();
             Enemy enemy = new Enemy(GameScreen.this, type, spawner.position.x, spawner.position.y);
-            // TODO - set enemy speed values based on type
+
             // TODO - add in special steering behaviors for certain types of enemies
             BlendedSteering<Vector2> steering = new BlendedSteering<>(enemy);
             steering.add(new Seek<>(enemy, player), 1f);
             enemy.setSteeringBehavior(steering);
+
             return enemy;
         }
     }

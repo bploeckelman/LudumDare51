@@ -593,4 +593,12 @@ public class Player extends ObjectLocation {
     public boolean isWizard() {
         return isWizard;
     }
+
+    public Gem.Type getLeastGemsType() {
+        if      (redGemCount   < greenGemCount && redGemCount   < blueGemCount)  return Gem.Type.RED;
+        else if (greenGemCount < redGemCount   && greenGemCount < blueGemCount)  return Gem.Type.GREEN;
+        else if (blueGemCount  < redGemCount   && blueGemCount  < greenGemCount) return Gem.Type.BLUE;
+        else return Gem.Type.random();
+    }
+
 }

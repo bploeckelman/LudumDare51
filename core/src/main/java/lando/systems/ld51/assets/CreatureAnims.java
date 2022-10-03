@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ObjectMap;
 import lando.systems.ld51.gameobjects.Gem;
 
+import static lando.systems.ld51.assets.CreatureAnims.Type.*;
 import static lando.systems.ld51.gameobjects.Gem.Type.*;
 
 public class CreatureAnims {
@@ -72,6 +73,21 @@ public class CreatureAnims {
             throw new GdxRuntimeException("Can't get creature flash animation for type '" + type.name() + "', it might not have been created correctly, check CreatureAnims.java");
         }
         return animation;
+    }
+
+    public enum CreatureGroups {
+          reds   (rat_small, rat_big, beetle_red_small, beetle_red_big, spider_black_small, spider_black_big, minotaur, skeleton, fairy, flame_person, blob_red, goblin_dagger, golem_red, elemental_red, dragon_red)
+        , greens (snake_small, snake_big, wolf_normal, wolf_dire, spider_brown_small, spider_brown_big, toad, bird, orc, reptile, blob_green, goblin_shield, golem_green, elemental_green, dragon_green)
+        , blues  (bat_small, bat_big, worm_small, worm_big, beetle_black_small, beetle_black_big, mimic, zombie, dwarf, beholder, blob_blue, goblin_mage, golem_blue, elemental_blue, dragon_blue)
+        ;
+        public final Array<Type> types = new Array<>();
+        CreatureGroups(Type... types) {
+            this.types.addAll(types);
+        }
+        public Type getRandomType() {
+            int numTypes = types.size;
+            return types.get(MathUtils.random(0, numTypes - 1));
+        }
     }
 
     public enum Type {

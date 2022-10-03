@@ -20,13 +20,27 @@ public class Gem {
     public static float CollectDistance = 20;
 
     public enum Type {
+
         RED, GREEN, BLUE;
+
         private static final Color color = new Color();
+
+        public static Type random() {
+            int rand = MathUtils.random(0, 2);
+            switch (rand) {
+                default:
+                case 0: return RED;
+                case 1: return GREEN;
+                case 2: return BLUE;
+            }
+        }
+
         public boolean matches(Player.Phase playerPhase) {
             return (this == RED   && playerPhase == Player.Phase.RED
                  || this == GREEN && playerPhase == Player.Phase.GREEN
                  || this == BLUE  && playerPhase == Player.Phase.BLUE);
         }
+
         public Color getColor() {
             switch (this) {
                 case RED:   color.set(Color.RED);   break;
@@ -35,7 +49,9 @@ public class Gem {
             }
             return color;
         }
+
     }
+
     public enum State { IDLE, SPIN }
 
     public final Type type;

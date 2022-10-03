@@ -94,6 +94,7 @@ public class Player extends ObjectLocation {
     public boolean isWizard;
     public int wizardPhaseCount;
     public int musicPhase = 1;
+    public boolean wizardMusicIsPlaying = false;
 
     public Player(GameScreen screen) {
         this.screen = screen;
@@ -385,20 +386,30 @@ public class Player extends ObjectLocation {
         }
 
         // TODO: anything that needs to happen on the phase change, particle effects etc
-        screen.audio.playSound(AudioManager.Sounds.lightning, 1.0f);
+        screen.audio.playSound(AudioManager.Sounds.lightning, 0.25f);
         screen.screenShaker.addDamage(.8f);
         Time.pause_for(0.2f);
 
         this.phase = nextPhase;
         switch (this.phase){
             case RED:
-                screen.audio.playMusic(AudioManager.Musics.valueOf("warriorMusic" + musicPhase));
+//                screen.audio.stopMusic();
+                if(!wizardMusicIsPlaying) {
+                    screen.audio.stopMusic();
+                    screen.audio.playMusic(AudioManager.Musics.valueOf("warriorMusic" + musicPhase));
+                }
                 break;
             case GREEN:
-                screen.audio.playMusic(AudioManager.Musics.valueOf("rogueMusic" + musicPhase));
+                if(!wizardMusicIsPlaying) {
+                    screen.audio.stopMusic();
+                    screen.audio.playMusic(AudioManager.Musics.valueOf("rogueMusic" + musicPhase));
+                }
                 break;
             case BLUE:
-                screen.audio.playMusic(AudioManager.Musics.valueOf("clericMusic" + musicPhase));
+                if(!wizardMusicIsPlaying) {
+                    screen.audio.stopMusic();
+                    screen.audio.playMusic(AudioManager.Musics.valueOf("clericMusic" + musicPhase));
+                }
                 if (musicPhase == 3) {
                     musicPhase = 1;
                 } else {
@@ -414,11 +425,19 @@ public class Player extends ObjectLocation {
                 isWizard = true;
                 wizardPhaseCount = 3;
                 redGemCount -= 4;
+                if(!wizardMusicIsPlaying) {
+                    screen.audio.playMusic(AudioManager.Musics.wizardMusic1);
+                }
+                wizardMusicIsPlaying = true;
+
             }
         } else {
+//            wizardMusicIsPlaying = false;
             wizardPhaseCount--;
             if (wizardPhaseCount<= 0) {
                 isWizard = false;
+                screen.audio.stopMusic();
+                 wizardMusicIsPlaying = false;
             }
         }
     }

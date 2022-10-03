@@ -363,7 +363,7 @@ public class Player extends ObjectLocation {
 
         Time.pause_for(0.1f);
         screen.audio.playSound(AudioManager.Sounds.playerImpact, .75F);
-        screen.audio.playSound(AudioManager.Sounds.playerHit, 6.0F);
+        screen.audio.playSound(AudioManager.Sounds.playerHit, 1.0F);
 
         // bounce back
         float bounceBackAmount = 20f;

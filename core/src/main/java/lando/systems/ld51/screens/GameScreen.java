@@ -8,7 +8,6 @@ import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.ai.steer.proximities.RadiusProximity;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -83,11 +82,12 @@ public class GameScreen extends BaseScreen {
         uiStage.addActor(debugWindow);
 
         //boss health ui
-        bossHealthUI = new BossHealthUI("", true, 0f, windowCamera.viewportHeight - BOSS_HEALTH_UI_HEIGHT, windowCamera.viewportWidth, BOSS_HEALTH_UI_HEIGHT, skin);
+        bossHealthUI = new BossHealthUI("", true, 0f + BOSS_HEALTH_UI_HEIGHT, windowCamera.viewportHeight - BOSS_HEALTH_UI_HEIGHT, windowCamera.viewportWidth - BOSS_HEALTH_UI_HEIGHT * 2, BOSS_HEALTH_UI_HEIGHT, skin, assets, windowCamera);
         bossHealthUI.setVisible(true);
         uiStage.addActor(bossHealthUI);
-
         uiStage.addActor(bossHealthUI.bossHealthBar);
+        uiStage.addActor(bossHealthUI.bossImageLeft);
+        uiStage.addActor(bossHealthUI.bossImageRight);
 
         cooldownTimerUI = new CooldownTimerUI(0f, PLAYER_GEMS_UI_HEIGHT, windowCamera.viewportWidth, PLAYER_GEMS_UI_HEIGHT, skin, assets);
         uiStage.addActor(cooldownTimerUI);

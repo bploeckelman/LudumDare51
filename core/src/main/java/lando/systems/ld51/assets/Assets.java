@@ -73,6 +73,8 @@ public class Assets implements Disposable {
     public TextureRegion blueProgressBar;
     public TextureRegion greenProgressBar;
     public TextureRegion whiteProgressBar;
+    public TextureRegion bossPortraitLeft;
+    public TextureRegion bossPortraitRight;
 
     public Animation<TextureRegion> cat;
     public Animation<TextureRegion> dog;
@@ -331,6 +333,8 @@ public class Assets implements Disposable {
         redProgressBar = atlas.findRegion("pixel-ui-pack/red-progress-bar");
         greenProgressBar = atlas.findRegion("pixel-ui-pack/green-progress-bar");
         whiteProgressBar = atlas.findRegion("pixel-ui-pack/white-progress-bar");
+        bossPortraitLeft = atlas.findRegion("characters/boss/boss-portrait/boss-portrait-facing-left");
+        bossPortraitRight = atlas.findRegion("characters/boss/boss-portrait/boss-portrait-facing-right");
         circleTex = atlas.findRegion("particles/circle");
         arrow = atlas.findRegion("arrow");
 

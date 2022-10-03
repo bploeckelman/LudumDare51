@@ -1,6 +1,8 @@
 package lando.systems.ld51.ui;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.kotcrab.vis.ui.widget.VisProgressBar;
@@ -14,9 +16,15 @@ public class BossHealthUI extends VisWindow {
     private Boss boss;
     private VisProgressBar.ProgressBarStyle bossProgressBarStyle;
     public VisProgressBar bossHealthBar;
+    public Image bossImageLeft;
+    public Image bossImageRight;
+    public Assets assets;
+    private OrthographicCamera windowCamera;
 
-    public BossHealthUI(String title, boolean showWindowBorder, float x, float y, float width, float height, Skin skin) {
+    public BossHealthUI(String title, boolean showWindowBorder, float x, float y, float width, float height, Skin skin, Assets assets, OrthographicCamera windowCamera) {
         super(title, showWindowBorder);
+        this.assets = assets;
+        this.windowCamera = windowCamera;
         VisWindow.WindowStyle defaultStyle = skin.get("default", VisWindow.WindowStyle.class);
         VisWindow.WindowStyle upperUIStyle = new VisWindow.WindowStyle(defaultStyle);
         upperUIStyle.background = Assets.Patch.glass.drawable;
@@ -31,8 +39,14 @@ public class BossHealthUI extends VisWindow {
         bossHealthBar = new VisProgressBar(75f, 100f, .1f, false);
         bossHealthBar.setValue(100f);
         bossHealthBar.setStyle(bossProgressBarStyle);
-        bossHealthBar.setSize(width - 20f, height -5f);
-        bossHealthBar.setPosition(x + 10f, y + 2.5f);
+        bossHealthBar.setSize(width - 10f, height -5f);
+        bossHealthBar.setPosition(x + 5f, y + 2.5f);
+
+        bossImageLeft = new Image(new TextureRegionDrawable(assets.bossPortraitRight));
+        bossImageLeft.setPosition(0f, windowCamera.viewportHeight - bossImageLeft.getHeight());
+
+        bossImageRight = new Image(new TextureRegionDrawable(assets.bossPortraitLeft));
+        bossImageRight.setPosition(windowCamera.viewportWidth - bossImageRight.getWidth(), windowCamera.viewportHeight - bossImageRight.getHeight());
     }
 
     public void setBoss(Boss boss) {

@@ -1,5 +1,6 @@
 package lando.systems.ld51.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -16,6 +17,9 @@ public class CreditScreen extends BaseScreen {
     private final TypingLabel thanksLabel;
     private final TypingLabel disclaimerLabel;
     private final TypingLabel rossmanLabel;
+
+    private boolean isCreditOver = false;
+    private boolean exitingScreen = false;
 
     private final Animation<TextureRegion> catAnimation;
     private final Animation<TextureRegion> dogAnimation;
@@ -76,6 +80,12 @@ public class CreditScreen extends BaseScreen {
     }
 
     @Override
+    public void hide() {
+        isCreditOver = false;
+        exitingScreen = false;
+    }
+
+    @Override
     public void update(float dt) {
         accum += dt;
         titleLabel.update(dt);
@@ -87,6 +97,15 @@ public class CreditScreen extends BaseScreen {
         }
         thanksLabel.update(dt);
         disclaimerLabel.update(dt);
+
+        if (rossmanLabel.hasEnded()) {
+            isCreditOver = true;
+        }
+
+        if (!exitingScreen && isCreditOver && Gdx.input.justTouched()){
+            exitingScreen = true;
+            game.getScreenManager().pushScreen("title", "blend");
+        }
     }
 
     @Override

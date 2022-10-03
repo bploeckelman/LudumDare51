@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -82,6 +83,7 @@ public class SettingsUI extends Group {
         greyOutWindow.setColor(1f, 1f, 1f, .8f);
         greyOutWindow.setKeepWithinStage(false);
         greyOutWindow.setVisible(false);
+        greyOutWindow.setTouchable(Touchable.disabled);
 
         settingsWindow = new VisWindow("", glassWindowStyle);
         settingsWindow.setSize(settingsPaneBoundsHidden.width, settingsPaneBoundsHidden.height);

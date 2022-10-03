@@ -20,6 +20,7 @@ public class StoryScreen extends BaseScreen {
     private Rectangle playerBounds;
     private TextureRegion playerTexture;
     private Color whiteWithAlpha;
+    private boolean isStoryOver = true; //true because we don't have story yet
 
     public StoryScreen() {
         whiteWithAlpha = new Color(Color.WHITE);

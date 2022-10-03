@@ -42,7 +42,7 @@ public class TitleScreen extends BaseScreen {
     public float accum;
 
     @Override
-    public void create() {
+    public void show() {
         drawUI = false;
         drawGradient = false;
         triggerColor = new Color(Color.WHITE);
@@ -54,25 +54,24 @@ public class TitleScreen extends BaseScreen {
         gradient = new Color(1.51f, 1.51f, 0f, 1f);
         light = new Color(0, 1f, .6f, .6f);
         game.audio.playMusic(AudioManager.Musics.introMusic);
-
         Timeline.createSequence()
                 .delay(.5f)
-                .push(Tween.to(wizardPos, Vector2Accessor.Y, .5f)
+                .push(Tween.to(wizardPos, Vector2Accessor.Y, .25f)
                         .target(0))
-                .push(Tween.to(charPos, Vector2Accessor.X, .5f)
+                .push(Tween.to(charPos, Vector2Accessor.X, .25f)
                         .target(0))
                 .push(Tween.call((type, source) -> {
                     drawGradient = true;
                 }))
-                .push(Tween.to(gradient, ColorAccessor.R, 2.f)
+                .push(Tween.to(gradient, ColorAccessor.R, 1.f)
                         .target(0f))
-                .push(Tween.to(light, ColorAccessor.B, .5f)
+                .push(Tween.to(light, ColorAccessor.B, .25f)
                         .target(0f).ease(Linear.INOUT))
-                .push(Tween.to(chromeAlpha, 1, .5f)
+                .push(Tween.to(chromeAlpha, 1, .25f)
                         .target(1f))
-                .push(Tween.to(triggerAlpha, 1, .5f)
+                .push(Tween.to(triggerAlpha, 1, .25f)
                         .target(1f))
-                .pushPause(1f)
+                .pushPause(.5f)
                 .push(Tween.call((type, source) -> {
                     drawUI = true;
                     game.getInputMultiplexer().addProcessor(uiStage);

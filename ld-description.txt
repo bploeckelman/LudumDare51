@@ -1,0 +1,34 @@
+- ** [HTML5/WebGL](https://lando.systems/games/ld51-chromo-trigger) **
+- ** [Desktop/Java](https://lando.systems/games/ld51-chromo-trigger/ld51-chromo-trigger.jar) **
+- ** [Source](https://github.com/bploeckelman/LudumDare51) **
+
+It’s time to take up arms to conquer demons - the realm’s, and your own!
+
+In this  click-and-slash fantasy action adventure, you’ll collect colorful gems to power up each of three different classes, but there’s a twist - your class changes every 10 seconds!
+
+Collect enough gems with each class and unlock your true power!
+
+# Controls:
+---
+WASD to move the player.
+Space or Left Click to attack in the direction your mouse is.
+
+
+# About the Team:
+---
+
+[LandoSystems](https://lando.systems) is a group of jammers from Madison, Wisconsin that varies in size from 2 to 12 people. This is the team's 26th Ludum Dare game!! :grinning:
+
+# Team Members:
+---
+
+Code:
+- Doug Graham [dsgraham](https://twitter.com/dsgraham)
+- Brian Ploeckelman [PalpatinesSmile](https://twitter.com/PalpatinesSmile)
+- Jeffrey Hwang
+
+Art:
+- Matt Neumann
+
+Audio:
+- Pete Valeo

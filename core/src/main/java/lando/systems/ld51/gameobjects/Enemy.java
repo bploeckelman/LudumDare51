@@ -82,13 +82,14 @@ public class Enemy implements Steerable<Vector2> {
         this.independentFacing = false;
         this.steeringBehavior = null;
 
-        this.hurtCircle = new Circle(position.x, position.y, size / 2f);
+        float hurtSize = size / 5f;
+        this.hurtCircle = new Circle(position.x, position.y, hurtSize);
 
         int numVerts = 10;
         float[] vertices = new float[2 * numVerts];
         for (int i = 0, angle = 0; i < vertices.length; i += 2) {
-            vertices[i+0] = position.x + MathUtils.cosDeg(angle) * size / 2f;
-            vertices[i+1] = position.y + MathUtils.sinDeg(angle) * size / 2f;
+            vertices[i+0] = position.x + MathUtils.cosDeg(angle) * hurtSize;
+            vertices[i+1] = position.y + MathUtils.sinDeg(angle) * hurtSize;
             angle += 360/numVerts;
         }
         this.hurtShape = new Polygon(vertices);

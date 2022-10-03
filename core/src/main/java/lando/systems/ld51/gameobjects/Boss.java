@@ -207,9 +207,18 @@ public class Boss extends ObjectLocation {
         }
     }
 
-    public void getHit(float damage, float dx, float dy) {
+    public void getHit(float damage, float sourcePosX, float sourcePosY, float dx, float dy) {
         health -= damage;
-        // TODO some particles or some shit
+        // TODO - sound?
+        int numSparks = MathUtils.random(3, 6);
+        for (int i = 0; i < numSparks; i++) {
+            float range = 60f;
+            float x = sourcePosX + MathUtils.random(-range, range);
+            float y = sourcePosY + MathUtils.random(-range, range);
+            screen.particles.explode(EffectAnims.Type.explode_spark, x, y, MathUtils.random(64f, 164f));
+            screen.particles.explode(EffectAnims.Type.explode_small, x, y, MathUtils.random(64f, 164f));
+        }
+        screen.particles.explode(EffectAnims.Type.swirl, sourcePosX, sourcePosY, 200f);
     }
 
     public boolean isAlive() {

@@ -284,17 +284,28 @@ public class GameScreen extends BaseScreen {
         private final Array<Enemy> spawnedEnemies = new Array<>();
         private final Vector2 dist = new Vector2();
 
-        private float duration = 2f;
+        private static final int MAX_NUM_LIVE_ENEMIES = 100;
+
+        private static final float SPAWN_INTERVAL_WIZARD = 0.75f;
+        private static final float SPAWN_INTERVAL_NORMAL = 2f;
+
+        private float interval = SPAWN_INTERVAL_NORMAL;
         private float timer = 0f;
 
         Array<Enemy> update(float delta) {
             spawnedEnemies.clear();
             Enemy enemy = null;
 
+            interval = (player.isWizard) ? SPAWN_INTERVAL_WIZARD : SPAWN_INTERVAL_NORMAL;
+
             timer += delta;
-            if (timer >= duration) {
-                timer -= duration;
-                enemy = spawn();
+            if (timer >= interval) {
+                timer -= interval;
+
+                // if there's 'too many' live enemies don't spawn more
+                if (enemies.size < MAX_NUM_LIVE_ENEMIES) {
+                    enemy = spawn();
+                }
             }
 
             if (enemy != null) {

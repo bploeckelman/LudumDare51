@@ -201,7 +201,7 @@ public class Enemy implements Steerable<Vector2> {
 
     public void kill() {
         screen.particles.explode(position.x, position.y, size);
-        int gemsToSpawn = MathUtils.random(5, 9);
+        int gemsToSpawn = (int) type.health;
         for (int i = 0; i < gemsToSpawn; i++) {
             screen.gems.add(new Gem(screen, position, type.gemColor));
         }

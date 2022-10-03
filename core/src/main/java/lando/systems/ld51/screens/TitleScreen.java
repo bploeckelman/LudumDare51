@@ -40,31 +40,35 @@ public class TitleScreen extends BaseScreen {
         super.update(delta);
         state += delta;
 
-//        if (Gdx.input.justTouched()){
-//            game.audio.stopAllSounds();
-//            game.getScreenManager().pushScreen("game", "blend");
-//        }
     }
 
     @Override
     public void render(float delta) {
         update(delta);
 
-        ScreenUtils.clear(Color.SKY);
+        ScreenUtils.clear(Color.BLACK);
 
         OrthographicCamera camera = windowCamera;
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         {
-            float left = (camera.viewportWidth  - gdx.getRegionWidth())  / 2f;
-            float bottom = (camera.viewportHeight - gdx.getRegionHeight()) / 2f;
-            TextureRegion dog = assets.dog.getKeyFrame(state);
-            TextureRegion cat = assets.cat.getKeyFrame(state);
-            TextureRegion kitten = assets.kitten.getKeyFrame(state);
-            batch.draw(dog, left - dog.getRegionWidth() * 2, bottom, dog.getRegionWidth() * 2, dog.getRegionHeight() * 2);
-            batch.draw(gdx, left, bottom);
-            batch.draw(kitten, left + gdx.getRegionWidth() / 2, bottom + gdx.getRegionHeight() - 15f, cat.getRegionWidth() * 2, cat.getRegionHeight() * 2);
-            batch.draw(cat, left + gdx.getRegionWidth(), bottom, cat.getRegionWidth() * 2, cat.getRegionHeight() * 2);
+            batch.draw(assets.titleBackground, 0, 0, windowCamera.viewportWidth, windowCamera.viewportHeight);
+            batch.draw(assets.titleLight, 0, 0, windowCamera.viewportWidth, windowCamera.viewportHeight);
+            batch.draw(assets.titleWizard, 0, 0, windowCamera.viewportWidth, windowCamera.viewportHeight);
+            batch.draw(assets.titleGradient, 0, 0, windowCamera.viewportWidth, windowCamera.viewportHeight);
+            batch.draw(assets.titlePrismHighlight, 0, 0, windowCamera.viewportWidth, windowCamera.viewportHeight);
+            batch.draw(assets.titlePrismToGem, 0, 0, windowCamera.viewportWidth, windowCamera.viewportHeight);
+            batch.draw(assets.titleHatPrism, 0, 0, windowCamera.viewportWidth, windowCamera.viewportHeight);
+            batch.draw(assets.titleThief, 0, 0, windowCamera.viewportWidth, windowCamera.viewportHeight);
+            batch.draw(assets.titleWarrior, 0, 0, windowCamera.viewportWidth, windowCamera.viewportHeight);
+            batch.draw(assets.titleCleric, 0, 0, windowCamera.viewportWidth, windowCamera.viewportHeight);
+            batch.draw(assets.titleBlueBeam, 0, 0, windowCamera.viewportWidth, windowCamera.viewportHeight);
+            batch.draw(assets.titleGreenBeam, 0, 0, windowCamera.viewportWidth, windowCamera.viewportHeight);
+            batch.draw(assets.titleRedBeam, 0, 0, windowCamera.viewportWidth, windowCamera.viewportHeight);
+            batch.draw(assets.titleChromeEdge, 0, 0, windowCamera.viewportWidth, windowCamera.viewportHeight);
+            batch.draw(assets.titleChromeGradient, 0, 0, windowCamera.viewportWidth, windowCamera.viewportHeight);
+            batch.draw(assets.titleTrigger, 0, 0, windowCamera.viewportWidth, windowCamera.viewportHeight);
+
         }
         batch.end();
         uiStage.draw();

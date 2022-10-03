@@ -46,6 +46,23 @@ public class Assets implements Disposable {
     public BitmapFont smallFont;
     public BitmapFont largeFont;
 
+    public Texture titleBackground;
+    public Texture titleBlueBeam;
+    public Texture titleGreenBeam;
+    public Texture titleRedBeam;
+    public Texture titleGradient;
+    public Texture titleCleric;
+    public Texture titleLight;
+    public Texture titlePrismHighlight;
+    public Texture titlePrismToGem;
+    public Texture titleThief;
+    public Texture titleWarrior;
+    public Texture titleWizard;
+    public Texture titleChromeEdge;
+    public Texture titleChromeGradient;
+    public Texture titleTrigger;
+    public Texture titleHatPrism;
+
     public Texture pixel;
     public Texture noiseTex;
     public TextureRegion circleTex;
@@ -262,6 +279,23 @@ public class Assets implements Disposable {
 //            mgr.load("audio/sound/.ogg", Sound.class);
 //            mgr.load("audio/sound/.ogg", Sound.class);
 
+            mgr.load("images/title-screen-elements/title-background_00.png", Texture.class);
+            mgr.load("images/title-screen-elements/title-char-beam-blue_00.png", Texture.class);
+            mgr.load("images/title-screen-elements/title-char-beam-green_01.png", Texture.class);
+            mgr.load("images/title-screen-elements/title-char-beam-red_00.png", Texture.class);
+            mgr.load("images/title-screen-elements/title-char-gradient_01.png", Texture.class);
+            mgr.load("images/title-screen-elements/title-cleric_00.png", Texture.class);
+            mgr.load("images/title-screen-elements/title-gem-light_00.png", Texture.class);
+            mgr.load("images/title-screen-elements/title-prism-right-highlight_00.png", Texture.class);
+            mgr.load("images/title-screen-elements/title-prism-to-gem_00.png", Texture.class);
+            mgr.load("images/title-screen-elements/title-thief_00.png", Texture.class);
+            mgr.load("images/title-screen-elements/title-warrior_00.png", Texture.class);
+            mgr.load("images/title-screen-elements/title-wizard-prism_00.png", Texture.class);
+            mgr.load("images/title-screen-elements/title-word-chrome-edge_00.png", Texture.class);
+            mgr.load("images/title-screen-elements/title-word-chrome-gradient.png", Texture.class);
+            mgr.load("images/title-screen-elements/title-word-trigger-blank_00.png", Texture.class);
+            mgr.load("images/title-screen-elements/title-hat-prism_00.png", Texture.class);
+
         }
 
         if (load == Load.SYNC) {
@@ -466,6 +500,23 @@ public class Assets implements Disposable {
 //         = mgr.get("audio/sound/.ogg", Sound.class);
 //         = mgr.get("audio/sound/.ogg", Sound.class);
 
+        // Title screen stuff
+        titleBackground = mgr.get("images/title-screen-elements/title-background_00.png");
+        titleBlueBeam = mgr.get("images/title-screen-elements/title-char-beam-blue_00.png");
+        titleGreenBeam = mgr.get("images/title-screen-elements/title-char-beam-green_01.png");
+        titleRedBeam = mgr.get("images/title-screen-elements/title-char-beam-red_00.png");
+        titleGradient = mgr.get("images/title-screen-elements/title-char-gradient_01.png");
+        titleCleric = mgr.get("images/title-screen-elements/title-cleric_00.png");
+        titleLight = mgr.get("images/title-screen-elements/title-gem-light_00.png");
+        titlePrismHighlight = mgr.get("images/title-screen-elements/title-prism-right-highlight_00.png");
+        titlePrismToGem = mgr.get("images/title-screen-elements/title-prism-to-gem_00.png");
+        titleThief = mgr.get("images/title-screen-elements/title-thief_00.png");
+        titleWarrior = mgr.get("images/title-screen-elements/title-warrior_00.png");
+        titleWizard = mgr.get("images/title-screen-elements/title-wizard-prism_00.png");
+        titleChromeEdge = mgr.get("images/title-screen-elements/title-word-chrome-edge_00.png");
+        titleChromeGradient = mgr.get("images/title-screen-elements/title-word-chrome-gradient.png");
+        titleTrigger = mgr.get("images/title-screen-elements/title-word-trigger-blank_00.png");
+        titleHatPrism = mgr.get("images/title-screen-elements/title-hat-prism_00.png");
 
         initialized = true;
         return 1;

@@ -21,10 +21,7 @@ import lando.systems.ld51.audio.AudioManager;
 import lando.systems.ld51.gameobjects.*;
 import lando.systems.ld51.particles.Particles;
 import lando.systems.ld51.systems.AttackResolver;
-import lando.systems.ld51.ui.BossHealthUI;
-import lando.systems.ld51.ui.CooldownTimerUI;
-import lando.systems.ld51.ui.DebugWindow;
-import lando.systems.ld51.ui.PlayerGemsUI;
+import lando.systems.ld51.ui.*;
 import lando.systems.ld51.utils.FollowOrthographicCamera;
 import lando.systems.ld51.utils.screenshake.ScreenShakeCameraController;
 
@@ -127,13 +124,13 @@ public class GameScreen extends BaseScreen {
     @Override
     public void update(float delta) {
         super.update(delta);
-
+        Stats.totalGameTime += delta;
         /// DEBUG SHIT
-        if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
-            Vector3 mouse = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-            worldCamera.unproject(mouse);
-            explosions.add(new Explosion(this, mouse.x, mouse.y, 200, 100));
-        }
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
+//            Vector3 mouse = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+//            worldCamera.unproject(mouse);
+//            explosions.add(new Explosion(this, mouse.x, mouse.y, 200, 100));
+//        }
 
         /// END DEBUG SHIT
 

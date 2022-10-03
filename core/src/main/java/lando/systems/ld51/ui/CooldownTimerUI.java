@@ -65,6 +65,10 @@ public class CooldownTimerUI extends VisWindow {
                     timerProgressBar.setStyle(timerProgressBarStyle);
                     break;
             }
+            if (player.isWizard) {
+                timerProgressBarStyle.knobBefore = new TextureRegionDrawable(assets.whiteProgressBar);
+                timerProgressBar.setStyle(timerProgressBarStyle);
+            }
         }
     }
 }

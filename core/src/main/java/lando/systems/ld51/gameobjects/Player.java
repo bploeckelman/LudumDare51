@@ -137,9 +137,9 @@ public class Player extends ObjectLocation {
         this.isAttacking = false;
         // player gem ui switch update
         this.isWizard = false;
-        this.redGemCount = 48;
-        this.greenGemCount = 48;
-        this.blueGemCount = 48;
+        this.redGemCount = 0;
+        this.greenGemCount = 0;
+        this.blueGemCount = 0;
         this.lockGemsUntilWizard = false;
         this.attackInterval = attackIntervalNormal;
         this.attackTimer = attackInterval;
@@ -414,7 +414,7 @@ public class Player extends ObjectLocation {
 
             if (redGemCount == 0 && greenGemCount == 0 && blueGemCount == 0) {
                 // TODO - kill player?
-                Gdx.app.log("Player Hurt", "Ouch, you lost all your gems dog! How you supposed to be a magic now?");
+//                Gdx.app.log("Player Hurt", "Ouch, you lost all your gems dog! How you supposed to be a magic now?");
             }
 
             screen.particles.dropGems(redToLose, greenToLose,  blueToLose, position.x, position.y);

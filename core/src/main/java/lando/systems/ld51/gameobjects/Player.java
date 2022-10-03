@@ -331,7 +331,7 @@ public class Player extends ObjectLocation {
         blueGemCount -= blueToLose;
 
         screen.audio.playSound(AudioManager.Sounds.gemDrop);
-        screen.particles.dropCoins(redToLose, greenToLose,  blueToLose, position.x, position.y);
+        screen.particles.dropGems(redToLose, greenToLose,  blueToLose, position.x, position.y);
 
         int totalLost = redToLose + blueToLose + greenToLose;
         if (totalLost == 0){

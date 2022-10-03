@@ -3,8 +3,6 @@ package lando.systems.ld51.particles;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -97,11 +95,15 @@ public class Particles implements Disposable {
                 .init());
     }
 
-    public void dropCoins(int numRed, int numGreen, int numBlue, float x, float y) {
+    public void dropGems(int numRed, int numGreen, int numBlue, float x, float y) {
+        float ttlMin = 1;
+        float ttlMax = 2;
+        float speedMin = 60;
+        float speedMax = 160;
         for (int i = 0; i < numRed; i++) {
             tempVec2.setToRandomDirection();
-            float speed = MathUtils.random(100f, 200f);
-            float ttl = MathUtils.random(2f, 4f);
+            float ttl = MathUtils.random(ttlMin, ttlMax);
+            float speed = MathUtils.random(speedMin, speedMax);
             activeParticles.get(Layer.foreground).add(Particle.initializer(particlePool.obtain())
                     .animation(assets.gemRedSpin)
                     .animUnlocked(true)
@@ -116,8 +118,8 @@ public class Particles implements Disposable {
         }
         for (int i = 0; i < numGreen; i++) {
             tempVec2.setToRandomDirection();
-            float speed = MathUtils.random(100f, 200f);
-            float ttl = MathUtils.random(2f, 4f);
+            float ttl = MathUtils.random(ttlMin, ttlMax);
+            float speed = MathUtils.random(speedMin, speedMax);
             activeParticles.get(Layer.foreground).add(Particle.initializer(particlePool.obtain())
                     .animation(assets.gemGreenSpin)
                     .animUnlocked(true)
@@ -132,8 +134,8 @@ public class Particles implements Disposable {
         }
         for (int i = 0; i < numBlue; i++) {
             tempVec2.setToRandomDirection();
-            float speed = MathUtils.random(100f, 200f);
-            float ttl = MathUtils.random(2f, 4f);
+            float ttl = MathUtils.random(ttlMin, ttlMax);
+            float speed = MathUtils.random(speedMin, speedMax);
             activeParticles.get(Layer.foreground).add(Particle.initializer(particlePool.obtain())
                     .animation(assets.gemBlueSpin)
                     .animUnlocked(true)

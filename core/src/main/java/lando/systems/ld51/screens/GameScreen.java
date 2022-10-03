@@ -144,7 +144,7 @@ public class GameScreen extends BaseScreen {
         for (int i = gems.size -1; i >= 0; i--) {
             Gem gem = gems.get(i);
             gem.update(delta);
-            if (gem.collected){
+            if (gem.collected || gem.diedOfOldAge){
                 gem.free();
                 gems.removeIndex(i);
             }

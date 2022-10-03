@@ -1,21 +1,15 @@
 package lando.systems.ld51.screens;
 
-import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.equations.Linear;
 import aurelienribon.tweenengine.primitives.MutableFloat;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import lando.systems.ld51.assets.Assets;
@@ -81,12 +75,14 @@ public class TitleScreen extends BaseScreen {
                 .pushPause(1f)
                 .push(Tween.call((type, source) -> {
                     drawUI = true;
-                    InputMultiplexer mux = new InputMultiplexer(uiStage);
-                    Gdx.input.setInputProcessor(mux);
+                    game.getInputMultiplexer().addProcessor(uiStage);
                 }))
                 .start(tween);
+    }
 
-
+    @Override
+    public void hide() {
+        game.getInputMultiplexer().removeProcessor(uiStage);
     }
 
     @Override
@@ -94,7 +90,6 @@ public class TitleScreen extends BaseScreen {
         super.update(delta);
         accum += delta;
         triggerColor.fromHsv(accum*30f, 1f, 1f);
-
     }
 
     @Override
@@ -189,9 +184,9 @@ public class TitleScreen extends BaseScreen {
         settingsButton = new TextButton("Settings", titleScreenButtonStyle);
         settingsButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
         settingsButton.setPosition(left, startGameButton.getY() - startGameButton.getHeight() - BUTTON_PADDING);
-        settingsButton.addListener(new ChangeListener() {
+        settingsButton.addListener(new ClickListener(){
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public void clicked(InputEvent event, float x, float y) {
                 settingsUI.showSettings();
             }
         });
@@ -200,9 +195,9 @@ public class TitleScreen extends BaseScreen {
         creditButton = new TextButton("Credits", titleScreenButtonStyle);
         creditButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
         creditButton.setPosition(left, settingsButton.getY() - settingsButton.getHeight() - BUTTON_PADDING);
-        creditButton.addListener(new ChangeListener() {
+        creditButton.addListener(new ClickListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public void clicked(InputEvent event, float x, float y) {
                 game.getScreenManager().pushScreen("credit", "blend");
             }
         });

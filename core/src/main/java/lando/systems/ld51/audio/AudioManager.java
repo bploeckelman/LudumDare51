@@ -54,6 +54,30 @@ public class AudioManager implements Disposable {
         , playerHit
         , playerImpact
         , playerDropGems
+        , intro1
+        , intro2
+        , intro3
+        , intro4
+        , intro5
+        , intro6
+        , intro7
+        , intro8
+        , warriorWalkout1
+        , warriorWalkout2
+        , warriorWalkout3
+        , warriorWalkout4
+        , warriorWalkout5
+        , thiefWalkout1
+        , thiefWalkout2
+        , thiefWalkout3
+        , thiefWalkout4
+        , thiefWalkout5
+        , clericWalkout1
+        , clericWalkout2
+        , clericWalkout3
+        , clericWalkout4
+        , clericWalkout5
+        , clericWalkout6
 //        ,
 //        , impactLight
 //        , impactWet
@@ -156,6 +180,35 @@ public class AudioManager implements Disposable {
         putSound(Sounds.playerDropGems, assets.playerDropGems2);
         putSound(Sounds.playerDropGems, assets.playerDropGems3);
         putSound(Sounds.playerDropGems, assets.playerDropGems4);
+
+        putSound(Sounds.intro1, assets.intro1);
+        putSound(Sounds.intro2, assets.intro2);
+        putSound(Sounds.intro3, assets.intro3);
+        putSound(Sounds.intro4, assets.intro4);
+        putSound(Sounds.intro5, assets.intro5);
+        putSound(Sounds.intro6, assets.intro6);
+        putSound(Sounds.intro7, assets.intro7);
+        putSound(Sounds.intro8, assets.intro8);
+
+        putSound(Sounds.warriorWalkout1, assets.warriorWalkout1);
+        putSound(Sounds.warriorWalkout2, assets.warriorWalkout2);
+        putSound(Sounds.warriorWalkout3, assets.warriorWalkout3);
+        putSound(Sounds.warriorWalkout4, assets.warriorWalkout4);
+        putSound(Sounds.warriorWalkout5, assets.warriorWalkout5);
+
+        putSound(Sounds.thiefWalkout1, assets.thiefWalkout1);
+        putSound(Sounds.thiefWalkout2, assets.thiefWalkout2);
+        putSound(Sounds.thiefWalkout3, assets.thiefWalkout3);
+        putSound(Sounds.thiefWalkout4, assets.thiefWalkout4);
+        putSound(Sounds.thiefWalkout5, assets.thiefWalkout5);
+
+        putSound(Sounds.clericWalkout1, assets.clericWalkout1);
+        putSound(Sounds.clericWalkout2, assets.clericWalkout2);
+        putSound(Sounds.clericWalkout3, assets.clericWalkout3);
+        putSound(Sounds.clericWalkout4, assets.clericWalkout4);
+        putSound(Sounds.clericWalkout5, assets.clericWalkout5);
+        putSound(Sounds.clericWalkout6, assets.clericWalkout6);
+
 //        putSound(Sounds.fireball, assets.fireball5);
 
 
@@ -178,7 +231,7 @@ public class AudioManager implements Disposable {
         musics.put(Musics.clericMusic3, assets.clericMusic3);
 
 
-        musicVolume = new MutableFloat(0.6f);
+        musicVolume = new MutableFloat(0.5f);
         soundVolume = new MutableFloat(0.75f);
 
         isMusicMuted = false;

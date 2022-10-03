@@ -160,6 +160,32 @@ public class Assets implements Disposable {
     public Sound playerImpact2;
     public Sound playerImpact3;
     public Sound playerImpact4;
+
+    public Sound intro1;
+    public Sound intro2;
+    public Sound intro3;
+    public Sound intro4;
+    public Sound intro5;
+    public Sound intro6;
+    public Sound intro7;
+    public Sound intro8;
+
+    public Sound warriorWalkout1;
+    public Sound warriorWalkout2;
+    public Sound warriorWalkout3;
+    public Sound warriorWalkout4;
+    public Sound warriorWalkout5;
+    public Sound thiefWalkout1;
+    public Sound thiefWalkout2;
+    public Sound thiefWalkout3;
+    public Sound thiefWalkout4;
+    public Sound thiefWalkout5;
+    public Sound clericWalkout1;
+    public Sound clericWalkout2;
+    public Sound clericWalkout3;
+    public Sound clericWalkout4;
+    public Sound clericWalkout5;
+    public Sound clericWalkout6;
 //    public Sound collect1;
 ////    public Sound ;
 //    public Sound ;
@@ -281,6 +307,33 @@ public class Assets implements Disposable {
             mgr.load("audio/sound/playerImpact2.ogg", Sound.class);
             mgr.load("audio/sound/playerImpact3.ogg", Sound.class);
             mgr.load("audio/sound/playerImpact4.ogg", Sound.class);
+
+            mgr.load("audio/sound/intro1.ogg", Sound.class);
+            mgr.load("audio/sound/intro2.ogg", Sound.class);
+            mgr.load("audio/sound/intro3.ogg", Sound.class);
+            mgr.load("audio/sound/intro4.ogg", Sound.class);
+            mgr.load("audio/sound/intro5.ogg", Sound.class);
+            mgr.load("audio/sound/intro6.ogg", Sound.class);
+            mgr.load("audio/sound/intro7.ogg", Sound.class);
+            mgr.load("audio/sound/intro8.ogg", Sound.class);
+
+            mgr.load("audio/sound/warriorWalkout1.ogg", Sound.class);
+            mgr.load("audio/sound/warriorWalkout2.ogg", Sound.class);
+            mgr.load("audio/sound/warriorWalkout3.ogg", Sound.class);
+            mgr.load("audio/sound/warriorWalkout4.ogg", Sound.class);
+            mgr.load("audio/sound/warriorWalkout5.ogg", Sound.class);
+            mgr.load("audio/sound/thiefWalkout1.ogg", Sound.class);
+            mgr.load("audio/sound/thiefWalkout2.ogg", Sound.class);
+            mgr.load("audio/sound/thiefWalkout3.ogg", Sound.class);
+            mgr.load("audio/sound/thiefWalkout4.ogg", Sound.class);
+            mgr.load("audio/sound/thiefWalkout5.ogg", Sound.class);
+            mgr.load("audio/sound/clericWalkout1.ogg", Sound.class);
+            mgr.load("audio/sound/clericWalkout2.ogg", Sound.class);
+            mgr.load("audio/sound/clericWalkout3.ogg", Sound.class);
+            mgr.load("audio/sound/clericWalkout4.ogg", Sound.class);
+            mgr.load("audio/sound/clericWalkout5.ogg", Sound.class);
+            mgr.load("audio/sound/clericWalkout5.ogg", Sound.class);
+            mgr.load("audio/sound/clericWalkout6.ogg", Sound.class);
 //            mgr.load("audio/sound/.ogg", Sound.class);
 //            mgr.load("audio/sound/.ogg", Sound.class);
 
@@ -515,6 +568,34 @@ public class Assets implements Disposable {
          playerImpact2 = mgr.get("audio/sound/playerImpact2.ogg", Sound.class);
          playerImpact3 = mgr.get("audio/sound/playerImpact3.ogg", Sound.class);
          playerImpact4 = mgr.get("audio/sound/playerImpact4.ogg", Sound.class);
+
+         intro1 = mgr.get("audio/sound/intro1.ogg", Sound.class);
+         intro2 = mgr.get("audio/sound/intro2.ogg", Sound.class);
+         intro3 = mgr.get("audio/sound/intro3.ogg", Sound.class);
+         intro4 = mgr.get("audio/sound/intro4.ogg", Sound.class);
+         intro5 = mgr.get("audio/sound/intro5.ogg", Sound.class);
+         intro6 = mgr.get("audio/sound/intro6.ogg", Sound.class);
+         intro7 = mgr.get("audio/sound/intro7.ogg", Sound.class);
+         intro8 = mgr.get("audio/sound/intro8.ogg", Sound.class);
+
+         warriorWalkout1 = mgr.get("audio/sound/warriorWalkout1.ogg", Sound.class);
+         warriorWalkout2 = mgr.get("audio/sound/warriorWalkout2.ogg", Sound.class);
+         warriorWalkout3 = mgr.get("audio/sound/warriorWalkout3.ogg", Sound.class);
+         warriorWalkout4 = mgr.get("audio/sound/warriorWalkout4.ogg", Sound.class);
+         warriorWalkout5 = mgr.get("audio/sound/warriorWalkout5.ogg", Sound.class);
+
+         thiefWalkout1 = mgr.get("audio/sound/thiefWalkout1.ogg", Sound.class);
+         thiefWalkout2 = mgr.get("audio/sound/thiefWalkout2.ogg", Sound.class);
+         thiefWalkout3 = mgr.get("audio/sound/thiefWalkout3.ogg", Sound.class);
+         thiefWalkout4 = mgr.get("audio/sound/thiefWalkout4.ogg", Sound.class);
+         thiefWalkout5 = mgr.get("audio/sound/thiefWalkout5.ogg", Sound.class);
+
+         clericWalkout1 = mgr.get("audio/sound/clericWalkout1.ogg", Sound.class);
+         clericWalkout2 = mgr.get("audio/sound/clericWalkout2.ogg", Sound.class);
+         clericWalkout3 = mgr.get("audio/sound/clericWalkout3.ogg", Sound.class);
+         clericWalkout4 = mgr.get("audio/sound/clericWalkout4.ogg", Sound.class);
+         clericWalkout5 = mgr.get("audio/sound/clericWalkout5.ogg", Sound.class);
+         clericWalkout6 = mgr.get("audio/sound/clericWalkout6.ogg", Sound.class);
 //         warriorMusic1Music = mgr.get("audio/music/warriorMusicA.ogg", Music.class);
 //         = mgr.get("audio/sound/.ogg", Sound.class);
 //         = mgr.get("audio/sound/.ogg", Sound.class);

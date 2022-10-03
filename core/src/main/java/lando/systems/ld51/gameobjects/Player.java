@@ -107,6 +107,8 @@ public class Player extends ObjectLocation {
     public boolean wizardMusicIsPlaying = false;
     public float wizardTransitionTimer = 0f;
 
+    public int walkoutCounter = 1;
+
 
     public Player(GameScreen screen) {
         this.screen = screen;
@@ -490,24 +492,39 @@ public class Player extends ObjectLocation {
                 if(!wizardMusicIsPlaying) {
                     screen.audio.stopMusic();
                     screen.audio.playMusic(AudioManager.Musics.valueOf("warriorMusic" + musicPhase));
+                    if(walkoutCounter < 6) {
+                        screen.audio.playSound(AudioManager.Sounds.valueOf("warriorWalkout"+walkoutCounter), 1.0F);
+                    }
                 }
                 break;
             case GREEN:
                 if(!wizardMusicIsPlaying) {
                     screen.audio.stopMusic();
                     screen.audio.playMusic(AudioManager.Musics.valueOf("rogueMusic" + musicPhase));
+                    if(walkoutCounter < 6) {
+                        screen.audio.playSound(AudioManager.Sounds.valueOf("thiefWalkout"+walkoutCounter),1.0F);
+                    }
                 }
                 break;
             case BLUE:
                 if(!wizardMusicIsPlaying) {
                     screen.audio.stopMusic();
                     screen.audio.playMusic(AudioManager.Musics.valueOf("clericMusic" + musicPhase));
+                    if(walkoutCounter <= 6) {
+                        screen.audio.playSound(AudioManager.Sounds.valueOf("clericWalkout"+walkoutCounter), 1.0F);
+                    }
                 }
                 if (musicPhase == 3) {
                     musicPhase = 1;
                 } else {
                     musicPhase++;
                 }
+
+//                if(walkoutCounter < 6) {
+//                    walkoutCounter = 7;
+//                }
+                walkoutCounter++;
+
                 break;
         }
 

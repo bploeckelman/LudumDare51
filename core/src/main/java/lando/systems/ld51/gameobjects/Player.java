@@ -388,22 +388,18 @@ public class Player extends ObjectLocation {
         // Particle effects etc
         screen.screenShaker.addDamage(.8f);
         this.phase = nextPhase;
+
+        screen.audio.playSound(AudioManager.Sounds.lightning, 1.0f);
         // NOTE: the animation should be changed correctly in update based on whatever phase happens to be
         switch (this.phase){
             case RED:
-                if(!isWizard) {
-                    screen.audio.playSound(AudioManager.Sounds.valueOf("warriorMusic" + musicPhase), 1.0f);
-                }
+                screen.audio.playMusic(AudioManager.Musics.valueOf("warriorMusic" + musicPhase));
                 break;
             case GREEN:
-                if(!isWizard) {
-                    screen.audio.playSound(AudioManager.Sounds.valueOf("rogueMusic" + musicPhase), 1.0f);
-                }
+                    screen.audio.playMusic(AudioManager.Musics.valueOf("rogueMusic" + musicPhase));
                 break;
             case BLUE:
-                if(!isWizard) {
-                    screen.audio.playSound(AudioManager.Sounds.valueOf("clericMusic" + musicPhase), 0.6f);
-                }
+                    screen.audio.playMusic(AudioManager.Musics.valueOf("clericMusic" + musicPhase));
                 if (musicPhase == 3) {
                     musicPhase = 1;
                 } else {

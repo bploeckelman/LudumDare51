@@ -29,7 +29,7 @@ public class TitleScreen extends BaseScreen {
     public void create() {
         gdx = assets.atlas.findRegion("libgdx");
         state = 0f;
-        game.audio.loopSound(AudioManager.Sounds.introMusic, 0.8f);
+        game.audio.playMusic(AudioManager.Musics.introMusic);
         InputMultiplexer mux = new InputMultiplexer(this, uiStage);
         Gdx.input.setInputProcessor(mux);
     }

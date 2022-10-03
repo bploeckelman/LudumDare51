@@ -1,4 +1,4 @@
-- ** [HTML5/WebGL](https://lando.systems/games/ld51-chromo-trigger) **
+- ** [HTML5/WebGL](https://lando.systems/games/ld51-chromo-trigger/) **
 - ** [Desktop/Java](https://lando.systems/games/ld51-chromo-trigger/ld51-chromo-trigger.jar) **
 - ** [Source](https://github.com/bploeckelman/LudumDare51) **
 
@@ -10,11 +10,15 @@ In this  click-and-slash fantasy action adventure, you’ll collect colorful gem
 
 Collect enough gems :gem: with each class and unlock your true power!
 
+![cleric.png](///raw/503/z/51931.png)
+
 # Controls:
 ---
-WASD to move the player.
-Space or Left Click to attack in the direction your mouse is.
+WASD or Arrows: Move the player.
+Space or Left Click: Attack based on mouse position
 
+
+![wizard1.png](///raw/503/z/51938.png)
 
 # About the Team:
 ---
@@ -32,5 +36,5 @@ Code:
 Art:
 - Matt Neumann
 
-Audio:
+Audio (and Code and Story, Triple Threat!):
 - Pete Valeo

@@ -93,22 +93,18 @@ public class Enemy implements Steerable<Vector2> {
         }
         this.hurtShape = new Polygon(vertices);
         this.isHurt = false;
-        this.hurtDuration = 0.25f;
+        this.hurtDuration = 0.6f;
         this.hurtTimer = hurtDuration;
     }
 
     public void update(float dt) {
+        prevPosition.set(position);
+
         if (steeringBehavior != null) {
             steeringBehavior.calculateSteering(steeringOutput);
-            /*
-             * Here you might want to add a motor control layer filtering steering accelerations.
-             * For instance, a car in a driving game has physical constraints on its movement:
-             * - it cannot turn while stationary
-             * - the faster it moves, the slower it can turn (without going into a skid)
-             * - it can brake much more quickly than it can accelerate
-             * - it only moves in the direction it is facing (ignoring power slides)
-             */
-            applySteering(steeringOutput, dt);
+            if (!isHurt) {
+                applySteering(steeringOutput, dt);
+            }
         }
 
         hurtCircle.setPosition(position);
@@ -126,7 +122,6 @@ public class Enemy implements Steerable<Vector2> {
     }
 
     public void applySteering(SteeringAcceleration<Vector2> steering, float delta) {
-        prevPosition.set(position);
         position.mulAdd(linearVelocity, delta);
         linearVelocity.mulAdd(steering.linear, delta).limit(this.getMaxLinearSpeed());
 

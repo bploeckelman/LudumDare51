@@ -39,12 +39,12 @@ public class CooldownTimerUI extends VisWindow {
         bossCooldownRemainingPercentage = 100f-(accum % 10f) * 10f;
         timerProgressBar.setValue(bossCooldownRemainingPercentage);
         if (player.isWizard) {
-            timerProgressBar.setValue(100f);
             timerProgressBarStyle.knobBefore = new TextureRegionDrawable(assets.whiteProgressBar);
             timerProgressBar.setStyle(timerProgressBarStyle);
         }
-        if (player.isWizard || player.isFullOfGems()) {
+        if (player.isWizard && (player.redGemCount >= player.FULL_GEM_COUNT /2f || player.greenGemCount >= player.FULL_GEM_COUNT /2f || player.blueGemCount >= player.FULL_GEM_COUNT /2f)) {
             timerProgressBarStyle.background = Assets.Patch.metal.drawable;
+            timerProgressBar.setValue(100f);
             setColor(Color.WHITE);
 //            timerProgressBarStyle.knobBefore = new TextureRegionDrawable(assets.whiteProgressBar);
         }

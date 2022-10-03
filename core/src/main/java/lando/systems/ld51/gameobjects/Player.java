@@ -136,9 +136,9 @@ public class Player extends ObjectLocation {
         this.isAttacking = false;
         // player gem ui switch update
         this.isWizard = false;
-        this.redGemCount = 0;
-        this.greenGemCount = 0;
-        this.blueGemCount = 0;
+        this.redGemCount = 48;
+        this.greenGemCount = 48;
+        this.blueGemCount = 48;
         this.lockGemsUntilWizard = false;
         this.attackInterval = attackIntervalNormal;
         this.attackTimer = attackInterval;

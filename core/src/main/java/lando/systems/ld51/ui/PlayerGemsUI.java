@@ -61,7 +61,7 @@ public class PlayerGemsUI extends Group {
     }
 
     public void updatePlayerGemsUIColor(Player player) {
-        if (player.isWizard) {
+        if (player.isWizard && (player.redGemCount >= player.FULL_GEM_COUNT /2f || player.greenGemCount >= player.FULL_GEM_COUNT /2f || player.blueGemCount >= player.FULL_GEM_COUNT /2f)) {
             blueGemUI.setColor(Color.WHITE);
             redGemUI.setColor(Color.WHITE);
             greenGemUI.setColor(Color.WHITE);

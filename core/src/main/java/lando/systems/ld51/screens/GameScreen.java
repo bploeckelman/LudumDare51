@@ -1,6 +1,5 @@
 package lando.systems.ld51.screens;
 
-import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.ai.steer.behaviors.BlendedSteering;
 import com.badlogic.gdx.ai.steer.behaviors.CollisionAvoidance;
 import com.badlogic.gdx.ai.steer.behaviors.Seek;
@@ -152,20 +151,24 @@ public class GameScreen extends BaseScreen {
             }
         }
 
-        Enemy enemy = enemySpawner.update(delta);
-        if (enemy != null) {
-            // add a group steering behavior in addition to the default behaviors
-            SteeringBehavior<Vector2> steeringBehavior = enemy.getSteeringBehavior();
-            if (enemy.getSteeringBehavior() instanceof BlendedSteering) {
-                float radius = enemy.size * enemy.type.avoidanceScale;
-                BlendedSteering<Vector2> blendedSteering = (BlendedSteering<Vector2>) enemy.getSteeringBehavior();
-                RadiusProximity<Vector2> radiusProximity = new RadiusProximity<>(enemy, enemies, radius);
-                blendedSteering.add(new CollisionAvoidance<>(enemy, radiusProximity), 2f);
+        // spawn enemies if appropriate
+        Array<Enemy> spawnedEnemies = enemySpawner.update(delta);
+        if (!spawnedEnemies.isEmpty()) {
+            for (Enemy spawnedEnemy : spawnedEnemies) {
+                // add a group steering behavior in addition to the default behaviors
+                if (spawnedEnemy.getSteeringBehavior() instanceof BlendedSteering) {
+                    float radius = spawnedEnemy.size * spawnedEnemy.type.avoidanceScale;
+                    BlendedSteering<Vector2> blendedSteering = (BlendedSteering<Vector2>) spawnedEnemy.getSteeringBehavior();
+                    RadiusProximity<Vector2> radiusProximity = new RadiusProximity<>(spawnedEnemy, enemies, radius);
+                    blendedSteering.add(new CollisionAvoidance<>(spawnedEnemy, radiusProximity), 2f);
+                }
+                enemies.add(spawnedEnemy);
             }
-            enemies.add(enemy);
         }
+
+        // update and remove dead enemies
         for (int i = enemies.size - 1; i >= 0; i--) {
-            enemy = enemies.get(i);
+            Enemy enemy = enemies.get(i);
             enemy.update(delta);
             if (enemy.isDead()) {
                 enemy.kill();
@@ -240,27 +243,53 @@ public class GameScreen extends BaseScreen {
     // Helper classes
     // ------------------------------------------------------------------------
 
+    // TODO - change this to be a spawner controller,
+    //  it keeps the time table for spawning
+    //  and if it's time to spawn picks a source spawner
+    //  and picks a random Spawner.SpawnType to spawn from there
+    //  needs to be able to spawn one or more enemies so should maintain an array that it populates and returns from update
     class EnemySpawner {
-        private float timer = 0f;
+
+        private final Array<Enemy> spawnedEnemies = new Array<>();
+        private final Vector2 dist = new Vector2();
+
         private float duration = 2f;
-        Enemy update(float delta) {
+        private float timer = 0f;
+
+        Array<Enemy> update(float delta) {
+            spawnedEnemies.clear();
             Enemy enemy = null;
+
             timer += delta;
             if (timer >= duration) {
                 timer -= duration;
                 enemy = spawn();
             }
-            return enemy;
+
+            if (enemy != null) {
+                spawnedEnemies.add(enemy);
+            }
+            return spawnedEnemies;
         }
+
+        Spawner findClosestOffscreenSpawner() {
+            Spawner closest = null;
+            float minDistance = Float.MAX_VALUE;
+            for (Spawner spawner : spawners) {
+                if (!spawner.isOffscreen()) continue;
+                float distance = dist.set(player.position).dst(spawner.position);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closest = spawner;
+                }
+            }
+            return closest;
+        }
+
         Enemy spawn() {
             CreatureAnims.Type type = CreatureAnims.Type.random();
-            float setback = 100f;
-            float angle = MathUtils.random(0, 360f);
-            float xDist = worldCamera.viewportWidth / 2f + setback;
-            float yDist = worldCamera.viewportHeight / 2f + setback;
-            float x = MathUtils.cosDeg(angle) * xDist;
-            float y = MathUtils.sinDeg(angle) * yDist;
-            Enemy enemy = new Enemy(GameScreen.this, type, x, y);
+            Spawner spawner = findClosestOffscreenSpawner();
+            Enemy enemy = new Enemy(GameScreen.this, type, spawner.position.x, spawner.position.y);
             // TODO - set enemy speed values based on type
             // TODO - add in special steering behaviors for certain types of enemies
             BlendedSteering<Vector2> steering = new BlendedSteering<>(enemy);

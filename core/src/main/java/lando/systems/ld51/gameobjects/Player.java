@@ -181,23 +181,23 @@ public class Player extends ObjectLocation {
         float prevPosX = position.x;
         float prevPosY = position.y;
 
-        if (!movementVector.isZero()){
+//        if (!movementVector.isZero()){
             tempVec2.set(movementVector);
             tempPos.set(position).add(movementVector.x * SPEED * dt, movementVector.y * SPEED * dt);
 
             // collision check of arena
             Arena arena = screen.arena;
             if ((tempPos.x - SIZE/2f) < arena.bounds.x){
-                tempVec2.x -= ((tempPos.x -SIZE/2f) - arena.bounds.x);
+                tempPos.x -= ((tempPos.x -SIZE/2f) - arena.bounds.x);
             }
             if ((tempPos.x + SIZE/2f) > arena.bounds.x + arena.bounds.width){
-                tempVec2.x -= (tempPos.x + SIZE/2f) - (arena.bounds.x + arena.bounds.width);
+                tempPos.x -= (tempPos.x + SIZE/2f) - (arena.bounds.x + arena.bounds.width);
             }
             if ((tempPos.y - SIZE/2f) < arena.bounds.y){
-                tempVec2.y -= ((tempPos.y -SIZE/2f) - arena.bounds.y);
+                tempPos.y -= ((tempPos.y -SIZE/2f) - arena.bounds.y);
             }
             if ((tempPos.y + SIZE/2f) > arena.bounds.y + arena.bounds.height){
-                tempVec2.y -= (tempPos.y + SIZE/2f) - (arena.bounds.y + arena.bounds.height);
+                tempPos.y -= (tempPos.y + SIZE/2f) - (arena.bounds.y + arena.bounds.height);
             }
 
             // Boss check
@@ -206,11 +206,11 @@ public class Player extends ObjectLocation {
             if (distToBoss < SIZE/2 + boss.protectedRadius) {
                 float overlapDist = SIZE/2 + boss.protectedRadius - distToBoss;
                 tempVec.set(tempPos).sub(boss.position).nor();
-                tempVec2.add(tempVec.x * overlapDist, tempVec.y * overlapDist);
+                tempPos.add(tempVec.x * overlapDist, tempVec.y * overlapDist);
             }
 
-            position.add(tempVec2.x * SPEED * dt, tempVec2.y * SPEED * dt);
-        }
+            position.set(tempPos);
+//        }
 
         // only animate while moving or attacking, or if we're the wizard who has a floaty walk animation
         if (isWizard || isAttacking || !position.epsilonEquals(prevPosX, prevPosY)) {

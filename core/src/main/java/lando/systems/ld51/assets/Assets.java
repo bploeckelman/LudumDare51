@@ -375,7 +375,6 @@ public class Assets implements Disposable {
             }
         }
 
-//        float attackDuration = 0.5f;
         playerAnimationByPhaseByState = new ObjectMap<>();
         playerFlashAnimationByPhaseByState = new ObjectMap<>();
         for (Player.Phase phase : Player.Phase.values()) {
@@ -392,10 +391,8 @@ public class Assets implements Disposable {
                 Array<AtlasRegion> frames = atlas.findRegions(regionsName);
 
                 float frameDuration = 0.1f;
-                PlayMode playMode = PlayMode.LOOP;
-//                float frameDuration = (state == Player.State.WALK) ? 0.1f : (attackDuration / frames.size);
-//                if (phase == Player.Phase.WIZARD) frameDuration = 0.01f;
-//                Animation.PlayMode playMode = (state == Player.State.WALK) ? Animation.PlayMode.LOOP : Animation.PlayMode.NORMAL;
+                Animation.PlayMode playMode = (state == Player.State.WALK || phase == Player.Phase.WIZARD)
+                        ? Animation.PlayMode.LOOP : Animation.PlayMode.NORMAL;
 
                 Animation<AtlasRegion> animation = new Animation<>(frameDuration, frames, playMode);
                 animationByState.put(state, animation);
@@ -417,8 +414,6 @@ public class Assets implements Disposable {
             Array<AtlasRegion> glowFrames = atlas.findRegions(glowRegions);
 
             float frameDuration = 0.05f;
-//            float frameDuration = attackDuration / weaponFrames.size;
-
             Animation<AtlasRegion> weaponAnim = new Animation<>(frameDuration, weaponFrames, PlayMode.NORMAL);
             Animation<AtlasRegion> glowAnim = new Animation<>(frameDuration, glowFrames, PlayMode.NORMAL);
 

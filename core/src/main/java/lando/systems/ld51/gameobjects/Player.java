@@ -46,13 +46,16 @@ public class Player extends ObjectLocation {
         public final Animation<AtlasRegion> glow;
     }
 
-    public static float SIZE_NORMAL = 100f;
-    public static float SIZE_WIZARD = 200;
+    public static final float SIZE_NORMAL = 100f;
+    public static final float SIZE_WIZARD = 200;
     public static float SIZE = SIZE_NORMAL;
-    public static float SPEED_NORMAL = 340f;
-    public static float SPEED_WIZARD = 450f;
+    public static final float SPEED_NORMAL = 340f;
+    public static final float SPEED_WIZARD = 450f;
     public static float SPEED = SPEED_NORMAL;
-    public static int FULL_GEM_COUNT = 5;
+    public static final float ATTACK_COOLDOWN_NORMAL = 0.2f;
+    public static final float ATTACK_COOLDOWN_WIZARD = 0.15f;
+
+    public static int FULL_GEM_COUNT = 50;
     public static int DEFAULT_GEM_DROP_AMOUNT = 8;
 
     private final GameScreen screen;
@@ -78,10 +81,8 @@ public class Player extends ObjectLocation {
     private float attackStateTime;
     private float attackInterval;
     private float attackIntervalNormal = 0.33f;
-    private float attackIntervalWizard = 0.1f;
+    private float attackIntervalWizard = 0.01f;
     private float attackTimer;
-    private float attackCooldownNormal = 0.2f;
-    private float attackCooldownWizard = 0.05f;
     private float attackCooldown;
 
     private float timeSinceLastHurt;
@@ -138,7 +139,7 @@ public class Player extends ObjectLocation {
         this.lockGemsUntilWizard = false;
         this.attackInterval = attackIntervalNormal;
         this.attackTimer = attackInterval;
-        this.attackCooldown = attackCooldownNormal;
+        this.attackCooldown = ATTACK_COOLDOWN_NORMAL;
         this.hurtCircle = new Circle(position, SIZE / 4f);
         this.hurtDuration = 0.33f;
         this.hurtTimer = hurtDuration;
@@ -246,15 +247,16 @@ public class Player extends ObjectLocation {
                 if (attackStateTime >= weaponAnims.weapon.getAnimationDuration()) {
                     attackStateTime = 0f;
                     attackHitShape = null;
+                    attackCooldown = (isWizard) ? ATTACK_COOLDOWN_WIZARD : ATTACK_COOLDOWN_NORMAL;
                     isAttacking = false;
                 }
             }
-        } else {
-            attackCooldown -= dt;
-            if (attackCooldown < 0f) {
-                attackCooldown = 0f;
-            }
         }
+        attackCooldown -= dt;
+        if (attackCooldown < 0f) {
+            attackCooldown = 0f;
+        }
+//        Gdx.app.log("attack cooldown", Stringf.format("%.2f", attackCooldown));
 
         // use facing to decide whether to flip keyframe
         float angle = facing.angleDeg();
@@ -281,12 +283,17 @@ public class Player extends ObjectLocation {
     }
 
     private boolean canAttack() {
-        if (isAttacking || isHurt || attackCooldown > 0 || attackTimer > 0) return false;
-
         float animationDuration = animation.getAnimationDuration();
-        boolean attackAnimComplete = (attackStateTime == 0 || attackStateTime >= animationDuration);
         boolean attackPressed = (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.SPACE));
+
+        // wizard attacks fast
+        if (isWizard && attackPressed && attackCooldown <= 0f) {
+            return true;
+        }
+
+        if (isAttacking || isHurt || attackCooldown > 0 || attackTimer > 0) return false;
 //        Gdx.app.log("can attack", "pressed: " + attackPressed + ", anim ready: " + attackAnimComplete);
+        boolean attackAnimComplete = (attackStateTime == 0 || attackStateTime >= animationDuration);
         return (attackPressed && attackAnimComplete);
     }
 
@@ -531,13 +538,12 @@ public class Player extends ObjectLocation {
     }
 
     public void attack() {
-        if (isAttacking) return;
+        if (isAttacking && !isWizard) return; // wizard attacks fast
         isAttacking = true;
         attackStateTime = 0f;
 
-        attackCooldown = (isWizard) ? attackCooldownWizard : attackCooldownNormal;
         attackInterval = (isWizard) ? attackIntervalWizard : attackIntervalNormal;
-        attackTimer = attackInterval; // TODO - attack anim duration + attack interval?
+        attackTimer = attackInterval;
 
         if (isWizard) {
             float size = 64f;
@@ -549,6 +555,7 @@ public class Player extends ObjectLocation {
             projectile.size = size;
             screen.projectiles.add(projectile);
             game.audio.playSound(AudioManager.Sounds.fireball, 0.25F);
+            attackCooldown = ATTACK_COOLDOWN_WIZARD;
         } else {
             float range = attackRange.radius;
             float[] vertices = new float[]{

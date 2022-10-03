@@ -16,6 +16,7 @@ import lando.systems.ld51.assets.EffectAnims;
 import lando.systems.ld51.audio.AudioManager;
 import lando.systems.ld51.screens.GameScreen;
 import lando.systems.ld51.utils.Calc;
+import lando.systems.ld51.utils.Time;
 import lombok.RequiredArgsConstructor;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
@@ -307,9 +308,10 @@ public class Player extends ObjectLocation {
     public void hurt(float amount, float dirX, float dirY) {
         if (isHurt) return;
         isHurt = true;
+        Time.pause_for(0.15f);
 
         // bounce back
-        float bounceBackAmount = 50f;
+        float bounceBackAmount = 20f;
         float prevPosX = position.x;
         float prevPosY = position.y;
         position.add(dirX * bounceBackAmount, dirY * bounceBackAmount);
@@ -387,6 +389,7 @@ public class Player extends ObjectLocation {
         // TODO: anything that needs to happen on the phase change
         // Particle effects etc
         screen.screenShaker.addDamage(.8f);
+        Time.pause_for(0.3f);
         this.phase = nextPhase;
 
         screen.audio.playSound(AudioManager.Sounds.lightning, 1.0f);

@@ -132,6 +132,10 @@ public class Main extends ManagedGame<BaseScreen, ScreenTransition> {
 		// update global systems
 		{
 			particles.update(delta);
+			BaseScreen screen = screenManager.getCurrentScreen();
+			if (screen != null) {
+				screen.update(Time.delta);
+			}
 		}
 	}
 

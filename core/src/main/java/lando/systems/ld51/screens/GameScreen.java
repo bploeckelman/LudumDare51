@@ -35,6 +35,7 @@ public class GameScreen extends BaseScreen {
     public float accum;
 
     public final Particles particles;
+    public final Array<Spawner> spawners;
     public final Array<Projectile> projectiles;
 
     private DebugWindow debugWindow;
@@ -57,9 +58,12 @@ public class GameScreen extends BaseScreen {
         this.enemies = new Array<>();
         this.accum = 0;
         this.particles = Main.game.particles;
+        this.spawners = new Array<>();
         this.projectiles = new Array<>();
         this.enemySpawner = new EnemySpawner();
         bossHealthUI.setBoss(boss);
+
+        populateSpawners();
     }
 
     @Override
@@ -184,8 +188,6 @@ public class GameScreen extends BaseScreen {
 
     @Override
     public void render(float delta) {
-        update(delta);
-
         ScreenUtils.clear(Color.BLACK);
 
         batch.setProjectionMatrix(screenShaker.getCombinedMatrix());
@@ -193,6 +195,9 @@ public class GameScreen extends BaseScreen {
         {
             arena.render(batch);
             particles.draw(batch, Particles.Layer.background);
+            for (Spawner spawner : spawners) {
+                spawner.render(batch);
+            }
             for (Gem gem : gems){
                 gem.render(batch);
             }
@@ -214,6 +219,22 @@ public class GameScreen extends BaseScreen {
 //    private void updateTimer() {
 
 //    }
+
+    private void populateSpawners() {
+        int numCols = 8;
+        int numRows = 8;
+        float margin = 200f;
+        float xSpacing = (arena.bounds.width  - (2f * margin)) / (numCols - 1);
+        float ySpacing = (arena.bounds.height - (2f * margin)) / (numRows - 1);
+        for (int col = 0; col < numCols; col++) {
+            for (int row = 0; row < numRows; row++) {
+                float x = arena.bounds.x + margin + col * xSpacing;
+                float y = arena.bounds.y + margin + row * ySpacing;
+                Spawner spawner = new Spawner(this, x, y);
+                spawners.add(spawner);
+            }
+        }
+    }
 
     // ------------------------------------------------------------------------
     // Helper classes

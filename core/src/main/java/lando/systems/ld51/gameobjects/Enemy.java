@@ -59,7 +59,7 @@ public class Enemy implements Steerable<Vector2> {
     public float health;
     public float size;
 
-    private static final float ENEMY_SIZE = 50F;
+    private static final float ENEMY_SIZE = 70F;
     private static final float ENEMY_SIZE_MAX = 200F;
 
     public Enemy(GameScreen screen, CreatureAnims.Type type, float x, float y) {

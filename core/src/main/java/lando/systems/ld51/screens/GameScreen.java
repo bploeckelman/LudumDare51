@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import lando.systems.ld51.Config;
 import lando.systems.ld51.Main;
-import lando.systems.ld51.assets.CreatureAnims;
+import lando.systems.ld51.assets.CreatureAnims.Type;
 import lando.systems.ld51.assets.EffectAnims;
 import lando.systems.ld51.audio.AudioManager;
 import lando.systems.ld51.gameobjects.*;
@@ -29,6 +29,8 @@ import lando.systems.ld51.utils.FollowOrthographicCamera;
 import lando.systems.ld51.utils.screenshake.ScreenShakeCameraController;
 
 import java.util.Comparator;
+
+import static lando.systems.ld51.assets.CreatureAnims.CreatureGroups;
 
 public class GameScreen extends BaseScreen {
 
@@ -310,32 +312,59 @@ public class GameScreen extends BaseScreen {
     // Helper classes
     // ------------------------------------------------------------------------
 
-    // TODO - change this to be a spawner controller,
-    //  it keeps the time table for spawning
-    //  and if it's time to spawn picks a source spawner
-    //  and picks a random Spawner.SpawnType to spawn from there
-    //  needs to be able to spawn one or more enemies so should maintain an array that it populates and returns from update
     class EnemySpawner {
 
         private final Array<Enemy> spawnedEnemies = new Array<>();
         private final Vector2 dist = new Vector2();
 
-        private float duration = 2f;
-        private float timer = 0f;
+        private static final int MAX_NUM_LIVE_ENEMIES = 100;
+
+        private static final float SPAWN_INTERVAL_WIZARD = 0.75f;
+        private static final float SPAWN_INTERVAL_NORMAL = 2f;
+
+        private Spawner lastSpawnerUsed = null;
+        private float interval = SPAWN_INTERVAL_NORMAL;
+        private float timer = interval; // spawn immediately
+        private boolean isFirstSpawn = true;
 
         Array<Enemy> update(float delta) {
             spawnedEnemies.clear();
-            Enemy enemy = null;
+
+            interval = (player.isWizard) ? SPAWN_INTERVAL_WIZARD : SPAWN_INTERVAL_NORMAL;
 
             timer += delta;
-            if (timer >= duration) {
-                timer -= duration;
-                enemy = spawn();
+            if (timer >= interval) {
+                timer -= interval;
+
+                // if there's 'too many' live enemies don't spawn more
+                if (enemies.size < MAX_NUM_LIVE_ENEMIES) {
+                    Enemy enemy;
+                    if (isFirstSpawn) {
+                        isFirstSpawn = false;
+                        // always spawn a red first since that's the starting character color
+                        enemy = spawn(CreatureGroups.reds.getRandomType(), false);
+                    } else {
+                        enemy = spawn();
+                    }
+                    spawnedEnemies.add(enemy);
+
+                    // potentially spawn a swarm
+                    if (CreatureGroups.babies.types.contains(enemy.type, true)) {
+                        boolean spawnSwarm = MathUtils.randomBoolean(0.66f);
+                        if (spawnSwarm) {
+                            // spawn a swarm
+                            Gdx.app.log("spawner", "spawning swarm of " + enemy.type.name());
+                            boolean reuseLastSpawner = true;
+                            int howMany = MathUtils.random(3, 6);
+                            for (int i = 0; i < howMany; i++) {
+                                enemy = spawn(enemy.type, reuseLastSpawner);
+                                spawnedEnemies.add(enemy);
+                            }
+                        }
+                    }
+                }
             }
 
-            if (enemy != null) {
-                spawnedEnemies.add(enemy);
-            }
             return spawnedEnemies;
         }
 
@@ -354,21 +383,31 @@ public class GameScreen extends BaseScreen {
         }
 
         Enemy spawn() {
-            CreatureAnims.Type type = CreatureAnims.Type.random();
-
-            // slightly prefer spawning creatures of the gem type the player has the least of
+            Type type = Type.random();
             boolean coinFlip = MathUtils.randomBoolean(0.75f);
             if (coinFlip) {
                 Gem.Type leastGemType = player.getLeastGemsType();
                 switch (leastGemType) {
-                    case RED:   type = CreatureAnims.CreatureGroups.reds.getRandomType(); break;
-                    case GREEN: type = CreatureAnims.CreatureGroups.greens.getRandomType(); break;
-                    case BLUE:  type = CreatureAnims.CreatureGroups.blues.getRandomType(); break;
+                    case RED:   type = CreatureGroups.reds.getRandomType(); break;
+                    case GREEN: type = CreatureGroups.greens.getRandomType(); break;
+                    case BLUE:  type = CreatureGroups.blues.getRandomType(); break;
                 }
             }
+            return spawn(type, false);
+        }
 
+        Enemy spawn(Type type, boolean reuseLastSpawner) {
+            // slightly prefer spawning creatures of the gem type the player has the least of
             Spawner spawner = findClosestOffscreenSpawner();
-            Enemy enemy = new Enemy(GameScreen.this, type, spawner.position.x, spawner.position.y);
+            if (reuseLastSpawner && lastSpawnerUsed != null) {
+                spawner = lastSpawnerUsed;
+            }
+            lastSpawnerUsed = spawner;
+
+            float spread = MathUtils.randomSign() * MathUtils.random(80f, 120f);
+            Enemy enemy = new Enemy(GameScreen.this, type,
+                    spawner.position.x + spread,
+                    spawner.position.y + spread);
 
             // TODO - add in special steering behaviors for certain types of enemies
             BlendedSteering<Vector2> steering = new BlendedSteering<>(enemy);

@@ -79,6 +79,12 @@ public class CreatureAnims {
           reds   (rat_small, rat_big, beetle_red_small, beetle_red_big, spider_black_small, spider_black_big, minotaur, skeleton, fairy, flame_person, blob_red, goblin_dagger, golem_red, elemental_red, dragon_red)
         , greens (snake_small, snake_big, wolf_normal, wolf_dire, spider_brown_small, spider_brown_big, toad, bird, orc, reptile, blob_green, goblin_shield, golem_green, elemental_green, dragon_green)
         , blues  (bat_small, bat_big, worm_small, worm_big, beetle_black_small, beetle_black_big, mimic, zombie, dwarf, beholder, blob_blue, goblin_mage, golem_blue, elemental_blue, dragon_blue)
+
+        , babies  (rat_small, snake_small, bat_small, beetle_red_small, wolf_normal, worm_small, spider_black_small, spider_brown_small, beetle_black_small)
+        , mediums (orc, reptile, dwarf, flame_person, beholder, golem_red, golem_green, golem_blue)
+        , biggest (devil_red, devil_green, devil_blue, dragon_red, dragon_green, dragon_blue)
+
+        // TODO - families
         ;
         public final Array<Type> types = new Array<>();
         CreatureGroups(Type... types) {
@@ -88,6 +94,7 @@ public class CreatureAnims {
             int numTypes = types.size;
             return types.get(MathUtils.random(0, numTypes - 1));
         }
+        // TODO - getRandomFamily()
     }
 
     public enum Type {
@@ -99,28 +106,28 @@ public class CreatureAnims {
 //        , wizard_blue  (0,0,  2,  1f,    80f, 100f, 0f, 20f, RED)
 
         // small and fast, tier 1
-          rat_small    (0,5,  1,  0.1f,  150, 200 , 0,  80,  RED)
-        , rat_big      (1,5,  2,  0.9f,   50,  80,  0,  40,  RED)
-        , snake_small  (5,5,  1,  0.1f,  150, 200,  0,  80,  GREEN)
-        , snake_big    (4,5,  2,  0.9f,   50,  80,  0,  40,  GREEN)
-        , bat_small    (5,4,  1,  0.1f,  150, 200,  0,  80,  BLUE)
-        , bat_big      (4,4,  2,  0.9f,   50,  80,  0,  40,  BLUE)
+          rat_small    (0,5,  1,  0.8f,  150, 200 , 0,  80,  RED)
+        , rat_big      (1,5,  2,  1.2f,   50,  80,  0,  40,  RED)
+        , snake_small  (5,5,  1,  0.8f,  150, 200,  0,  80,  GREEN)
+        , snake_big    (4,5,  2,  1.2f,   50,  80,  0,  40,  GREEN)
+        , bat_small    (5,4,  1,  0.8f,  150, 200,  0,  80,  BLUE)
+        , bat_big      (4,4,  2,  1.2f,   50,  80,  0,  40,  BLUE)
 
         // small and fast tier 2
-        , beetle_red_small (7,10,  1,  0.1f,  120,  200,  0,  100,   RED)
-        , beetle_red_big   (5,10,  2,  0.9f,   70,  100,  0,   60,   RED)
-        , wolf_normal      (1, 6,  1,  0.1f,  120,  200,  0,  100,   GREEN)
-        , wolf_dire        (0, 6,  2,  0.9f,   70,  100,  0,   60,   GREEN)
-        , worm_small       (5,11,  1,  0.1f,  120,  200,  0,  100,   BLUE)
-        , worm_big         (6,11,  2,  0.9f,   70,  100,  0,   60,   BLUE)
+        , beetle_red_small (7,10,  1,  0.8f,  120,  200,  0,  100,   RED)
+        , beetle_red_big   (5,10,  2,  1.2f,   70,  100,  0,   60,   RED)
+        , wolf_normal      (1, 6,  1,  0.8f,  120,  200,  0,  100,   GREEN)
+        , wolf_dire        (0, 6,  2,  1.2f,   70,  100,  0,   60,   GREEN)
+        , worm_small       (5,11,  1,  0.8f,  120,  200,  0,  100,   BLUE)
+        , worm_big         (6,11,  2,  1.2f,   70,  100,  0,   60,   BLUE)
 
         // small and fast tier 3
-        , spider_black_small (9, 4,  1,  0.1f,  100,  220,  0,  200,   RED)
-        , spider_black_big   (8, 4,  2,  0.9f,   50,  110,  0,  100,   RED)
-        , spider_brown_small (7, 4,  1,  0.1f,  100,  220,  0,  200,   GREEN)
-        , spider_brown_big   (6, 4,  2,  0.9f,   50,  110,  0,  100,   GREEN)
-        , beetle_black_small (6,10,  1,  0.1f,  100,  220,  0,  200,   BLUE)
-        , beetle_black_big   (4,10,  2,  0.9f,   50,  110,  0,  100,   BLUE)
+        , spider_black_small (9, 4,  1,  0.8f,  100,  220,  0,  200,   RED)
+        , spider_black_big   (8, 4,  2,  1.2f,   50,  110,  0,  100,   RED)
+        , spider_brown_small (7, 4,  1,  0.8f,  100,  220,  0,  200,   GREEN)
+        , spider_brown_big   (6, 4,  2,  1.2f,   50,  110,  0,  100,   GREEN)
+        , beetle_black_small (6,10,  1,  0.8f,  100,  220,  0,  200,   BLUE)
+        , beetle_black_big   (4,10,  2,  1.2f,   50,  110,  0,  100,   BLUE)
 
         // random one offs tier 1
         , minotaur (6, 5,  2,  1.5f,   80,   80,  0,   50,   RED)
@@ -139,9 +146,9 @@ public class CreatureAnims {
         , beholder     (8,6,  5,  3.0f,   60,  150,  0,  100,   BLUE)
 
         // family tier 1
-        , blob_red   (9,11,  3,  0.1f,  100,  100,  0,  100,   RED)
-        , blob_green (7,11,  3,  0.1f,  100,  100,  0,  100,   GREEN)
-        , blob_blue  (8,11,  3,  0.1f,  100,  100,  0,  100,   BLUE)
+        , blob_red   (9,11,  3,  0.3f,  100,  100,  0,  100,   RED)
+        , blob_green (7,11,  3,  0.3f,  100,  100,  0,  100,   GREEN)
+        , blob_blue  (8,11,  3,  0.3f,  100,  100,  0,  100,   BLUE)
 
         // family tier 2
         , goblin_dagger (4,3,  3,  1.0f,  120,  150,  0,  120,   RED)

@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.ObjectMap;
 import lando.systems.ld51.Config;
 import lando.systems.ld51.assets.EffectAnims;
 import lando.systems.ld51.audio.AudioManager;
@@ -213,7 +214,8 @@ public class Player extends ObjectLocation {
 //        }
 
         // only animate while moving or attacking, or if we're the wizard who has a floaty walk animation
-        if (isWizard || isAttacking || !position.epsilonEquals(prevPosX, prevPosY)) {
+        boolean looksLikeCurrentPhase = looksLikeCurrentPhase(); // fix a dumb bug
+        if (isWizard || isAttacking || !looksLikeCurrentPhase || !position.epsilonEquals(prevPosX, prevPosY)) {
             stateTime += dt;
 
             float animStateTime = isAttacking ? attackStateTime : stateTime;
@@ -623,6 +625,17 @@ public class Player extends ObjectLocation {
         else if (greenGemCount < redGemCount   && greenGemCount < blueGemCount)  return Gem.Type.GREEN;
         else if (blueGemCount  < redGemCount   && blueGemCount  < greenGemCount) return Gem.Type.BLUE;
         else return Gem.Type.random();
+    }
+
+    private boolean looksLikeCurrentPhase() {
+        ObjectMap<State, Animation<AtlasRegion>> animationsByState = screen.assets.playerAnimationByPhaseByState.get(phase);
+        for (Animation<AtlasRegion> anim : animationsByState.values()) {
+            if (anim == null) continue;
+            if (animation == anim) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

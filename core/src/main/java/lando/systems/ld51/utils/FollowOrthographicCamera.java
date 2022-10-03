@@ -20,7 +20,7 @@ public class FollowOrthographicCamera extends OrthographicCamera {
         tempVec.set(MathUtils.clamp(followPoint.x, bounds.x + viewportWidth/2, bounds.x + bounds.width - viewportWidth/2f),
                 MathUtils.clamp(followPoint.y, bounds.y + viewportHeight/2, bounds.y + bounds.height - viewportHeight/2f));
 
-        direction.set(tempVec).sub(position.x, position.y).scl(4.5f);
+        direction.set(tempVec).sub(position.x, position.y).scl(8.5f);
 
         position.add(direction.x * dt, direction.y * dt, 0);
 

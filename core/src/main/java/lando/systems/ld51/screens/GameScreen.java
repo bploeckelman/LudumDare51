@@ -41,6 +41,8 @@ public class GameScreen extends BaseScreen {
     public PlayerGemsUI playerGemsUI;
     public CooldownTimerUI cooldownTimerUI;
 
+    public BossArrow bossArrow;
+
     public ScreenShakeCameraController screenShaker;
 
     private final EnemySpawner enemySpawner;
@@ -58,6 +60,7 @@ public class GameScreen extends BaseScreen {
         this.spawners = new Array<>();
         this.projectiles = new Array<>();
         this.enemySpawner = new EnemySpawner();
+        this.bossArrow = new BossArrow(this);
         bossHealthUI.setBoss(boss);
 
         populateSpawners();
@@ -110,6 +113,7 @@ public class GameScreen extends BaseScreen {
 
         player.setPhase((int)(Main.game.mainGameTimer / 10f));
         arena.update(delta);
+        bossArrow.update(delta);
 
         for (int i = projectiles.size - 1; i >= 0; i--) {
             Projectile projectile = projectiles.get(i);
@@ -122,20 +126,6 @@ public class GameScreen extends BaseScreen {
                 projectiles.removeIndex(i);
             }
         }
-
-//        if (MathUtils.random(1f) > .97f){ // THIS IS PLACEHOLDER
-//            int randType = MathUtils.random(2);
-//            Gem.Type type = Gem.Type.RED;
-//            switch(randType){
-//                case 0:
-//                    type = Gem.Type.GREEN;
-//                    break;
-//                case 1:
-//                    type = Gem.Type.BLUE;
-//                    break;
-//            }
-//            gems.add(new Gem(this, new Vector2(MathUtils.random(Config.Screen.window_width), MathUtils.random(Config.Screen.window_height)), type));
-//        }
 
         player.update(delta);
         boss.update(delta);
@@ -216,6 +206,13 @@ public class GameScreen extends BaseScreen {
         }
         batch.end();
         uiStage.draw();
+        batch.setProjectionMatrix(windowCamera.combined);
+        batch.begin();
+        {
+            // other UI things
+            bossArrow.render(batch);
+        }
+        batch.end();
     }
 
 //    private void updateTimer() {

@@ -52,7 +52,7 @@ public class Player extends ObjectLocation {
     public static float SPEED_NORMAL = 340f;
     public static float SPEED_WIZARD = 450f;
     public static float SPEED = SPEED_NORMAL;
-    public static int FULL_GEM_COUNT = 50;
+    public static int FULL_GEM_COUNT = 5;
     public static int DEFAULT_GEM_DROP_AMOUNT = 8;
 
     private final GameScreen screen;
@@ -66,15 +66,23 @@ public class Player extends ObjectLocation {
     private WeaponAnims weaponAnims;
     private TextureRegion weaponKeyframe;
     private TextureRegion weaponGlowKeyframe;
-    private float attackStateTime;
-    private boolean isAttacking;
+
+    public boolean isWizard;
+    public boolean lockGemsUntilWizard;
+
     public Circle hurtCircle;
     public Circle attackRange;
     public Polygon attackHitShape;
-    public float attackInterval;
-    public float attackIntervalNormal = 0.25f;
-    public float attackIntervalWizard = 0.1f;
-    public float attackTimer;
+
+    private boolean isAttacking;
+    private float attackStateTime;
+    private float attackInterval;
+    private float attackIntervalNormal = 0.33f;
+    private float attackIntervalWizard = 0.1f;
+    private float attackTimer;
+    private float attackCooldownNormal = 0.2f;
+    private float attackCooldownWizard = 0.05f;
+    private float attackCooldown;
 
     private float timeSinceLastHurt;
     private float hurtDuration;
@@ -93,13 +101,10 @@ public class Player extends ObjectLocation {
     public int redGemCount;
     public int greenGemCount;
     public int blueGemCount;
-    public boolean lockGemsUntilWizard;
     public int gemAmountToLose = DEFAULT_GEM_DROP_AMOUNT;
-    public boolean isWizard;
     public int musicPhase = 1;
     public boolean wizardMusicIsPlaying = false;
     public float wizardTransitionTimer = 0f;
-
 
 
     public Player(GameScreen screen) {
@@ -133,6 +138,7 @@ public class Player extends ObjectLocation {
         this.lockGemsUntilWizard = false;
         this.attackInterval = attackIntervalNormal;
         this.attackTimer = attackInterval;
+        this.attackCooldown = attackCooldownNormal;
         this.hurtCircle = new Circle(position, SIZE / 4f);
         this.hurtDuration = 0.33f;
         this.hurtTimer = hurtDuration;
@@ -155,10 +161,8 @@ public class Player extends ObjectLocation {
             }
         }
 
-        attackInterval = (isWizard) ? attackIntervalWizard : attackIntervalNormal;
         attackTimer -= dt;
-        if (attackTimer <= 0 && (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.SPACE))) {
-            attackTimer = attackInterval;
+        if (canAttack()) {
             attack();
         }
 
@@ -204,17 +208,19 @@ public class Player extends ObjectLocation {
             position.add(tempVec2.x * SPEED * dt, tempVec2.y * SPEED * dt);
         }
 
-        // TODO - need to rework animations based on walking or attacking
-        // only animate while moving
-        if (isWizard || !position.epsilonEquals(prevPosX, prevPosY)) {
+        // only animate while moving or attacking, or if we're the wizard who has a floaty walk animation
+        if (isWizard || isAttacking || !position.epsilonEquals(prevPosX, prevPosY)) {
             stateTime += dt;
-            // TODO - won't need this edge case if we start using Phase.WIZARD as an actual transitionable phase
+
+            float animStateTime = isAttacking ? attackStateTime : stateTime;
+            State animState = isAttacking ? State.SWING : State.WALK;
             Phase animPhase = isWizard ? Phase.WIZARD : phase;
-            State animState = isWizard && isAttacking ? State.SWING : State.WALK;
+
             animation = screen.assets.playerAnimationByPhaseByState.get(animPhase).get(animState);
             flashAnimation = screen.assets.playerFlashAnimationByPhaseByState.get(animPhase).get(animState);
-            keyframe = animation.getKeyFrame(stateTime);
-            flashKeyframe = flashAnimation.getKeyFrame(stateTime);
+
+            keyframe = animation.getKeyFrame(animStateTime);
+            flashKeyframe = flashAnimation.getKeyFrame(animStateTime);
         }
 
         // NOTE - wizard doesn't have weapon anims so this will go null when we go wizard
@@ -222,6 +228,8 @@ public class Player extends ObjectLocation {
 
         attackRange.setPosition(position);
         if (isAttacking) {
+            attackStateTime += dt;
+
             // update hit shape
             if (attackHitShape != null) {
                 attackHitShape.translate(position.x - prevPosX, position.y - prevPosY);
@@ -231,7 +239,6 @@ public class Player extends ObjectLocation {
             // TODO - a bunch of this shit is could break when we go wizard mode because it has no weaponanims
             if (weaponAnims != null) {
                 // update attack animation
-                attackStateTime += dt;
                 weaponKeyframe = weaponAnims.weapon.getKeyFrame(attackStateTime);
                 weaponGlowKeyframe = weaponAnims.glow.getKeyFrame(attackStateTime);
 
@@ -241,6 +248,11 @@ public class Player extends ObjectLocation {
                     attackHitShape = null;
                     isAttacking = false;
                 }
+            }
+        } else {
+            attackCooldown -= dt;
+            if (attackCooldown < 0f) {
+                attackCooldown = 0f;
             }
         }
 
@@ -266,6 +278,16 @@ public class Player extends ObjectLocation {
 
         wizardTransitionTimer += dt;
 //        System.out.println(wizardTransitionTimer);
+    }
+
+    private boolean canAttack() {
+        if (isAttacking || isHurt || attackCooldown > 0 || attackTimer > 0) return false;
+
+        float animationDuration = animation.getAnimationDuration();
+        boolean attackAnimComplete = (attackStateTime == 0 || attackStateTime >= animationDuration);
+        boolean attackPressed = (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.SPACE));
+//        Gdx.app.log("can attack", "pressed: " + attackPressed + ", anim ready: " + attackAnimComplete);
+        return (attackPressed && attackAnimComplete);
     }
 
     public void render(SpriteBatch batch) {
@@ -379,8 +401,6 @@ public class Player extends ObjectLocation {
                 Gdx.app.log("Player Hurt", "Ouch, you lost all your gems dog! How you supposed to be a magic now?");
             }
 
-
-
             screen.particles.dropGems(redToLose, greenToLose,  blueToLose, position.x, position.y);
 //            screen.audio.playSound(AudioManager.Sounds.playerDropGems, 0.35F);
         }
@@ -451,7 +471,7 @@ public class Player extends ObjectLocation {
             return;
         }
 
-        // TODO: anything that needs to happen on the phase change, particle effects etc
+        // anything that needs to happen on the phase change, particle effects etc
         screen.audio.playSound(AudioManager.Sounds.lightning, 0.25f);
         screen.screenShaker.addDamage(.8f);
         Time.pause_for(0.15f);
@@ -511,8 +531,13 @@ public class Player extends ObjectLocation {
     }
 
     public void attack() {
+        if (isAttacking) return;
         isAttacking = true;
         attackStateTime = 0f;
+
+        attackCooldown = (isWizard) ? attackCooldownWizard : attackCooldownNormal;
+        attackInterval = (isWizard) ? attackIntervalWizard : attackIntervalNormal;
+        attackTimer = attackInterval; // TODO - attack anim duration + attack interval?
 
         if (isWizard) {
             float size = 64f;
@@ -549,7 +574,6 @@ public class Player extends ObjectLocation {
             attackHitShape.setOrigin(position.x, position.y);
             game.audio.playSound(AudioManager.Sounds.swipe, 0.25F);
         }
-
     }
 
     public Phase getCurrentPhase() {

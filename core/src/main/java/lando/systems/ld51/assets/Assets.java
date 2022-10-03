@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -336,15 +337,15 @@ public class Assets implements Disposable {
         font      = mgr.get("fonts/outfit-medium-40px.fnt");
         largeFont = mgr.get("fonts/outfit-medium-80px.fnt");
 
-        cat = new Animation<>(0.1f, atlas.findRegions("pets/cat"), Animation.PlayMode.LOOP);
-        dog = new Animation<>(0.1f, atlas.findRegions("pets/dog"), Animation.PlayMode.LOOP);
-        kitten = new Animation<>(.1f, atlas.findRegions("pets/kitten"), Animation.PlayMode.LOOP);
-        gemBlueIdle = new Animation<>(0.1f, atlas.findRegions("gems/gem-blue/gem-blue-idle/gem-blue-idle"), Animation.PlayMode.LOOP);
-        gemBlueSpin = new Animation<>(0.1f, atlas.findRegions("gems/gem-blue/gem-blue-spin/gem-blue-spin"), Animation.PlayMode.LOOP);
-        gemRedIdle = new Animation<>(0.1f, atlas.findRegions("gems/gem-red/gem-red-idle/gem-red-idle"), Animation.PlayMode.LOOP);
-        gemRedSpin = new Animation<>(0.1f, atlas.findRegions("gems/gem-red/gem-red-spin/gem-red-spin"), Animation.PlayMode.LOOP);
-        gemGreenIdle = new Animation<>(0.1f, atlas.findRegions("gems/gem-green/gem-green-idle/gem-green-idle"), Animation.PlayMode.LOOP);
-        gemGreenSpin = new Animation<>(0.1f, atlas.findRegions("gems/gem-green/gem-green-spin/gem-green-spin"), Animation.PlayMode.LOOP);
+        cat = new Animation<>(0.1f, atlas.findRegions("pets/cat"), PlayMode.LOOP);
+        dog = new Animation<>(0.1f, atlas.findRegions("pets/dog"), PlayMode.LOOP);
+        kitten = new Animation<>(.1f, atlas.findRegions("pets/kitten"), PlayMode.LOOP);
+        gemBlueIdle = new Animation<>(0.1f, atlas.findRegions("gems/gem-blue/gem-blue-idle/gem-blue-idle"), PlayMode.LOOP);
+        gemBlueSpin = new Animation<>(0.1f, atlas.findRegions("gems/gem-blue/gem-blue-spin/gem-blue-spin"), PlayMode.LOOP);
+        gemRedIdle = new Animation<>(0.1f, atlas.findRegions("gems/gem-red/gem-red-idle/gem-red-idle"), PlayMode.LOOP);
+        gemRedSpin = new Animation<>(0.1f, atlas.findRegions("gems/gem-red/gem-red-spin/gem-red-spin"), PlayMode.LOOP);
+        gemGreenIdle = new Animation<>(0.1f, atlas.findRegions("gems/gem-green/gem-green-idle/gem-green-idle"), PlayMode.LOOP);
+        gemGreenSpin = new Animation<>(0.1f, atlas.findRegions("gems/gem-green/gem-green-spin/gem-green-spin"), PlayMode.LOOP);
 
         // initialize particle images
         particles = new Particles();
@@ -369,10 +370,12 @@ public class Assets implements Disposable {
                 String stateName = state.name().toLowerCase();
                 String regionsName = Stringf.format("gems/gem-%1$s/gem-%1$s-%2$s/gem-%1$s-%2$s", typeName, stateName);
                 Array<AtlasRegion> frames = atlas.findRegions(regionsName);
-                Animation<AtlasRegion> animation = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
+                Animation<AtlasRegion> animation = new Animation<>(0.1f, frames, PlayMode.LOOP);
                 animationByState.put(state, animation);
             }
         }
+
+//        float attackDuration = 0.5f;
         playerAnimationByPhaseByState = new ObjectMap<>();
         playerFlashAnimationByPhaseByState = new ObjectMap<>();
         for (Player.Phase phase : Player.Phase.values()) {
@@ -387,25 +390,38 @@ public class Assets implements Disposable {
 
                 String regionsName = Stringf.format("characters/%1$s/%1$s-%2$s/%1$s-%2$s", phaseName, stateName);
                 Array<AtlasRegion> frames = atlas.findRegions(regionsName);
-                Animation<AtlasRegion> animation = new Animation<>(0.1f, frames, Animation.PlayMode.LOOP);
+
+                float frameDuration = 0.1f;
+                PlayMode playMode = PlayMode.LOOP;
+//                float frameDuration = (state == Player.State.WALK) ? 0.1f : (attackDuration / frames.size);
+//                if (phase == Player.Phase.WIZARD) frameDuration = 0.01f;
+//                Animation.PlayMode playMode = (state == Player.State.WALK) ? Animation.PlayMode.LOOP : Animation.PlayMode.NORMAL;
+
+                Animation<AtlasRegion> animation = new Animation<>(frameDuration, frames, playMode);
                 animationByState.put(state, animation);
 
                 String flashRegionsName = Stringf.format("characters/%1$s/%1$s-%2$s/flash/%1$s-%2$s-flash", phaseName, stateName);
                 Array<AtlasRegion> flashFrames = atlas.findRegions(flashRegionsName);
-                Animation<AtlasRegion> flashAnimation = new Animation<>(0.1f, flashFrames, Animation.PlayMode.LOOP);
+
+                Animation<AtlasRegion> flashAnimation = new Animation<>(frameDuration, flashFrames, playMode);
                 flashAnimationByState.put(state, flashAnimation);
             }
         }
         weaponAnimationsByType = new ObjectMap<>();
         for (Player.WeaponType type : Player.WeaponType.values()) {
             String typeName = type.name().toLowerCase();
+
             String weaponRegions = Stringf.format("weapons/%1$s/%1$s", typeName);
             String glowRegions = Stringf.format("weapons/%1$s-glow/%1$s-glow", typeName);
             Array<AtlasRegion> weaponFrames = atlas.findRegions(weaponRegions);
             Array<AtlasRegion> glowFrames = atlas.findRegions(glowRegions);
+
             float frameDuration = 0.05f;
-            Animation<AtlasRegion> weaponAnim = new Animation<>(frameDuration, weaponFrames, Animation.PlayMode.NORMAL);
-            Animation<AtlasRegion> glowAnim = new Animation<>(frameDuration, glowFrames, Animation.PlayMode.NORMAL);
+//            float frameDuration = attackDuration / weaponFrames.size;
+
+            Animation<AtlasRegion> weaponAnim = new Animation<>(frameDuration, weaponFrames, PlayMode.NORMAL);
+            Animation<AtlasRegion> glowAnim = new Animation<>(frameDuration, glowFrames, PlayMode.NORMAL);
+
             Player.WeaponAnims anims = new Player.WeaponAnims(weaponAnim, glowAnim);
             weaponAnimationsByType.put(type, anims);
         }

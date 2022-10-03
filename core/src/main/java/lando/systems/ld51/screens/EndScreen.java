@@ -55,7 +55,7 @@ public class EndScreen extends BaseScreen {
         playerBounds3 = new Rectangle(440, 200, 300, 300);
         playerTexture3 = game.assets.playerAnimationByPhaseByState.get(Player.Phase.BLUE).get(Player.State.WALK).getKeyFrame(0);
 
-        subtitles = "";
+        subtitles = "click to continue...";
         playerTexture1 = game.assets.playerAnimationByPhaseByState.get(Player.Phase.RED).get(Player.State.WALK).getKeyFrame(0);
 
 

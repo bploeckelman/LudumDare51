@@ -326,7 +326,7 @@ public class AudioManager implements Disposable {
         Sound s = soundCont.getSound();
         float midWidth = viewportWidth / 2f;
         float pan = -1 * (midWidth - vector.x) / midWidth;
-        Gdx.app.log("pan: ", String.valueOf(pan));
+//        Gdx.app.log("pan: ", String.valueOf(pan));
 
         return (s != null) ? s.play(soundVolume.floatValue(), 1f, pan) : 0;
     }

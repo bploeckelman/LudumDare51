@@ -169,7 +169,7 @@ public class TitleScreen extends BaseScreen {
         float top = windowCamera.viewportHeight * (1f / 2f);
 
         startGameButton = new TextButton("Start Game", titleScreenButtonStyle);
-        Gdx.app.log("startbuttonwidth&height", "width: " + startGameButton.getWidth() + " & height: " + startGameButton.getHeight());
+//        Gdx.app.log("startbuttonwidth&height", "width: " + startGameButton.getWidth() + " & height: " + startGameButton.getHeight());
         startGameButton.setSize(BUTTON_WIDTH, BUTTON_HEIGHT);
         startGameButton.setPosition(left, top);
         startGameButton.addListener(new ClickListener(){

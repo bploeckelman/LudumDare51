@@ -350,7 +350,7 @@ public class GameScreen extends BaseScreen {
                         boolean spawnSwarm = MathUtils.randomBoolean(0.66f);
                         if (spawnSwarm) {
                             // spawn a swarm
-                            Gdx.app.log("spawner", "spawning swarm of " + enemy.type.name());
+//                            Gdx.app.log("spawner", "spawning swarm of " + enemy.type.name());
                             boolean reuseLastSpawner = true;
                             int howMany = MathUtils.random(3, 6);
                             for (int i = 0; i < howMany; i++) {

@@ -55,17 +55,16 @@ public class StoryScreen extends BaseScreen {
         backgroundImage = new Rectangle(0, 100, 900,  600);
         backgroundTexture = game.assets.titleBackground;
 
-        playerBounds1 = new Rectangle(100, 200, 300, 300);
+        playerBounds1 = new Rectangle(10, 200, 300, 300);
         playerTexture1 = game.assets.playerAnimationByPhaseByState.get(Player.Phase.RED).get(Player.State.WALK).getKeyFrame(0);
 
-        playerBounds2 = new Rectangle(400, 200, 300, 300);
+        playerBounds2 = new Rectangle(20, 200, 300, 300);
         playerTexture2 = game.assets.playerAnimationByPhaseByState.get(Player.Phase.GREEN).get(Player.State.WALK).getKeyFrame(0);
 
-        playerBounds3 = new Rectangle(700, 200, 300, 300);
+        playerBounds3 = new Rectangle(30, 200, 300, 300);
         playerTexture3 = game.assets.playerAnimationByPhaseByState.get(Player.Phase.BLUE).get(Player.State.WALK).getKeyFrame(0);
 
         subtitles = "";
-        playerBounds1 = new Rectangle(100, 200, 300, 300);
         playerTexture1 = game.assets.playerAnimationByPhaseByState.get(Player.Phase.RED).get(Player.State.WALK).getKeyFrame(0);
         ChangeListener listener = new ChangeListener() {
             @Override

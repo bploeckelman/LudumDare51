@@ -110,6 +110,7 @@ public class GameScreen extends BaseScreen {
         worldCamera.update();
         screenShaker = new ScreenShakeCameraController(worldCamera);
         game.audio.playMusic(AudioManager.Musics.warriorMusic1);
+        game.audio.playSound(AudioManager.Sounds.warriorWalkout1);
 
         // start the phase change timer
         Main.game.mainGameTimer = 0f;

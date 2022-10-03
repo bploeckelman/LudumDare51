@@ -71,7 +71,7 @@ public class Arena {
         batch.setShader(shader);
         shader.setUniformf("u_time", Main.game.mainGameTimer % 10f);
         shader.setUniformi("u_phase", phase);
-        batch.draw(screen.assets.noiseTex, 0, 0, bounds.width, bounds.height);
+        batch.draw(screen.assets.noiseTex, -100, -100, bounds.width + 200, bounds.height + 200);
         batch.setShader(null);
     }
 }

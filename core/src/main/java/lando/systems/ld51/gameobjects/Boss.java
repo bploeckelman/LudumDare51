@@ -57,6 +57,7 @@ public class Boss extends ObjectLocation {
     public float health;
     private float attackTimer;
     private float finalAttackTimer;
+    private boolean playingUppercutAnim;
 
     public Boss(GameScreen screen) {
         this.screen = screen;
@@ -70,11 +71,12 @@ public class Boss extends ObjectLocation {
         this.animationsByState = new ObjectMap<>();
         for (State state : State.values()) {
             Array<AtlasRegion> frames = screen.assets.atlas.findRegions(state.frameRegionsName);
+            float frameDuration = (state == State.attack_punch) ? 0.5f : 0.25f;
             Animation<AtlasRegion> animation = null;
             if (state == State.idle_a || state == State.idle_b) {
                 animation = new Animation<>(0.2f, frames, Animation.PlayMode.LOOP);
             } else {
-                animation = new Animation<>(0.25f, frames, Animation.PlayMode.NORMAL);
+                animation = new Animation<>(frameDuration, frames, Animation.PlayMode.NORMAL);
             }
             animationsByState.put(state, animation);
         }
@@ -84,6 +86,7 @@ public class Boss extends ObjectLocation {
         this.stateTime = 0f;
         this.shieldState = 1f;
         this.health = MAX_HEALTH;
+        this.playingUppercutAnim = false;
     }
 
     int cycleCount = 0;
@@ -97,16 +100,26 @@ public class Boss extends ObjectLocation {
         shieldState = MathUtils.clamp(shieldState, 0f, 1f);
 
         // TODO - handle state changes and switch animation as needed
+        if (playingUppercutAnim && stateTime >= animationsByState.get(State.attack_punch).getAnimationDuration()) {
+            playingUppercutAnim = false;
+            animation = animationsByState.get(currentState);
+            stateTime = 0f;
+        }
+
         stateTime += dt;
 
         if (!screen.player.isWizard()){
             if (Main.game.mainGameTimer % 10f > 9.15f || Main.game.mainGameTimer %10 < .25f){
-                animation = animationsByState.get(State.attack_spell);
+                if (!playingUppercutAnim) {
+                    animation = animationsByState.get(State.attack_spell);
+                }
                 stateTime = (Main.game.mainGameTimer + .85f) % 1;
                 currentState = State.attack_spell;
             } else {
-                animation = animationsByState.get(State.idle_a);
-                currentState = State.idle_a;
+                if (!playingUppercutAnim) {
+                    animation = animationsByState.get(State.idle_a);
+                    currentState = State.idle_a;
+                }
             }
         } else {
             attackTimer -= dt;
@@ -117,10 +130,12 @@ public class Boss extends ObjectLocation {
                     if (attackTimer < 0){
                         attackTimer = .3f;
                         tempVec.set(screen.player.position).sub(position);
-                        shootFireball(tempVec.angleDeg(), EffectAnims.Type.fireball_red, 100, 100);
+                        shootFireball(tempVec.angleDeg(), EffectAnims.Type.fireball_red, 100, 100, false);
                     }
                 } else {
-                    animation = animationsByState.get(State.idle_b);
+                    if (!playingUppercutAnim) {
+                        animation = animationsByState.get(State.idle_b);
+                    }
                     currentState = State.idle_a;
                 }
 
@@ -131,7 +146,9 @@ public class Boss extends ObjectLocation {
                         fireballArc(screen.player.position, 315f, 50, true, EffectAnims.Type.fireball_green, 100);
                     }
                 } else {
-                    animation = animationsByState.get(State.idle_b);
+                    if (!playingUppercutAnim) {
+                        animation = animationsByState.get(State.idle_b);
+                    }
                     currentState = State.idle_a;
                 }
             } else if (health > MAX_HEALTH * .25f) {
@@ -145,7 +162,9 @@ public class Boss extends ObjectLocation {
                         fireballArc(screen.player.position, 360f, 15, false, EffectAnims.Type.fireball_blue, 50);
                     }
                 } else {
-                    animation = animationsByState.get(State.idle_b);
+                    if (!playingUppercutAnim) {
+                        animation = animationsByState.get(State.idle_b);
+                    }
                     currentState = State.idle_a;
                 }
             } else {
@@ -153,7 +172,7 @@ public class Boss extends ObjectLocation {
                 if (finalAttackTimer < 0){
                     finalAttackTimer = .5f;
                     tempVec.set(screen.player.position).sub(position);
-                    shootFireball(tempVec.angleDeg(), EffectAnims.Type.fireball_red, 100, 100);
+                    shootFireball(tempVec.angleDeg(), EffectAnims.Type.fireball_red, 100, 100, false);
                 }
                 if ((int)(Main.game.mainGameTimer % 5f) == 3){
                     if (attackTimer < 0){
@@ -168,7 +187,9 @@ public class Boss extends ObjectLocation {
                         }
                     }
                 } else {
-                    animation = animationsByState.get(State.idle_b);
+                    if (!playingUppercutAnim) {
+                        animation = animationsByState.get(State.idle_b);
+                    }
                     currentState = State.idle_b;
                 }
             }
@@ -235,15 +256,19 @@ public class Boss extends ObjectLocation {
         }
         float dAngle = degrees / shotCount;
         for (int i = 0; i < shotCount; i++){
-            shootFireball(startDir + dAngle * i, type, 100, size);
+            shootFireball(startDir + dAngle * i, type, 100, size, true);
         }
     }
 
 
-    private void shootFireball(float angleDeg, EffectAnims.Type fireballType, float speed, float size) {
+    private void shootFireball(float angleDeg, EffectAnims.Type fireballType, float speed, float size, boolean isPartOfArc) {
         float degreeRad = MathUtils.degRad * angleDeg;
         Projectile proj = new Projectile(screen.assets, fireballType, position.x, position.y, degreeRad, speed, false);
         proj.size = size;
         screen.projectiles.add(proj);
+
+        playingUppercutAnim = true;
+        animation = animationsByState.get(State.attack_punch);
+        stateTime = 0f;
     }
 }

@@ -112,7 +112,7 @@ public class Player extends ObjectLocation {
         this.screen = screen;
         this.phase = Phase.RED;
         this.state = State.WALK;
-        this.position = new Vector2(Config.Screen.window_width/2f, Config.Screen.window_height/2f);
+        this.position = new Vector2(screen.arena.bounds.width/2f, screen.arena.bounds.height/3f + 80);
         this.velocity = new Vector2();
         this.facing = new Vector2();
         this.movementVector = new Vector2();

@@ -55,7 +55,7 @@ public class Boss extends ObjectLocation {
         this.screen = screen;
         this.position = new Vector2(screen.arena.bounds.x + screen.arena.bounds.width/2f,
                           screen.arena.bounds.y + screen.arena.bounds.height/2f);
-        this.hurtCircle = new Circle(position, SIZE/2f);
+        this.hurtCircle = new Circle(position, SIZE/4f);
         this.animationsByState = new ObjectMap<>();
         for (State state : State.values()) {
             Array<AtlasRegion> frames = screen.assets.atlas.findRegions(state.frameRegionsName);

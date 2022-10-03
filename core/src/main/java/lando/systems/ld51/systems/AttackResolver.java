@@ -3,10 +3,7 @@ package lando.systems.ld51.systems;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import lando.systems.ld51.gameobjects.Boss;
-import lando.systems.ld51.gameobjects.Enemy;
-import lando.systems.ld51.gameobjects.Player;
-import lando.systems.ld51.gameobjects.Projectile;
+import lando.systems.ld51.gameobjects.*;
 
 public class AttackResolver {
 
@@ -14,7 +11,19 @@ public class AttackResolver {
     private static float SAME_TYPE_MULTIPLIER = 3f;
     private static final Vector2 attackDir = new Vector2();
 
-    public static void resolve(Player player, Array<Enemy> enemies, Boss boss, Array<Projectile> projectiles) {
+    public static void resolve(Player player, Array<Enemy> enemies, Boss boss, Array<Projectile> projectiles, Array<Explosion> explosions) {
+        // resolve the explosions
+        for (int i = explosions.size - 1; i >= 0; i--) {
+            Explosion explosion = explosions.get(i);
+            for (Enemy enemy : enemies){
+                float dist2 = enemy.getPosition().dst2(explosion.position);
+                if (dist2 < explosion.radius * explosion.radius) {
+                    enemy.hurt(explosion.damage, 0, 0);
+                }
+            }
+            explosions.removeIndex(i);
+        }
+
         // hurt enemies and the boss with projectiles
         for (int i = projectiles.size - 1; i >= 0; i--) {
             Projectile projectile = projectiles.get(i);

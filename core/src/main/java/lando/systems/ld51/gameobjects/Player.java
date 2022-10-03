@@ -516,6 +516,8 @@ public class Player extends ObjectLocation {
             screen.particles.lightning(screen.boss.position, position);
             if (redGemCount >= FULL_GEM_COUNT && greenGemCount >= FULL_GEM_COUNT && blueGemCount >= FULL_GEM_COUNT){
                 isWizard = true;
+                screen.explosions.add(new Explosion(screen, position.x, position.y, SIZE_WIZARD * 1.5f, 100));
+
                 if(!wizardMusicIsPlaying) {
                     screen.audio.playMusic(AudioManager.Musics.wizardMusic1);
                 }

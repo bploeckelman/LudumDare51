@@ -1,5 +1,7 @@
 package lando.systems.ld51.screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ai.steer.behaviors.BlendedSteering;
 import com.badlogic.gdx.ai.steer.behaviors.CollisionAvoidance;
 import com.badlogic.gdx.ai.steer.behaviors.Seek;
@@ -8,6 +10,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import lando.systems.ld51.Config;
@@ -33,6 +36,7 @@ public class GameScreen extends BaseScreen {
     public Arena arena;
     public Array<Gem> gems;
     public Array<Enemy> enemies;
+    public Array<Explosion> explosions;
 
     public final Particles particles;
     public final Array<Spawner> spawners;
@@ -55,6 +59,7 @@ public class GameScreen extends BaseScreen {
 
     public GameScreen(){
         this.arena = new Arena(this);
+        this.explosions = new Array<>();
         this.player = new Player(this);
         this.boss = new Boss(this);
         this.gems = new Array<>();
@@ -106,6 +111,16 @@ public class GameScreen extends BaseScreen {
     @Override
     public void update(float delta) {
         super.update(delta);
+
+        /// DEBUG SHIT
+        if (Gdx.input.isKeyJustPressed(Input.Keys.P)){
+            Vector3 mouse = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+            worldCamera.unproject(mouse);
+            explosions.add(new Explosion(this, mouse.x, mouse.y, 200, 100));
+        }
+
+        /// END DEBUG SHIT
+
         if (!boss.isAlive()) {
             // Game Over dude...
             // TODO: some exposition
@@ -132,7 +147,7 @@ public class GameScreen extends BaseScreen {
 
         player.update(delta);
         boss.update(delta);
-        AttackResolver.resolve(player, enemies, boss, projectiles);
+        AttackResolver.resolve(player, enemies, boss, projectiles, explosions);
 
         for (int i = gems.size -1; i >= 0; i--) {
             Gem gem = gems.get(i);

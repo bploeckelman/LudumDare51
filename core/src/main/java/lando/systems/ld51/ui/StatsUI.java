@@ -3,8 +3,10 @@ package lando.systems.ld51.ui;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.widget.VisWindow;
 import lando.systems.ld51.assets.Assets;
@@ -12,12 +14,7 @@ import lando.systems.ld51.assets.Assets;
 public class StatsUI extends VisWindow {
     private Assets assets;
     private Skin skin;
-    public VisWindow statsWindow;
-    public TextButton closeStatsTextButton;
-    public ImageButton closeStatsButton;
     private Rectangle statsPaneBoundsVisible;
-    public MoveToAction hideStatsPaneAction;
-    public MoveToAction showStatsPaneAction;
     private OrthographicCamera windowCamera;
     public StatsUI(Skin skin, Assets assets, OrthographicCamera windowCamera) {
         super("");
@@ -37,7 +34,7 @@ public class StatsUI extends VisWindow {
         setStyle(glassWindowStyle);
 
 
-        statsPaneBoundsVisible = new Rectangle(windowCamera.viewportWidth - 550f, windowCamera.viewportHeight - 210f, 550f, 210f);
+        statsPaneBoundsVisible = new Rectangle(windowCamera.viewportWidth / 6f, windowCamera.viewportHeight / 4f, windowCamera.viewportWidth * 2f / 3f, windowCamera.viewportHeight / 2f);
 
 
         setSize(statsPaneBoundsVisible.width, statsPaneBoundsVisible.height);
@@ -53,22 +50,34 @@ public class StatsUI extends VisWindow {
         add(label);
         row();
         Table statsTable = new Table();
-        label = new Label("Game duration: " + (Stats.totalGameTime) + "sec", skin);
+        label = new Label("Game duration: ", skin);
+        statsTable.add(label).align(Align.left);
+        label = new Label((Stats.totalGameTime) + "sec", skin);
         statsTable.add(label).align(Align.left);
         statsTable.row();
-        label = new Label("Gem earned: " + (Stats.gemTotalEarned), skin);
+        label = new Label("Gem earned: ", skin);
+        statsTable.add(label).align(Align.left);
+        label = new Label((Stats.gemTotalEarned) + " gems", skin);
         statsTable.add(label).align(Align.left);
         statsTable.row();
-        label = new Label("Gem lost: " + (Stats.gemTotalLost) + "sec", skin);
+        label = new Label("Gem lost: ", skin);
+        statsTable.add(label).align(Align.left);
+        label = new Label((Stats.gemTotalLost) + " gems", skin);
         statsTable.add(label).align(Align.left);
         statsTable.row();
-        label = new Label("Longest time undamaged: " + (Stats.longestTimeBetweenHits) + "sec", skin);
+        label = new Label("Longest time undamaged: ", skin);
+        statsTable.add(label).align(Align.left);
+        label = new Label((Stats.longestTimeBetweenHits) + "sec", skin);
         statsTable.add(label).align(Align.left);
         statsTable.row();
-        label = new Label("White Wizard Count: " + (Stats.numTransitionToWhiteWizard), skin);
+        label = new Label("White Wizard Count: ", skin);
+        statsTable.add(label).align(Align.left);
+        label = new Label((Stats.numTransitionToWhiteWizard) + "times", skin);
         statsTable.add(label).align(Align.left);
         statsTable.row();
-        label = new Label("Enemy Killed: " + (Stats.numEnemyKilled), skin);
+        label = new Label("Enemy Killed: ", skin);
+        statsTable.add(label).align(Align.left);
+        label = new Label(String.valueOf(Stats.numEnemyKilled), skin);
         statsTable.add(label).align(Align.left);
         statsTable.row();
         add(statsTable);

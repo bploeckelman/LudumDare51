@@ -30,7 +30,7 @@ public class AttackResolver {
                 }
             }
 
-            if (projectile.playerShot && projectile.alive && projectile.bounds.overlaps(boss.hurtCircle)){
+            if (projectile.playerShot && projectile.alive && Intersector.overlaps(projectile.bounds, boss.hurtBox)) {
                 float amount = projectile.damageAmount;
                 float dx = projectile.direction.x;
                 float dy = projectile.direction.y;

@@ -254,7 +254,7 @@ public class Player extends ObjectLocation {
         hurtCircle.setPosition(position);
 
         wizardTransitionTimer += dt;
-        System.out.println(wizardTransitionTimer);
+//        System.out.println(wizardTransitionTimer);
     }
 
     public void render(SpriteBatch batch) {

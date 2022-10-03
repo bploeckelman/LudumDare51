@@ -7,10 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -18,6 +15,7 @@ import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.widget.VisSlider;
 import com.kotcrab.vis.ui.widget.VisWindow;
 import lando.systems.ld51.assets.Assets;
+import lando.systems.ld51.assets.InputPrompts;
 import lando.systems.ld51.audio.AudioManager;
 
 public class SettingsUI extends Group {
@@ -25,6 +23,7 @@ public class SettingsUI extends Group {
     private Assets assets;
     private Skin skin;
     public VisWindow settingsWindow;
+    public TextButton closeSettingsTextButton;
     public ImageButton closeSettingsButton;
     public VisWindow greyOutWindow;
     private Rectangle settingsPaneBoundsVisible;
@@ -129,11 +128,31 @@ public class SettingsUI extends Group {
         settingsWindow.add(soundSlider).padBottom(10f).width(settingsWindow.getWidth() - 100f);
         settingsWindow.row();
 
-        closeSettingsButton = new ImageButton(skin, "default");
+        ImageButton.ImageButtonStyle defaultButtonStyle = skin.get("default", ImageButton.ImageButtonStyle.class);
+        ImageButton.ImageButtonStyle closeButtonStyle = new ImageButton.ImageButtonStyle(defaultButtonStyle);
+        closeButtonStyle.imageUp = new TextureRegionDrawable(assets.inputPrompts.get(InputPrompts.Type.button_light_power));
+        closeButtonStyle.imageDown = new TextureRegionDrawable(assets.inputPrompts.get(InputPrompts.Type.button_light_power));
+        closeButtonStyle.down = new TextureRegionDrawable(assets.inputPrompts.get(InputPrompts.Type.button_light_power));
+        closeButtonStyle.up = new TextureRegionDrawable(assets.inputPrompts.get(InputPrompts.Type.button_light_power));
+        closeButtonStyle.disabled = new TextureRegionDrawable(assets.inputPrompts.get(InputPrompts.Type.button_light_power));
+        closeSettingsButton = new ImageButton(skin);
+        closeSettingsButton.setStyle(closeButtonStyle);
         closeSettingsButton.setWidth(50f);
         closeSettingsButton.setHeight(50f);
         closeSettingsButton.setPosition(settingsPaneBoundsHidden.x + settingsPaneBoundsHidden.width - closeSettingsButton.getWidth(), settingsPaneBoundsHidden.y + settingsPaneBoundsHidden.height - closeSettingsButton.getHeight());
         closeSettingsButton.setClip(false);
+
+        TextButton.TextButtonStyle outfitMediumStyle = skin.get("text", TextButton.TextButtonStyle.class);
+        TextButton.TextButtonStyle settingsButtonStyle = new TextButton.TextButtonStyle(outfitMediumStyle);
+        settingsButtonStyle.font = assets.smallFont;
+        settingsButtonStyle.fontColor = Color.WHITE;
+        settingsButtonStyle.up = Assets.Patch.glass.drawable;
+        settingsButtonStyle.down = Assets.Patch.glass_dim.drawable;
+        settingsButtonStyle.over = Assets.Patch.glass_dim.drawable;
+
+        closeSettingsTextButton = new TextButton("Close Settings", settingsButtonStyle);
+        settingsWindow.row();
+        settingsWindow.add(closeSettingsTextButton).padBottom(10f).width(settingsWindow.getWidth() - 100f);
 
         float showDuration = 0.2f;
         float hideDuration = 0.1f;
@@ -146,6 +165,13 @@ public class SettingsUI extends Group {
         showCloseSettingsButtonAction.setDuration(showDuration);
 
         closeSettingsButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                hideSettings();
+            }
+        });
+
+        closeSettingsTextButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 hideSettings();

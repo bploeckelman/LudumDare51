@@ -75,7 +75,6 @@ public class TitleScreen extends BaseScreen {
         super.initializeUI();
 
         SettingsUI settingsUI = new SettingsUI(assets, skin, audio, windowCamera);
-        uiStage.addActor(settingsUI);
 
         TextButton.TextButtonStyle outfitMediumStyle = skin.get("text", TextButton.TextButtonStyle.class);
         TextButton.TextButtonStyle titleScreenButtonStyle = new TextButton.TextButtonStyle(outfitMediumStyle);
@@ -122,6 +121,7 @@ public class TitleScreen extends BaseScreen {
         uiStage.addActor(startGameButton);
         uiStage.addActor(settingsButton);
         uiStage.addActor(creditButton);
+        uiStage.addActor(settingsUI);
     }
 
 }

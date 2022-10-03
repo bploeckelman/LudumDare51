@@ -155,8 +155,8 @@ public class AudioManager implements Disposable {
         musics.put(Musics.clericMusic3, assets.clericMusic3);
 
 
-        musicVolume = new MutableFloat(.5f); 
-        soundVolume = new MutableFloat(1.0f);
+        musicVolume = new MutableFloat(0.6f);
+        soundVolume = new MutableFloat(0.75f);
 
         isMusicMuted = false;
         isSoundMuted = false;

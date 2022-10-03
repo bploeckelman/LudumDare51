@@ -57,6 +57,9 @@ public class Enemy implements Steerable<Vector2> {
     public float health;
     public float size;
 
+    private static final float ENEMY_SIZE = 50F;
+    private static final float ENEMY_SIZE_MAX = 200F;
+
     public Enemy(GameScreen screen, CreatureAnims.Type type, float x, float y) {
         this.screen = screen;
         this.type = type;
@@ -65,7 +68,7 @@ public class Enemy implements Steerable<Vector2> {
         this.maxLinearAcceleration = type.maxLinearAccel;
         this.maxAngularSpeed = type.maxAngularSpeed;
         this.maxAngularAcceleration = type.maxAngularAccel;
-        this.size = 50f;
+        this.size = Math.min(this.health * ENEMY_SIZE, ENEMY_SIZE_MAX);
 
         this.animation = screen.assets.creatureAnims.get(type);
         this.keyframe = animation.getKeyFrame(0f);

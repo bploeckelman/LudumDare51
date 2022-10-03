@@ -6,7 +6,7 @@ import text.formic.Stringf;
 
 public class Config {
 
-    public static final String title = "Ludum Dare 51";
+    public static final String title = "Chromo Trigger";
 
     public static class Screen {
         public static final int window_width = 948;

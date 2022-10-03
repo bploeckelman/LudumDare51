@@ -37,6 +37,16 @@ public class AttackResolver {
                 projectile.kill();
                 projectiles.removeIndex(i);
             }
+
+            if (!projectile.playerShot && projectile.alive && projectile.bounds.overlaps(player.hurtCircle)) {
+                float amount = projectile.damageAmount;
+                float dx = projectile.direction.x;
+                float dy = projectile.direction.y;
+                player.hurt(amount, dx, dy);
+
+                projectile.kill();
+                projectiles.removeIndex(i);
+            }
         }
 
         // hurt the player with touching

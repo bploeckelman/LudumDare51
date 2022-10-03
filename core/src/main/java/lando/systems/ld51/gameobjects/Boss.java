@@ -29,6 +29,8 @@ public class Boss extends ObjectLocation {
         }
     }
 
+    public enum Phase { full, three, half, quarter};
+
     public static float SIZE = 200;
 
     public float protectedRadius = 130;
@@ -46,6 +48,7 @@ public class Boss extends ObjectLocation {
     private float shieldState;
     public float health;
     private float attackTimer;
+    private float finalAttackTimer;
 
     public Boss(GameScreen screen) {
         this.screen = screen;
@@ -70,6 +73,7 @@ public class Boss extends ObjectLocation {
         this.health = MAX_HEALTH;
     }
 
+    int cycleCount = 0;
     public void update(float dt){
         accum += dt;
         if (screen.player.isWizard()){
@@ -93,12 +97,14 @@ public class Boss extends ObjectLocation {
             }
         } else {
             attackTimer -= dt;
+            finalAttackTimer -= dt;
             // Fighting time
             if (health > MAX_HEALTH * .75f){
-                if ((int)(screen.accum % 5f) == 0){
+                if ((int)(screen.accum % 5f) == 3){
                     if (attackTimer < 0){
                         attackTimer = .3f;
-                        shootFireball(screen.player.position, Gem.Type.RED);
+                        tempVec.set(screen.player.position).sub(position);
+                        shootFireball(tempVec.angleDeg(), EffectAnims.Type.fireball_red, 100, 100);
                     }
                 } else {
                     animation = animationsByState.get(State.idle_b);
@@ -106,11 +112,52 @@ public class Boss extends ObjectLocation {
                 }
 
             } else if (health > MAX_HEALTH * .5f) {
-
+                if ((int)(screen.accum % 10f) == 5){
+                    if (attackTimer < 0){
+                        attackTimer = 2.3f;
+                        fireballArc(screen.player.position, 315f, 50, true, EffectAnims.Type.fireball_green, 100);
+                    }
+                } else {
+                    animation = animationsByState.get(State.idle_b);
+                    currentState = State.idle_a;
+                }
             } else if (health > MAX_HEALTH * .25f) {
-
+                if ((int)(screen.accum % 10f) == 5){
+                    if (attackTimer < 0){
+                        cycleCount++;
+                        attackTimer = .78f;
+                        tempVec.set(1, 0);
+                        tempVec.rotateDeg(cycleCount * 45f);
+                        tempVec.add(position);
+                        fireballArc(screen.player.position, 360f, 15, false, EffectAnims.Type.fireball_blue, 50);
+                    }
+                } else {
+                    animation = animationsByState.get(State.idle_b);
+                    currentState = State.idle_a;
+                }
             } else {
                 // final form
+                if (finalAttackTimer < 0){
+                    finalAttackTimer = .5f;
+                    tempVec.set(screen.player.position).sub(position);
+                    shootFireball(tempVec.angleDeg(), EffectAnims.Type.fireball_red, 100, 100);
+                }
+                if ((int)(screen.accum % 5f) == 3){
+                    if (attackTimer < 0){
+                        attackTimer = 2.3f;
+                        if (MathUtils.randomBoolean()) {
+                            fireballArc(screen.player.position, 315f, 50, true, EffectAnims.Type.fireball_green, 100);
+                        } else {
+                            tempVec.set(1, 0);
+                            tempVec.rotateDeg(MathUtils.random(360f));
+                            tempVec.add(position);
+                            fireballArc(screen.player.position, 360f, 15, false, EffectAnims.Type.fireball_blue, 50);
+                        }
+                    }
+                } else {
+                    animation = animationsByState.get(State.idle_b);
+                    currentState = State.idle_a;
+                }
             }
         }
 
@@ -141,9 +188,24 @@ public class Boss extends ObjectLocation {
     }
 
     Vector2 tempVec = new Vector2();
-    private void shootFireball(Vector2 target, Gem.Type type) {
-        tempVec.set(target).sub(position);
-        Projectile proj = new Projectile(screen.assets, EffectAnims.Type.fireball_red, position.x, position.y, tempVec.angleRad(), 100, false);
+
+    private void fireballArc(Vector2 playerPos, float degrees, int shotCount, boolean randomStart, EffectAnims.Type type, float size) {
+        tempVec.set(playerPos).sub(position).nor();
+        float startDir = tempVec.angleDeg();
+        if (randomStart){
+            startDir +=  MathUtils.random(-90f, 90f);
+        }
+        float dAngle = degrees / shotCount;
+        for (int i = 0; i < shotCount; i++){
+            shootFireball(startDir + dAngle * i, type, 100, size);
+        }
+    }
+
+
+    private void shootFireball(float angleDeg, EffectAnims.Type fireballType, float speed, float size) {
+        float degreeRad = MathUtils.degRad * angleDeg;
+        Projectile proj = new Projectile(screen.assets, fireballType, position.x, position.y, degreeRad, speed, false);
+        proj.size = size;
         screen.projectiles.add(proj);
     }
 }

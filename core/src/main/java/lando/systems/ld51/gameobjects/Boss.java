@@ -7,12 +7,16 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import lando.systems.ld51.Config;
 import lando.systems.ld51.Main;
 import lando.systems.ld51.assets.EffectAnims;
 import lando.systems.ld51.screens.GameScreen;
+import space.earlygrey.shapedrawer.JoinType;
+import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class Boss extends ObjectLocation {
 
@@ -40,6 +44,7 @@ public class Boss extends ObjectLocation {
 
     private final GameScreen screen;
     public Circle hurtCircle;
+    public Rectangle hurtBox;
     private State currentState;
 
     private final ObjectMap<State, Animation<AtlasRegion>> animationsByState;
@@ -56,6 +61,10 @@ public class Boss extends ObjectLocation {
         this.position = new Vector2(screen.arena.bounds.x + screen.arena.bounds.width/2f,
                           screen.arena.bounds.y + screen.arena.bounds.height/2f);
         this.hurtCircle = new Circle(position, SIZE/4f);
+        float hurtBoxW = SIZE * (1f / 6f);
+        float hurtBoxH = SIZE * (3f / 5f);
+        float hurtBoxShiftY = -SIZE * (1f / 7f);
+        this.hurtBox = new Rectangle(position.x - hurtBoxW / 2f, position.y - hurtBoxH / 2f + hurtBoxShiftY, hurtBoxW, hurtBoxH);
         this.animationsByState = new ObjectMap<>();
         for (State state : State.values()) {
             Array<AtlasRegion> frames = screen.assets.atlas.findRegions(state.frameRegionsName);
@@ -177,6 +186,13 @@ public class Boss extends ObjectLocation {
         batch.draw(screen.assets.noiseTex, position.x - protectedRadius, position.y - protectedRadius, protectedRadius*2f, protectedRadius*2f);
         batch.setColor(Color.WHITE);
         batch.setShader(null);
+
+        if (Config.Debug.general) {
+            ShapeDrawer shapes = screen.assets.shapes;
+            shapes.setColor(Color.MAGENTA);
+            shapes.rectangle(hurtBox.x, hurtBox.y, hurtBox.width, hurtBox.height, 2f, JoinType.SMOOTH);
+            shapes.setColor(Color.WHITE);
+        }
     }
 
     public void getHit(float damage, float dx, float dy) {

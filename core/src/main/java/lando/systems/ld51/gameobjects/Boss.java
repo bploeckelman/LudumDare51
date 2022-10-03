@@ -15,6 +15,7 @@ import lando.systems.ld51.Config;
 import lando.systems.ld51.Main;
 import lando.systems.ld51.assets.EffectAnims;
 import lando.systems.ld51.screens.GameScreen;
+import lando.systems.ld51.utils.Calc;
 import space.earlygrey.shapedrawer.JoinType;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
@@ -50,6 +51,7 @@ public class Boss extends ObjectLocation {
     private final ObjectMap<State, Animation<AtlasRegion>> animationsByState;
     private Animation<AtlasRegion> animation;
     private TextureRegion keyframe;
+    private Vector2 lookat;
     private float stateTime;
     private float shieldState;
     public float health;
@@ -78,6 +80,7 @@ public class Boss extends ObjectLocation {
         }
         this.animation = animationsByState.get(State.idle_a);
         this.keyframe = animation.getKeyFrame(0);
+        this.lookat = new Vector2();
         this.stateTime = 0f;
         this.shieldState = 1f;
         this.health = MAX_HEALTH;
@@ -172,6 +175,15 @@ public class Boss extends ObjectLocation {
         }
 
         keyframe = animation.getKeyFrame(stateTime);
+        lookat.set(position).sub(screen.player.position).nor();
+        float angle = lookat.angleDeg();
+        if (Calc.between(angle, 0, 90) || Calc.between(angle, 270, 360)) {
+            // facing right
+            if (keyframe.isFlipX())      keyframe.flip(true, false);
+        } else if (Calc.between(angle, 90, 270)) {
+            // facing left
+            if (!keyframe.isFlipX())      keyframe.flip(true, false);
+        }
     }
 
     public void render(SpriteBatch batch) {

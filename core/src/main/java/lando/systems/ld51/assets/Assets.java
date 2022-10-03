@@ -92,6 +92,7 @@ public class Assets implements Disposable {
     public SimplexNoise noise;
 
     public ShaderProgram shieldShader;
+    public ShaderProgram titleShader;
 
     public Music introMusicMusic;
     public Music warriorMusic1Music;
@@ -310,6 +311,7 @@ public class Assets implements Disposable {
 
         noise = new SimplexNoise(16, .8f, 12);
         shieldShader = loadShader("shaders/default.vert", "shaders/shield.frag");
+        titleShader = loadShader("shaders/default.vert", "shaders/title-fade.frag");
 
         atlas = mgr.get("sprites/sprites.atlas");
         strings = mgr.get("i18n/strings", I18NBundle.class);

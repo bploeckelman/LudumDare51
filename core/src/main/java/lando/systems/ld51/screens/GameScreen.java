@@ -243,6 +243,10 @@ public class GameScreen extends BaseScreen {
 
 //    }
 
+    public void setZoom(float amount) {
+        ((FollowOrthographicCamera)worldCamera).targetZoom = amount;
+    }
+
     private void populateSpawners() {
         int numCols = 8;
         int numRows = 8;

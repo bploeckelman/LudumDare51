@@ -37,8 +37,8 @@ public class Spawner extends ObjectLocation {
 
     public boolean isOffscreen() {
         FollowOrthographicCamera camera = (FollowOrthographicCamera) screen.worldCamera;
-        return (position.x < (camera.position.x - camera.viewportWidth  / 2f) || position.x > (camera.position.x + camera.viewportWidth  / 2f))
-            || (position.y < (camera.position.y - camera.viewportHeight / 2f) || position.y > (camera.position.y + camera.viewportHeight / 2f));
+        return (position.x < (camera.position.x - (camera.viewportWidth*camera.zoom)  / 2f) || position.x > (camera.position.x + (camera.viewportWidth*camera.zoom)  / 2f))
+            || (position.y < (camera.position.y - (camera.viewportHeight*camera.zoom) / 2f) || position.y > (camera.position.y + (camera.viewportHeight*camera.zoom) / 2f));
     }
 
 }

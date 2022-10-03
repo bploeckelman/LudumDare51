@@ -7,8 +7,11 @@ import com.badlogic.gdx.math.Vector2;
 
 public class FollowOrthographicCamera extends OrthographicCamera {
 
+    private static float ZOOM_SPEED = 2f;
+
     Vector2 direction;
     Vector2 tempVec;
+    public float targetZoom;
 
 
     public FollowOrthographicCamera() {
@@ -17,12 +20,23 @@ public class FollowOrthographicCamera extends OrthographicCamera {
     }
 
     public void update(Vector2 followPoint, Rectangle bounds, float dt) {
-        tempVec.set(MathUtils.clamp(followPoint.x, bounds.x + viewportWidth/2, bounds.x + bounds.width - viewportWidth/2f),
-                MathUtils.clamp(followPoint.y, bounds.y + viewportHeight/2, bounds.y + bounds.height - viewportHeight/2f));
+        tempVec.set(MathUtils.clamp(followPoint.x, bounds.x + (viewportWidth*zoom)/2, bounds.x + bounds.width - (viewportWidth*zoom)/2f),
+                MathUtils.clamp(followPoint.y, bounds.y + (viewportHeight*zoom)/2, bounds.y + bounds.height - (viewportHeight*zoom)/2f));
 
         direction.set(tempVec).sub(position.x, position.y).scl(8.5f);
 
         position.add(direction.x * dt, direction.y * dt, 0);
+        float dzoom = (targetZoom - zoom);
+        float zoomChange = ZOOM_SPEED * dt;
+        if (Math.abs(dzoom) < zoomChange){
+            zoom = targetZoom;
+        } else {
+            if (dzoom < 0) {
+                zoom -= zoomChange;
+            } else {
+                zoom += zoomChange;
+            }
+        }
 
         this.update();
     }

@@ -62,6 +62,7 @@ public class AudioManager implements Disposable {
         , intro6
         , intro7
         , intro8
+        , outro
         , warriorWalkout1
         , warriorWalkout2
         , warriorWalkout3
@@ -87,6 +88,7 @@ public class AudioManager implements Disposable {
     public enum Musics {
         none
         ,introMusic
+        ,outroMusic
         ,wizardMusic1
         ,warriorMusic1
         ,warriorMusic2
@@ -189,6 +191,7 @@ public class AudioManager implements Disposable {
         putSound(Sounds.intro6, assets.intro6);
         putSound(Sounds.intro7, assets.intro7);
         putSound(Sounds.intro8, assets.intro8);
+        putSound(Sounds.outro, assets.outro);
 
         putSound(Sounds.warriorWalkout1, assets.warriorWalkout1);
         putSound(Sounds.warriorWalkout2, assets.warriorWalkout2);
@@ -216,6 +219,7 @@ public class AudioManager implements Disposable {
 
 
         musics.put(Musics.introMusic, assets.introMusicMusic);
+        musics.put(Musics.outroMusic, assets.outroMusic);
         musics.put(Musics.wizardMusic1, assets.wizardMusic1);
 
         musics.put(Musics.warriorMusic1, assets.warriorMusic1);

@@ -102,6 +102,7 @@ public class Assets implements Disposable {
     public Music warriorMusic1Music;
 
     public Music introMusicSound;
+    public Music outroMusic;
     public Music warriorMusic1;
     public Music warriorMusic2;
     public Music warriorMusic3;
@@ -169,6 +170,8 @@ public class Assets implements Disposable {
     public Sound intro6;
     public Sound intro7;
     public Sound intro8;
+
+    public Sound outro;
 
     public Sound warriorWalkout1;
     public Sound warriorWalkout2;
@@ -249,6 +252,7 @@ public class Assets implements Disposable {
 
 
             mgr.load("audio/music/introMusic.ogg", Music.class);
+            mgr.load("audio/music/outroMusic.ogg", Music.class);
             mgr.load("audio/music/wizardMusic1.ogg", Music.class);
 
             mgr.load("audio/music/warriorMusicA.ogg", Music.class);
@@ -316,6 +320,7 @@ public class Assets implements Disposable {
             mgr.load("audio/sound/intro6.ogg", Sound.class);
             mgr.load("audio/sound/intro7.ogg", Sound.class);
             mgr.load("audio/sound/intro8.ogg", Sound.class);
+            mgr.load("audio/sound/outro.ogg", Sound.class);
 
             mgr.load("audio/sound/warriorWalkout1.ogg", Sound.class);
             mgr.load("audio/sound/warriorWalkout2.ogg", Sound.class);
@@ -508,6 +513,7 @@ public class Assets implements Disposable {
 
         // Music clips as Sound objects
         introMusicSound = mgr.get("audio/music/introMusic.ogg", Music.class);
+        outroMusic = mgr.get("audio/music/outroMusic.ogg", Music.class);
         wizardMusic1 = mgr.get("audio/music/wizardMusic1.ogg", Music.class);
 
         warriorMusic1 = mgr.get("audio/music/warriorMusicB.ogg", Music.class);
@@ -577,6 +583,7 @@ public class Assets implements Disposable {
          intro6 = mgr.get("audio/sound/intro6.ogg", Sound.class);
          intro7 = mgr.get("audio/sound/intro7.ogg", Sound.class);
          intro8 = mgr.get("audio/sound/intro8.ogg", Sound.class);
+         outro = mgr.get("audio/sound/outro.ogg", Sound.class);
 
          warriorWalkout1 = mgr.get("audio/sound/warriorWalkout1.ogg", Sound.class);
          warriorWalkout2 = mgr.get("audio/sound/warriorWalkout2.ogg", Sound.class);

@@ -21,7 +21,7 @@ import space.earlygrey.shapedrawer.ShapeDrawer;
 
 public class Boss extends ObjectLocation {
 
-    public static float MAX_HEALTH = 1000f;
+    public static float MAX_HEALTH = 500f;
 
     public enum State {
           idle_a        ("characters/boss/boss-idle-a/boss-idle-a")

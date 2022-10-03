@@ -30,6 +30,9 @@ import java.util.Comparator;
 
 public class GameScreen extends BaseScreen {
 
+    public static float NORMAL_ZOOM = 1.1f;
+    public static float WIZARD_ZOOM = 1.9f;
+
     public Player player;
     public Boss boss;
     public Arena arena;
@@ -100,6 +103,8 @@ public class GameScreen extends BaseScreen {
     protected void create() {
         worldCamera = new FollowOrthographicCamera();
         worldCamera.setToOrtho(false, Config.Screen.window_width, Config.Screen.window_height);
+        worldCamera.zoom = NORMAL_ZOOM;
+        setZoom(NORMAL_ZOOM);
         worldCamera.update();
         screenShaker = new ScreenShakeCameraController(worldCamera);
         game.audio.playMusic(AudioManager.Musics.warriorMusic1);

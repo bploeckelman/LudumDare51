@@ -517,7 +517,7 @@ public class Player extends ObjectLocation {
             if (redGemCount >= FULL_GEM_COUNT && greenGemCount >= FULL_GEM_COUNT && blueGemCount >= FULL_GEM_COUNT){
                 isWizard = true;
                 screen.explosions.add(new Explosion(screen, position.x, position.y, SIZE_WIZARD * 1.5f, 100));
-                screen.setZoom(2f);
+                screen.setZoom(GameScreen.WIZARD_ZOOM);
                 if(!wizardMusicIsPlaying) {
                     screen.audio.playMusic(AudioManager.Musics.wizardMusic1);
                 }
@@ -529,7 +529,7 @@ public class Player extends ObjectLocation {
 //            wizardMusicIsPlaying = false;
             if (redGemCount < FULL_GEM_COUNT /2f || greenGemCount < FULL_GEM_COUNT /2f || blueGemCount < FULL_GEM_COUNT /2f) {
                 isWizard = false;
-                screen.setZoom(1f);
+                screen.setZoom(GameScreen.NORMAL_ZOOM);
                 screen.audio.stopMusic();
                  wizardMusicIsPlaying = false;
             }

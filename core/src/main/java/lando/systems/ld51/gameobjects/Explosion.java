@@ -39,7 +39,7 @@ public class Explosion {
                     effectType = EffectAnims.Type.explode_spark;
             }
             EffectAnims.Type finalEffectType = effectType;
-            Time.do_after_delay(MathUtils.random(.5f), new Callback() {
+            Time.do_after_delay(MathUtils.random(1f), new Callback() {
                 @Override
                 public void run(Object... params) {
                     screen.particles.explode(finalEffectType, eX, eY, MathUtils.random(30, 50));

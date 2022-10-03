@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class FollowOrthographicCamera extends OrthographicCamera {
 
-    private static float ZOOM_SPEED = 2f;
+    private static float ZOOM_SPEED = 1f;
 
     Vector2 direction;
     Vector2 tempVec;

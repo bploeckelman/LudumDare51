@@ -92,7 +92,6 @@ public class Player extends ObjectLocation {
     public Phase phase;
     public State state;
     public boolean isWizard;
-    public int wizardPhaseCount;
     public int musicPhase = 1;
     public boolean wizardMusicIsPlaying = false;
 
@@ -126,7 +125,6 @@ public class Player extends ObjectLocation {
         this.blueGemCount = 0;
         this.attackInterval = attackIntervalNormal;
         this.attackTimer = attackInterval;
-        this.wizardPhaseCount = 0;
         this.hurtCircle = new Circle(position, SIZE / 4f);
         this.hurtDuration = 0.33f;
         this.hurtTimer = hurtDuration;
@@ -423,8 +421,6 @@ public class Player extends ObjectLocation {
             screen.particles.lightning(screen.boss.position, position);
             if (redGemCount >= FULL_GEM_COUNT && greenGemCount >= FULL_GEM_COUNT && blueGemCount >= FULL_GEM_COUNT){
                 isWizard = true;
-                wizardPhaseCount = 3;
-                redGemCount -= 4;
                 if(!wizardMusicIsPlaying) {
                     screen.audio.playMusic(AudioManager.Musics.wizardMusic1);
                 }
@@ -433,8 +429,7 @@ public class Player extends ObjectLocation {
             }
         } else {
 //            wizardMusicIsPlaying = false;
-            wizardPhaseCount--;
-            if (wizardPhaseCount<= 0) {
+            if (redGemCount < FULL_GEM_COUNT /2f || greenGemCount < FULL_GEM_COUNT /2f || blueGemCount < FULL_GEM_COUNT /2f) {
                 isWizard = false;
                 screen.audio.stopMusic();
                  wizardMusicIsPlaying = false;

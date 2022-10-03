@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import lando.systems.ld51.Config;
 import lando.systems.ld51.assets.CreatureAnims;
+import lando.systems.ld51.assets.EffectAnims;
 import lando.systems.ld51.audio.AudioManager;
 import lando.systems.ld51.screens.GameScreen;
 import lando.systems.ld51.utils.Calc;
@@ -53,6 +54,7 @@ public class Enemy implements Steerable<Vector2> {
     private float hurtDuration;
     private float hurtTimer;
     private boolean isHurt;
+    private Color hurtFlashColor;
 
     public float health;
     public float size;
@@ -96,6 +98,7 @@ public class Enemy implements Steerable<Vector2> {
         this.isHurt = false;
         this.hurtDuration = 0.6f;
         this.hurtTimer = hurtDuration;
+        this.hurtFlashColor = Color.WHITE.cpy();
     }
 
     public void update(float dt) {
@@ -114,6 +117,7 @@ public class Enemy implements Steerable<Vector2> {
             hurtTimer -= dt;
             if (hurtTimer <= 0) {
                 hurtTimer = hurtDuration;
+                hurtFlashColor.set(Color.WHITE);
                 isHurt = false;
             }
         }
@@ -158,7 +162,11 @@ public class Enemy implements Steerable<Vector2> {
         if (isHurt) {
             Animation<TextureRegion> flashAnimation = screen.assets.creatureAnims.getFlash(type);
             TextureRegion flashKeyframe = flashAnimation.getKeyFrame(stateTime);
+
+            hurtFlashColor.a = 0.75f;
+            batch.setColor(hurtFlashColor);
             batch.draw(flashKeyframe, position.x - (size / 2f), position.y - (size / 2f), size, size);
+            batch.setColor(Color.WHITE);
         }
 
         if (Config.Debug.general) {
@@ -181,7 +189,14 @@ public class Enemy implements Steerable<Vector2> {
             game.audio.playSound(AudioManager.Sounds.impact, 0.125f);
         }
 
-        health -= amount;
+        // wizard should always 'crit' enemies
+        float wizardScale = (screen.player.isWizard) ? 2f : 1f;
+        health -= amount * wizardScale;
+
+        if (screen.player.isWizard || type.gemColor.matches(screen.player.phase)) {
+            hurtFlashColor.set(type.gemColor.getColor());
+            screen.particles.explode(EffectAnims.Type.x_white, position.x, position.y, size);
+        }
 
         // bounce back
         float bounceBackAmount = 50f;

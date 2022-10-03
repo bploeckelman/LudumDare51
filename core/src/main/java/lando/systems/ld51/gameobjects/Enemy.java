@@ -143,6 +143,19 @@ public class Enemy implements Steerable<Vector2> {
     public void render(SpriteBatch batch) {
         batch.draw(keyframe, position.x - (size / 2f), position.y - (size / 2f), size, size);
 
+        switch(type.gemColor) {
+            case RED:
+                batch.setColor(Color.RED);
+                break;
+            case GREEN:
+                batch.setColor(Color.GREEN);
+                break;
+            case BLUE:
+                batch.setColor(.3f, .3f, 1f, 1f);
+                break;
+        }
+        batch.draw(screen.assets.circleTex, position.x - 4, position.y +size/2f, 8, 8);
+        batch.setColor(Color.WHITE);
         if (isHurt) {
             Animation<TextureRegion> flashAnimation = screen.assets.creatureAnims.getFlash(type);
             TextureRegion flashKeyframe = flashAnimation.getKeyFrame(stateTime);

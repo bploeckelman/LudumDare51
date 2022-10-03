@@ -63,7 +63,7 @@ public class EffectAnims {
         , double_fireball_blue(0,8)
         , orb_red(0,0,  1,0)
         , orb_blue(0,1, 1,1)
-        , swirl(3,3)
+        , swirl(2,2)
         ;
         final Array<Point> coords;
         Type(int... coords) {
